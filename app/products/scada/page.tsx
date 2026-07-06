@@ -1,1 +1,5 @@
-export default function Page(){ return (<div className="max-w-7xl mx-auto px-6 lg:px-8 py-24"><h1 className="text-3xl font-semibold">Coming in Phase 4</h1><p className="text-muted mt-2">pvNXT – SCADA</p></div>) }
+import ProductPageTemplate from "@/components/ProductPageTemplate";
+export const metadata = { title: "SCADA Monitoring – pvNXT | Terranxt", description: "SCADA Monitoring gives role-based plant visibility, live alerts, work orders and accountable operations." };
+export default function Page() {
+  return <ProductPageTemplate slug="scada" />;
+}

@@ -175,6 +175,49 @@ export default function HomePage() {
       {/* 6. STAT BAND */}
       <StatBand />
 
+      {/* ROLE-BASED ENTRY */}
+      <section className="py-20 bg-white">
+        <div className="max-w-7xl mx-auto px-6 lg:px-8 text-center">
+          <h2 className="text-[32px] lg:text-[40px] font-semibold text-ink mb-10">Find your workspace</h2>
+          <div className="flex flex-wrap justify-center gap-4">
+            {[
+              { label: "EPC", href: "/products/studio" },
+              { label: "Homeowner", href: "/products/connect" },
+              { label: "Installer", href: "/products/go" },
+              { label: "O&M", href: "/products/scada" },
+            ].map((role) => (
+              <Link 
+                key={role.label} 
+                href={role.href} 
+                className="px-6 py-3 rounded-full bg-[#047a88] text-white font-medium hover:opacity-90 transition-opacity"
+              >
+                {role.label}
+              </Link>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* GLOSSARY */}
+      <section className="py-20 bg-[#f8fcfd]">
+        <div className="max-w-7xl mx-auto px-6 lg:px-8">
+          <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-4">
+            {[
+              { term: "EPC", def: "Engineering, Procurement & Construction — the solar company that designs, installs and manages the project." },
+              { term: "Consumer", def: "The homeowner or customer who gets solar installed." },
+              { term: "Installer", def: "The on-ground team that does the site work and installation." },
+              { term: "O&M", def: "Operations & Maintenance — monitoring and servicing the plant after install." },
+              { term: "SCADA", def: "System that monitors plant performance and raises alerts in real time." },
+            ].map((item) => (
+              <div key={item.term} className="bg-white border-[#dbe8ea] border rounded-xl p-4">
+                <h3 className="font-medium text-ink">{item.term}</h3>
+                <p className="text-sm text-muted mt-1">{item.def}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* 7. FINAL CTA */}
       <div className="relative overflow-hidden">
         <PatternBg opacity={0.05} />
