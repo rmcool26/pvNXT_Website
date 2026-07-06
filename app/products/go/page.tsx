@@ -1,0 +1,1 @@
+export default function Page(){ return (<div className="max-w-7xl mx-auto px-6 lg:px-8 py-24"><h1 className="text-3xl font-600">Coming in Phase 4</h1><p className="text-muted mt-2">pvNXT – Go</p></div>) }
