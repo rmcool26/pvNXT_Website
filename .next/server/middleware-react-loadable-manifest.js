@@ -1,1 +1,0 @@
-self.__REACT_LOADABLE_MANIFEST="{\"app\\\\page.tsx -> @/components/SolarHeroCanvas\":{\"id\":\"app\\\\page.tsx -> @/components/SolarHeroCanvas\",\"files\":[\"static/chunks/_app-pages-browser_components_SolarHeroCanvas_tsx.js\"]}}"

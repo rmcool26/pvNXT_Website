@@ -34,7 +34,7 @@ export default function HomePage() {
         <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-8 py-20 lg:py-28 w-full grid lg:grid-cols-2 gap-12 items-center">
           <div>
             <span className="text-[#047a88] font-medium text-sm">Incubated at IIT Delhi – FITT</span>
-            <h1 className="text-[40px] lg:text-[56px] font-semibold text-ink leading-tight mt-2" style={{ fontFamily: "Sora, sans-serif" }}>
+            <h1 className="text-[40px] lg:text-[56px] font-semibold text-ink leading-tight mt-2 font-sora">
               Solar operations, connected.
             </h1>
             <p className="text-lg text-muted max-w-xl mt-4">
@@ -84,7 +84,7 @@ export default function HomePage() {
                   className="w-12 h-12" 
                   onError={(e) => {
                     const el = e.currentTarget as HTMLImageElement;
-                    el.outerHTML = `<div class="w-12 h-12 rounded-xl bg-[#e6f7f9] border border-[#baf0f5] flex items-center justify-center text-[#047a88] text-xs font-600">${item.code}</div><!-- ICON: ${item.icon} – Rajat to replace -->`;
+                    el.outerHTML = `<div class="w-12 h-12 rounded-xl bg-[#e6f7f9] border border-[#baf0f5] flex items-center justify-center text-[#047a88] text-xs font-semibold">${item.code}</div><!-- ICON: ${item.icon} – Rajat to replace -->`;
                   }} 
                 />
                 <h3 className="font-medium text-ink mt-4">{item.title}</h3>

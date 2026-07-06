@@ -20,8 +20,8 @@ const config: Config = {
         white: "#ffffff",
       },
       fontFamily: {
-        sora: ["Sora", "sans-serif"],
-        inter: ["Inter", "sans-serif"],
+        sora: ["var(--font-sora)", "system-ui", "sans-serif"],
+        inter: ["var(--font-inter)", "system-ui", "sans-serif"],
       },
       borderRadius: {
         "2xl": "1rem",

@@ -3,6 +3,7 @@ export type Product = {
   users: string; usersShort: string; livePortal?: string;
   overview: string; capabilities: string[]; features: string[]; userChips: string[];
   screenshotLabel: string; screenshot: {width:number;height:number;ratio:string;bg:string}
+  before?: string; after?: string;
 }
 
 export const products: Product[] = [
@@ -65,5 +66,39 @@ export const products: Product[] = [
   userChips:["EPC teams","Sales"],
   screenshotLabel:"[ Proposal System — sample proposal document | client screenshot yaha aayega | ratio A4 portrait | 794x1123px | bg: #ffffff ]",
   screenshot:{width:794,height:1123,ratio:"0.707",bg:"#ffffff"}
+},
+{
+  slug: "field-app",
+  name: "Field App",
+  tagline: "One visit, complete site capture.",
+  status: "Internal",
+  users: "Field survey teams",
+  usersShort: "Field survey teams",
+  livePortal: "",
+  overview: "Field capture app that records site data, roof details, keepouts, measurements, photos and handoff notes in a single visit.",
+  capabilities: ["Site data capture","Roof details & keepouts","Measurements","Photos","Structured handoff notes"],
+  features: ["Site data capture","Roof details & keepouts","Measurements","Photos","Structured handoff notes"],
+  userChips: ["Field survey teams"],
+  before: "Site visits produced incomplete handoffs — design later had to re-ask for missing details.",
+  after: "One visit captures everything — cleaner handoff, fewer missing details, faster proposals.",
+  screenshotLabel: "[ Field App — site survey capture | client screenshot yaha aayega | ratio 9:16 | 390x844px | bg: #ffffff ]",
+  screenshot: {width:390,height:844,ratio:"9/16",bg:"#ffffff"}
+},
+{
+  slug: "scada",
+  name: "SCADA Monitoring",
+  tagline: "Every alert, accountable.",
+  status: "In progress",
+  users: "EPC managers, plant owners, field techs, O&M owners",
+  usersShort: "EPC managers, plant owners, field techs, O&M owners",
+  livePortal: "https://scada.pvnxt.com/",
+  overview: "Role-based monitoring dashboard for plant visibility, alerts, inverter/string issues, work orders, assignments and activity logs.",
+  capabilities: ["Role-based views (Manager/Owner/Tech/O&M)","Live alerts","Work orders & assignment","Activity history","Plant-level monitoring"],
+  features: ["Role-based views (Manager/Owner/Tech/O&M)","Live alerts","Work orders & assignment","Activity history","Plant-level monitoring"],
+  userChips: ["EPC managers","Plant owners","Field techs","O&M owners"],
+  before: "O&M relied on manual checks, scattered screenshots, delayed alerts and unclear issue ownership.",
+  after: "A visible, accountable operations flow — every alert has a clear owner.",
+  screenshotLabel: "[ SCADA — monitoring dashboard | client screenshot yaha aayega | ratio 16:9 | 1280x720px | bg: #ffffff ]",
+  screenshot: {width:1280,height:720,ratio:"16/9",bg:"#ffffff"}
 }
 ]
