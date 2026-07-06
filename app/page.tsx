@@ -13,31 +13,17 @@ export default function HomePage() {
   return (
     <main>
       {/* 1. HERO */}
-      <section className="relative overflow-hidden bg-[#e6f7f9] min-h-[82vh] flex items-center">
-        {/* Background image – static fallback */}
-        <img
-          src="/assets/hero-bg-aurora.webp"
-          alt="pvNXT solar aurora background – teal gradient with solar panel pattern"
-          className="absolute inset-0 w-full h-full object-cover"
-          width="1920"
-          height="1080"
-          fetchPriority="high"
-          decoding="async"
-          onError={(e) => {
-            const t = e.currentTarget as HTMLImageElement;
-            if (!t.src.endsWith(".png")) t.src = "/assets/hero-bg-aurora.png";
-          }}
-        />
-        {/* Motion overlay */}
+       <section className="relative overflow-hidden bg-gradient-to-br from-[#e6f7f9] via-[#dff3f5] to-white min-h-[82vh] flex items-center">
+         {/* Motion overlay */}
         <SolarHeroCanvas />
         {/* content wrapper */}
         <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-8 py-20 lg:py-28 w-full grid lg:grid-cols-2 gap-12 items-center">
           <div>
             <span className="text-[#047a88] font-medium text-sm">Incubated at IIT Delhi – FITT</span>
-            <h1 className="text-[40px] lg:text-[56px] font-semibold text-ink leading-tight mt-2 font-sora">
+            <h1 className="text-[36px] md:text-[40px] lg:text-[56px] font-semibold text-ink leading-tight mt-2 font-sora">
               Solar operations, connected.
             </h1>
-            <p className="text-lg text-muted max-w-xl mt-4">
+            <p className="text-base md:text-lg text-muted max-w-xl mt-4">
               pvNXT connects EPC design, sales, installation and monitoring in one workflow suite. Built for solar teams in India.
             </p>
             <div className="flex flex-wrap gap-4 mt-8">
@@ -52,7 +38,7 @@ export default function HomePage() {
               <span>BOQ + proposal – auto-generated</span>
             </div>
           </div>
-          <div className="hidden lg:block">
+          <div>
             <PlaceholderBox
               label="[ pvNXT Suite — connected dashboard preview | client screenshot yaha aayega | ratio 16:9 | 1280x720px | bg: #e6f7f9 ]"
               ratio="16/9"
@@ -63,33 +49,30 @@ export default function HomePage() {
       </section>
 
       {/* 2. WHAT IS pvNXT */}
-      <section className="bg-white py-20 text-center">
+      <section className="bg-white py-16 md:py-20 text-center">
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
-          <h2 className="text-[32px] lg:text-[40px] font-semibold text-ink">One connected suite for solar operations.</h2>
-          <p className="text-muted max-w-2xl mx-auto mt-3 text-lg">
+          <h2 className="text-[28px] md:text-[32px] lg:text-[40px] font-semibold text-ink font-sora">One connected suite for solar operations.</h2>
+          <p className="text-muted max-w-2xl mx-auto mt-3 text-base md:text-lg">
             pvNXT gives every solar role its own workspace – EPC, consumer, installer, O&M – with shared project data.
           </p>
-          <div className="grid md:grid-cols-3 gap-6 mt-12 text-left">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-10 md:mt-12 text-left">
             {[
-              { title: "Design & Sell", desc: "EPC workspace – Studio + Proposal", code: "D&S", icon: "/assets/icons/ico-solar-panel.svg" },
-              { title: "Install & Track", desc: "Field teams – Go + Field App", code: "I&T", icon: "/assets/icons/ico-installer.svg" },
-              { title: "Monitor & Maintain", desc: "Plant owners – Connect + SCADA", code: "M&M", icon: "/assets/icons/ico-monitoring.svg" },
+              { title: "Design & Sell", desc: "EPC workspace – Studio + Proposal", code: "D&S", icon: "/assets/icons/ico-solar-panel.svg", href: "/products/studio" },
+              { title: "Install & Track", desc: "Field teams – Go + Field App", code: "I&T", icon: "/assets/icons/ico-installer.svg", href: "/products/go" },
+              { title: "Monitor & Maintain", desc: "Plant owners – Connect + SCADA", code: "M&M", icon: "/assets/icons/ico-monitoring.svg", href: "/products/connect" },
             ].map((item) => (
-              <div key={item.title} className="rounded-2xl border border-line p-6 bg-white">
+              <Link key={item.title} href={item.href} className="group rounded-2xl border border-line p-6 bg-white hover:border-pvnxt hover:shadow-md transition duration-200">
                 <img 
                   src={item.icon} 
                   width="48" 
                   height="48" 
                   alt={`${item.title} icon – pvNXT`} 
                   className="w-12 h-12" 
-                  onError={(e) => {
-                    const el = e.currentTarget as HTMLImageElement;
-                    el.outerHTML = `<div class="w-12 h-12 rounded-xl bg-[#e6f7f9] border border-[#baf0f5] flex items-center justify-center text-[#047a88] text-xs font-semibold">${item.code}</div><!-- ICON: ${item.icon} – Rajat to replace -->`;
-                  }} 
                 />
                 <h3 className="font-medium text-ink mt-4">{item.title}</h3>
                 <p className="text-sm text-muted mt-1">{item.desc}</p>
-              </div>
+                <span className="text-[#047a88] font-medium text-sm mt-4 inline-block group-hover:underline">Explore →</span>
+              </Link>
             ))}
           </div>
         </div>
