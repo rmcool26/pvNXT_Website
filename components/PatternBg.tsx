@@ -12,7 +12,7 @@ export default function PatternBg({
   className = "",
 }: PatternBgProps) {
   const bg = variant === "dark" ? "#113f4a" : "transparent";
-  const img = "/assets/pat-pvnxt.png";
+  const img = "/assets/pat-pvnxt.webp";
 
   return (
     <div
