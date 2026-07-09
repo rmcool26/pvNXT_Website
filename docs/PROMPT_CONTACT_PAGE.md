@@ -1,3 +1,16 @@
+Read and strictly follow the instructions in `docs/agent.md`. Those rules apply to this task.
+
+PROJECT CONTEXT:
+We are updating the pvNXT website (static HTML/CSS/JS, v3-main branch). The homepage, all 6 product pages, and About page are complete with pvNXT branding. Now we need to update the Contact page to match pvNXT branding and improve the form flow. The existing contact.html uses Terranxt branding — we must update it to pvNXT branding while keeping the same page shell structure.
+
+This is an EXISTING file: `contact.html` in the root directory. We will MODIFY this file to make it pvNXT-focused.
+
+---
+
+TASK: Update `contact.html` — Transform from Terranxt-focused to pvNXT-focused.
+
+STEP 1: Read the existing `contact.html` to understand current structure, then REPLACE the entire content with the following complete HTML:
+
 <!doctype html>
 <html lang="en">
 <head>
@@ -147,3 +160,83 @@
   </script>
 </body>
 </html>
+
+STEP 2: Update `assets/css/pages/contact.css` to add styles for the new role selector grid. Add the following CSS at the END of the existing contact.css file:
+
+/* ===== CONTACT PAGE — pvNXT UPDATE ===== */
+
+/* Role Grid */
+.role-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px;
+  margin-top: 40px;
+}
+
+.role-card {
+  padding: 24px;
+  background: #fff;
+  border: 2px solid var(--line);
+  border-radius: 16px;
+  cursor: pointer;
+  transition: border-color .25s ease, box-shadow .25s ease;
+  text-align: left;
+}
+
+.role-card:hover {
+  border-color: var(--brand);
+  box-shadow: 0 8px 30px rgba(6,159,177,.08);
+}
+
+.role-card h3 {
+  font-size: .95rem;
+  margin-bottom: 8px;
+  color: var(--ink);
+}
+
+.role-card p {
+  font-size: .82rem;
+  color: var(--muted);
+  margin: 0;
+  line-height: 1.5;
+}
+
+/* Form Section */
+#contact-form {
+  display: none;
+}
+
+#contact-form.show {
+  display: block;
+}
+
+/* Responsive */
+@media (max-width: 860px) {
+  .role-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 560px) {
+  .role-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+---
+
+CRITICAL RULES:
+- MODIFY the existing `contact.html` file (do not create a new file)
+- ADD CSS to the END of `assets/css/pages/contact.css` (do not replace existing CSS)
+- Use existing CSS variables from style.css (--brand, --brand-dark, --ink, --muted, --line, --mist, --paper)
+- Use existing utility classes where possible: .section, .section-soft, .container, .overline, .lead, .btn, .btn-primary, .btn-secondary
+- The page shell (head, meta, fonts, loader, header placeholder, footer placeholder) must match the existing structure
+- DO NOT touch: components/header.html, components/footer.html, assets/js/main.js, assets/css/style.css
+- Inline styles in the HTML will be moved to contact.css in a future cleanup. For now, keep them inline to match the prompt structure.
+- Form validation is frontend-only (static build). Backend integration is out of scope for this task.
+
+When done, reply "TASK FINISHED SUCCESSFULLY" and confirm:
+1. contact.html modified with pvNXT-focused content (role selector + form)
+2. assets/css/pages/contact.css updated with new styles at the END
+3. Page uses existing design system (CSS variables, utility classes)
+4. No other existing files were modified except contact.html and contact.css
