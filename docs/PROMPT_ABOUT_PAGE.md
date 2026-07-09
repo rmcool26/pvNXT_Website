@@ -1,3 +1,16 @@
+Read and strictly follow the instructions in `docs/agent.md`. Those rules apply to this task.
+
+PROJECT CONTEXT:
+We are revamping the pvNXT website (static HTML/CSS/JS, v3-main branch). The homepage (index.html) and all 6 product pages (products/*.html) are complete. Now we need to revamp the About page to focus on pvNXT (not Terranxt). The existing about.html uses Terranxt branding — we must update it to pvNXT branding while keeping the same page shell structure.
+
+This is an EXISTING file: `about.html` in the root directory. We will MODIFY this file to make it pvNXT-focused.
+
+---
+
+TASK: Revamp `about.html` — Transform from Terranxt-focused to pvNXT-focused.
+
+STEP 1: Read the existing `about.html` to understand current structure, then REPLACE the entire content with the following complete HTML:
+
 <!doctype html>
 <html lang="en">
 <head>
@@ -194,3 +207,97 @@
   <script src="assets/js/main.js"></script>
 </body>
 </html>
+
+STEP 2: Update `assets/css/pages/about.css` to add styles for the new sections. Add the following CSS at the END of the existing about.css file:
+
+/* ===== ABOUT PAGE — pvNXT REVAMP ===== */
+
+/* Problem Grid */
+.about-problem-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 24px;
+  margin-top: 40px;
+}
+
+@media (max-width: 860px) {
+  .about-problem-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Flow Steps */
+.about-flow-steps {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 16px;
+  align-items: center;
+}
+
+.about-flow-step {
+  padding: 14px 22px;
+  background: rgba(6,159,177,.08);
+  border: 1px solid rgba(6,159,177,.2);
+  border-radius: 12px;
+  font-weight: 700;
+  font-size: .88rem;
+  color: var(--brand-dark);
+}
+
+/* Products Grid */
+.about-products-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  margin-top: 40px;
+}
+
+.about-products-grid a:hover {
+  border-color: rgba(6,159,177,.35);
+  box-shadow: 0 8px 30px rgba(6,159,177,.08);
+}
+
+@media (max-width: 860px) {
+  .about-products-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 560px) {
+  .about-products-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Principles Grid */
+.about-principles-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+  margin-top: 40px;
+}
+
+@media (max-width: 860px) {
+  .about-principles-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+---
+
+CRITICAL RULES:
+- MODIFY the existing `about.html` file (do not create a new file)
+- ADD CSS to the END of `assets/css/pages/about.css` (do not replace existing CSS)
+- Use existing CSS variables from style.css (--brand, --brand-dark, --ink, --muted, --line, --mist, --paper)
+- Use existing utility classes where possible: .section, .section-soft, .container, .overline, .lead, .btn, .btn-primary, .btn-secondary, .cta-final
+- The page shell (head, meta, fonts, loader, header placeholder, footer placeholder) must match the existing structure
+- DO NOT touch: components/header.html, components/footer.html, assets/js/main.js, assets/css/style.css
+- All inline styles in the HTML will be moved to about.css in a future cleanup. For now, keep them inline to match the prompt structure.
+- Links to product pages: use `products/studio.html` format (since about.html is in root)
+
+When done, reply "TASK FINISHED SUCCESSFULLY" and confirm:
+1. about.html modified with pvNXT-focused content (all sections)
+2. assets/css/pages/about.css updated with new styles at the END
+3. Page uses existing design system (CSS variables, utility classes)
+4. No other existing files were modified except about.html and about.css
