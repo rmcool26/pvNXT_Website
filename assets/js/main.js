@@ -97,47 +97,77 @@
   /* End of Zoom In/Out */
 
   document.addEventListener("DOMContentLoaded", function () {
-    // Header Load Karna (FIXED for root + products/ subdirectory)
-    const basePath = window.location.pathname.includes('/products/') ? '../' : './';
+    // Helper function to detect correct base path
+    function getBasePath() {
+      const path = window.location.pathname;
+      
+      // For GitHub Pages (username.github.io/repo-name/)
+      if (path.includes('/pvNXT_Website/')) {
+        if (path.includes('/products/')) {
+          return '../';  // products/*.html → go up to root
+        } else {
+          return '';  // root pages → same directory
+        }
+      }
+      
+      // For local development
+      if (path.includes('/products/')) {
+        return '../';
+      } else {
+        return './';
+      }
+    }
 
+    const basePath = getBasePath();
+
+    // Header Load Karna
     fetch(basePath + 'assets/components/header.html')
       .then(response => {
-        if (!response.ok) throw new Error("Header not found");
+        if (!response.ok) throw new Error("Header not found: " + response.status);
         return response.text();
       })
       .then(data => {
-        document.getElementById('header-placeholder').innerHTML = data;
-        
-        // Dropdown functionality
-        const dropdownTriggers = document.querySelectorAll('[data-dropdown-trigger]');
-        dropdownTriggers.forEach(trigger => {
-          trigger.addEventListener('click', function(e) {
-            e.preventDefault();
-            const dropdown = this.closest('[data-dropdown]');
-            const isOpen = dropdown.getAttribute('data-open') === 'true';
-            dropdown.setAttribute('data-open', isOpen ? 'false' : 'true');
-          });
-        });
-        
-        // Close dropdown on outside click
-        document.addEventListener('click', function(e) {
-          if (!e.target.closest('[data-dropdown]')) {
-            document.querySelectorAll('[data-dropdown]').forEach(dd => {
-              dd.setAttribute('data-open', 'false');
+        const placeholder = document.getElementById('header-placeholder');
+        if (placeholder) {
+          placeholder.innerHTML = data;
+          
+          // Dropdown functionality
+          const dropdownTriggers = document.querySelectorAll('[data-dropdown-trigger]');
+          dropdownTriggers.forEach(trigger => {
+            trigger.addEventListener('click', function(e) {
+              e.preventDefault();
+              const dropdown = this.closest('[data-dropdown]');
+              const isOpen = dropdown.getAttribute('data-open') === 'true';
+              dropdown.setAttribute('data-open', isOpen ? 'false' : 'true');
             });
-          }
-        });
+          });
+          
+          // Close dropdown on outside click
+          document.addEventListener('click', function(e) {
+            if (!e.target.closest('[data-dropdown]')) {
+              document.querySelectorAll('[data-dropdown]').forEach(dd => {
+                dd.setAttribute('data-open', 'false');
+              });
+            }
+          });
+          
+          console.log('Header loaded successfully');
+        }
       })
       .catch(error => console.error("Error loading header:", error));
 
-    // Footer Load Karna (FIXED for root + products/ subdirectory)
+    // Footer Load Karna
     fetch(basePath + 'assets/components/footer.html')
       .then(response => {
-        if (!response.ok) throw new Error("Footer not found");
+        if (!response.ok) throw new Error("Footer not found: " + response.status);
         return response.text();
       })
       .then(data => {
-        document.getElementById('footer-placeholder').innerHTML = data;
+        const placeholder = document.getElementById('footer-placeholder');
+        if (placeholder) {
+          placeholder.innerHTML = data;
+          console.log('Footer loaded successfully');
+        }
       })
       .catch(error => console.error("Error loading footer:", error));
   });
