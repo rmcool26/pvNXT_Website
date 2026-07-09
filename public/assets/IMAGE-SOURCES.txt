@@ -1,0 +1,22 @@
+IMAGE SOURCES
+
+The build uses the Terranxt logo supplied by the user as assets/images/logo.png.
+
+Remote Unsplash images used in the static pages:
+1. Solar panels under daylight:
+   https://images.unsplash.com/photo-1509391366360-2e959784a276?auto=format&fit=crop&w=1100&q=80
+2. Solar and energy infrastructure:
+   https://images.unsplash.com/photo-1497435334941-8c899ee9e8e9?auto=format&fit=crop&w=1100&q=80
+3. Solar field / clean energy landscape:
+   https://images.unsplash.com/photo-1466611653911-95081537e5b7?auto=format&fit=crop&w=1100&q=80
+4. Field / equipment image for installer visual treatment:
+   https://images.unsplash.com/photo-1624397640148-949b1732bb0a?auto=format&fit=crop&w=1100&q=80
+
+Product screenshots are intentionally represented with the exact requested placeholders in the HTML:
+- [PLACEHOLDER: 3D Roof Shadow Analysis GIF]
+- [PLACEHOLDER: App Login Screen]
+- [PLACEHOLDER: Consumer Dashboard Image]
+- [PLACEHOLDER: 3D Roof Image with Module Placement]
+- [PLACEHOLDER: Field Installer Geo-tagged App Screen]
+- [PLACEHOLDER: SCADA Dashboard Image]
+- [PLACEHOLDER: Google Map]
