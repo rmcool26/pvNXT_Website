@@ -87,7 +87,7 @@ export default function ProductPageTemplate({ slug }: ProductPageTemplateProps) 
               <ul className="space-y-2">
                 {product.beforeList.map((item, i) => (
                   <li key={i} className="flex items-start gap-2 text-sm text-muted">
-                    <span className="text-red-500 font-semibold flex-shrink-0 mt-0.5">X</span>
+                    <span className="text-red-500 font-semibold flex-shrink-0 mt-0.5">•</span>
                     <span>{item}</span>
                   </li>
                 ))}
@@ -102,7 +102,7 @@ export default function ProductPageTemplate({ slug }: ProductPageTemplateProps) 
               <ul className="space-y-2">
                 {product.afterList.map((item, i) => (
                   <li key={i} className="flex items-start gap-2 text-sm text-muted">
-                    <span className="text-emerald-500 font-semibold flex-shrink-0 mt-0.5">V</span>
+                    <span className="text-emerald-500 font-semibold flex-shrink-0 mt-0.5">•</span>
                     <span>{item}</span>
                   </li>
                 ))}
