@@ -99,31 +99,40 @@
   document.addEventListener("DOMContentLoaded", function () {
     // Helper function to detect correct base path
     function getBasePath() {
-      const path = window.location.pathname;
+      const hostname = window.location.hostname;
+      const pathname = window.location.pathname;
       
       // For GitHub Pages (username.github.io/repo-name/)
-      if (path.includes('/pvNXT_Website/')) {
-        if (path.includes('/products/')) {
-          return '../';  // products/*.html → go up to root
+      if (hostname.includes('github.io') || hostname.includes('netlify.app')) {
+        // Extract repo name from pathname
+        const pathParts = pathname.split('/');
+        const repoName = pathParts[1] || '';  // pvNXT_Website
+        
+        if (pathname.includes('/products/')) {
+          return '/' + repoName + '/';  // → /pvNXT_Website/ (goes to root)
         } else {
-          return '';  // root pages → same directory
+          return '/' + repoName + '/';  // → /pvNXT_Website/
         }
       }
       
-      // For local development
-      if (path.includes('/products/')) {
-        return '../';
+      // For local development (127.0.0.1 or localhost)
+      if (pathname.includes('/products/')) {
+        return '../';  // products/*.html → go up to root
       } else {
-        return './';
+        return './';  // root pages → same directory
       }
     }
 
     const basePath = getBasePath();
 
-    // Header Load Karna
+    // Debug: Log the basePath (remove after testing)
+    console.log('Base path:', basePath);
+    console.log('Loading header from:', basePath + 'assets/components/header.html');
+
+    // Header Load Karna (FIXED with absolute paths)
     fetch(basePath + 'assets/components/header.html')
       .then(response => {
-        if (!response.ok) throw new Error("Header not found: " + response.status);
+        if (!response.ok) throw new Error("Header not found: " + response.status + " (tried: " + basePath + "assets/components/header.html)");
         return response.text();
       })
       .then(data => {
@@ -151,25 +160,29 @@
             }
           });
           
-          console.log('Header loaded successfully');
+          console.log('✅ Header loaded successfully from:', basePath + 'assets/components/header.html');
+        } else {
+          console.error('❌ Header placeholder not found!');
         }
       })
-      .catch(error => console.error("Error loading header:", error));
+      .catch(error => console.error("❌ Error loading header:", error));
 
-    // Footer Load Karna
+    // Footer Load Karna (FIXED with absolute paths)
     fetch(basePath + 'assets/components/footer.html')
       .then(response => {
-        if (!response.ok) throw new Error("Footer not found: " + response.status);
+        if (!response.ok) throw new Error("Footer not found: " + response.status + " (tried: " + basePath + "assets/components/footer.html)");
         return response.text();
       })
       .then(data => {
         const placeholder = document.getElementById('footer-placeholder');
         if (placeholder) {
           placeholder.innerHTML = data;
-          console.log('Footer loaded successfully');
+          console.log('✅ Footer loaded successfully from:', basePath + 'assets/components/footer.html');
+        } else {
+          console.error('❌ Footer placeholder not found!');
         }
       })
-      .catch(error => console.error("Error loading footer:", error));
+      .catch(error => console.error("❌ Error loading footer:", error));
   });
 
   window.addEventListener('scroll', onScroll, { passive: true });
