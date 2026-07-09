@@ -1,3 +1,17 @@
+Read and strictly follow the instructions in `docs/agent.md`. Those rules apply to this task.
+
+PROJECT CONTEXT:
+We are updating the pvNXT website (static HTML/CSS/JS, v3-main branch). All main pages (homepage, products, about, contact) are complete with pvNXT branding. Now we need to update the shared footer component to match pvNXT branding and include product links. The footer is loaded via JavaScript on every page.
+
+This is an EXISTING file: `components/footer.html`. We will MODIFY this file to make it pvNXT-focused.
+
+---
+
+TASK: Update `components/footer.html` — Transform from Terranxt-focused to pvNXT-focused with product links.
+
+STEP 1: Read the existing `components/footer.html` to understand current structure, then REPLACE the entire content with the following complete HTML:
+
+```html
 <footer class="site-footer" data-footer>
   <div class="container">
     <div class="footer-grid">
@@ -66,7 +80,15 @@
     </div>
 
   </div>
-  <style>
+</footer>
+```
+
+STEP 2: No CSS changes needed — the footer uses existing classes from `assets/css/style.css`. The social icons need minimal styling, but that can be added later. For now, use these inline styles:
+
+Add this style block at the end of the footer HTML (before the closing `</footer>` tag):
+
+```html
+<style>
 .footer-social-link { 
   display: inline-flex; 
   align-items: center; 
@@ -89,4 +111,22 @@
   margin-bottom: 8px; 
 }
 </style>
-</footer>
+```
+
+---
+
+CRITICAL RULES:
+- MODIFY the existing `components/footer.html` file
+- Use pvNXT branding (logo text "pvNXT" in teal #069fb1)
+- Include all 6 product links in the Products column
+- Mention "Powered by Terranxt" in the brand description
+- Keep existing contact info (IIT Delhi incubation)
+- Use CSS variables from style.css
+- The footer loads via JavaScript on every page, so this change will affect ALL pages
+
+When done, reply "TASK FINISHED SUCCESSFULLY" and confirm:
+1. components/footer.html updated with pvNXT branding
+2. All 6 product links added to footer
+3. Social media links updated (LinkedIn, X, YouTube)
+4. Copyright updated to "© 2026 pvNXT by Terranxt"
+5. No other files were modified

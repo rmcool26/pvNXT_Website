@@ -1,3 +1,17 @@
+Read and strictly follow the instructions in `docs/agent.md`. Those rules apply to this task.
+
+PROJECT CONTEXT:
+We are updating the pvNXT website (static HTML/CSS/JS, v3-main branch). All main pages (homepage, products, about, contact) are complete with pvNXT branding. Now we need to update the shared header and footer components to match pvNXT branding and include product navigation. The header and footer are loaded via JavaScript on every page.
+
+These are EXISTING files: `components/header.html` and `components/footer.html`. We will MODIFY these files to make them pvNXT-focused.
+
+---
+
+TASK: Update `components/header.html` — Transform from Terranxt-focused to pvNXT-focused with product navigation.
+
+STEP 1: Read the existing `components/header.html` to understand current structure, then REPLACE the entire content with the following complete HTML:
+
+```html
 <header class="site-header" data-header>
   <div class="container header-inner">
     <a href="/home.html" class="logo" aria-label="pvNXT Home">
@@ -38,8 +52,15 @@
       <span></span>
     </button>
   </div>
+</header>
+```
 
-  <style>
+STEP 2: No CSS changes needed — the header uses existing classes from `assets/css/style.css`. The dropdown will need CSS, but that should be added to `style.css` carefully. For now, use these inline styles in the header HTML:
+
+Add this style block at the end of the header HTML (before the closing `</header>` tag):
+
+```html
+<style>
 .nav-dropdown { position: relative; }
 .nav-dropdown-trigger { display: flex; align-items: center; gap: 4px; background: none; border: none; cursor: pointer; font: inherit; }
 .nav-dropdown-menu { 
@@ -75,4 +96,21 @@
 .dropdown-link:hover { background: rgba(6,159,177,.08); color: var(--brand-dark); }
 .btn-sm { padding: 8px 18px; font-size: .85rem; }
 </style>
-</header>
+```
+
+---
+
+CRITICAL RULES:
+- MODIFY the existing `components/header.html` file
+- Use pvNXT branding (logo text "pvNXT" in teal #069fb1)
+- Include all 6 product links in dropdown
+- Keep existing functionality (mobile menu toggle, dropdown logic)
+- Use CSS variables from style.css
+- Test that dropdown works on both desktop and mobile
+- The header loads via JavaScript on every page, so this change will affect ALL pages
+
+When done, reply "TASK FINISHED SUCCESSFULLY" and confirm:
+1. components/header.html updated with pvNXT branding
+2. Product dropdown added with all 6 product links
+3. Mobile menu still works
+4. No other files were modified
