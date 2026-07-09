@@ -1,0 +1,16 @@
+QA CHECKLIST
+
+PASS - File structure matches the requested structure.
+PASS - Navigation links map to working files: home.html, services.html#platform, services.html#beyond, about.html and contact.html.
+PASS - CSS paths use assets/css/style.css plus the appropriate assets/css/pages/*.css file.
+PASS - JavaScript path uses assets/js/main.js.
+PASS - Logo path uses assets/images/logo.png.
+PASS - The mobile hamburger opens and closes, closes after tapping links, and supports Escape key closing.
+PASS - Portal Login dropdown opens and closes, supports outside-click and Escape key closing.
+PASS - Floating WhatsApp widget is fixed at the bottom-right and has a working wa.me route.
+PASS - Contact form validates name, email, phone, role and message with accessible error messaging.
+PASS - Semantic structure uses one visible H1 per full page and meaningful section H2 headings.
+PASS - Text contrast uses dark ink on light backgrounds, and dark CTA/footer sections use light readable text.
+PASS - Layout uses responsive grids, max-width containers and overflow-x hidden to avoid horizontal scrolling.
+PASS - Product placeholders are preserved exactly as requested.
+PASS - The visual system was de-boxed: fewer rigid cards, reduced borders and shadows, more whitespace, editorial grids and industry-specific solar/AI motion details.

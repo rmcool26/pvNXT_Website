@@ -1,0 +1,414 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Terranxt | AI Solar Design & Zero Site Visit Solar Platform</title>
+  <meta name="description"
+    content="Terranxt is an IIT Delhi-incubated deep-tech startup building the digital backbone of solar with AI, geo-spatial design, automated BOQs and role-specific workflows.">
+  <meta name="keywords"
+    content="AI Solar Design, Zero Site Visit Solar, Solar EPC Software, Installer Mobile App, Auto BOQ Generation, Solar Reverse Bidding, SCADA Solar Monitoring, 3D Solar Layout">
+  <meta name="theme-color" content="#069fb1">
+  <meta property="og:title" content="Terranxt | AI Solar Design & Zero Site Visit Solar Platform">
+  <meta property="og:description"
+    content="Terranxt is an IIT Delhi-incubated deep-tech startup building the digital backbone of solar with AI, geo-spatial design, automated BOQs and role-specific workflows.">
+  <meta property="og:type" content="website">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/style.css">
+  <link rel="stylesheet" href="assets/css/pages/home.css">
+</head>
+
+<body data-page="home">
+  <a class="skip-link" href="#main">Skip to main content</a>
+  <div class="page-loader" data-loader aria-hidden="true">
+    <div class="loader-orbit"><span></span><span></span><span></span></div>
+  </div>
+
+  <header class="site-header" data-header>
+    <div class="header-progress" data-progress></div>
+    <div class="nav-shell">
+      <a class="brand" href="index.html" aria-label="Terranxt home">
+        <img src="assets/images/logo.png" width="224" height="56" alt="Terranxt logo">
+      </a>
+      <nav class="nav-links" aria-label="Primary navigation">
+        <a class="nav-link is-active" href="index.html" data-nav="home">Home</a>
+        <a class="nav-link" href="services.html#platform" data-nav="platform">pvNXT Platform</a>
+        <!-- <a class="nav-link" href="services.html#beyond" data-nav="beyond">Beyond Solar</a> -->
+        <a class="nav-link" href="about.html" data-nav="about">About</a>
+        <a class="nav-link" href="contact.html" data-nav="contact" aria-current="page">Contact</a>
+      </nav>
+      <div class="nav-actions">
+        <div class="portal-wrap">
+          <button class="portal-button" type="button" data-portal-toggle aria-expanded="false"
+            aria-controls="portal-menu">
+            <span>pvNXT Portal</span>
+            <svg viewBox="0 0 16 16" aria-hidden="true">
+              <path d="M4.3 6.1 8 9.8l3.7-3.7" />
+            </svg>
+          </button>
+          <div class="portal-menu" id="portal-menu" role="menu" aria-label="Portal login options">
+            <a href="https://consumer.pvnxt.com/" target="_blank" rel="noopener noreferrer" class="portal-item" role="menuitem">
+              <span class="portal-item-mark" aria-hidden="true"></span>
+              <span><strong>Consumer</strong><small>Free checks and reverse bidding</small></span>
+            </a>
+            <a href="https://epc.pvnxt.com/" target="_blank" rel="noopener noreferrer" class="portal-item" role="menuitem">
+              <span class="portal-item-mark" aria-hidden="true"></span>
+              <span><strong>Solar EPC</strong><small>Auto 3D layouts and BOQs</small></span>
+            </a>
+            <a href="https://installer.pvnxt.com/" target="_blank" rel="noopener noreferrer" class="portal-item" role="menuitem">
+              <span class="portal-item-mark" aria-hidden="true"></span>
+              <span><strong>Installer</strong><small>Mobile tasks and handovers</small></span>
+            </a>
+          </div>
+        </div>
+        <button class="menu-toggle" type="button" data-menu-toggle aria-controls="mobile-menu" aria-expanded="false"
+          aria-label="Open navigation">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+    <div class="mobile-panel" id="mobile-menu" data-mobile-menu aria-label="Mobile navigation">
+      <nav class="mobile-links" aria-label="Mobile primary navigation">
+        <a class="nav-link" href="home.html" data-nav="home">Home</a>
+        <a class="nav-link" href="services.html#platform" data-nav="platform">pvNXT Platform</a>
+        <a class="nav-link" href="services.html#beyond" data-nav="beyond">Beyond Solar</a>
+        <a class="nav-link" href="about.html" data-nav="about">About Us</a>
+        <a class="nav-link is-active" href="contact.html" data-nav="contact" aria-current="page">Contact</a>
+      </nav>
+      <div class="mobile-portal">
+        <p class="mobile-portal-title">Portal Login</p>
+        <a href="https://consumer.pvnxt.com/" class="portal-item" role="menuitem">
+          <span class="portal-item-mark" aria-hidden="true"></span>
+          <span><strong>Consumer</strong><small>Free checks and reverse bidding</small></span>
+        </a>
+        <a href="https://epc.pvnxt.com/" class="portal-item" role="menuitem">
+          <span class="portal-item-mark" aria-hidden="true"></span>
+          <span><strong>Solar EPC</strong><small>Auto 3D layouts and BOQs</small></span>
+        </a>
+        <a href="https://installer.pvnxt.com/" class="portal-item" role="menuitem">
+          <span class="portal-item-mark" aria-hidden="true"></span>
+          <span><strong>Installer</strong><small>Mobile tasks and handovers</small></span>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <main id="main">
+    <section class="hero hero-home energy-field" id="top">
+      <div class="hero-solar-wash" aria-hidden="true"></div>
+      <div class="container hero-grid">
+        <div class="hero-copy reveal">
+          <p class="overline"><span></span>Deep-tech startup created solar intelligence platform</p>
+          <h1>Elevating Solar with AI &amp; Geo-Spatial Tech</h1>
+          <p class="hero-lead">Terranxt acts as the digital backbone of the solar industry. Our flagship B2B2C SaaS
+            platform, pvNXT, uses AI and satellite intelligence to eliminate soft costs and manual site visits.</p>
+          <div class="hero-proof-row" aria-label="Terranxt proof points">
+            <span>3D building digitization</span>
+            <span>Shadow analysis</span>
+            <span>Auto BOQ in 15-20 minutes</span>
+          </div>
+          <div class="smart-cta" aria-label="Choose your Terranxt journey">
+            <a class="btn btn-primary" href="contact.html?role=consumer#contact-form">Get a free solar estimate</a>
+            <a class="btn btn-secondary" href="contact.html?role=epc#contact-form">Book EPC demo</a>
+          </div>
+        </div>
+        <div class="hero-visual reveal" aria-label="AI solar design visualisation">
+          <div class="orbital-rings" aria-hidden="true"><span></span><span></span><span></span></div>
+          <div class="solar-canvas">
+            <div class="roof-plane" aria-hidden="true">
+              <div class="roof-grid"></div>
+              <div class="panel-strip strip-one"></div>
+              <div class="panel-strip strip-two"></div>
+              <div class="panel-strip strip-three"></div>
+              <div class="shadow-field"></div>
+            </div>
+            <!-- <div class="placeholder-label">[PLACEHOLDER: 3D Roof Shadow Analysis GIF]</div> -->
+            <div class="roof-plane">
+              <img src="assets/images/081025 pvNXT_3D Analysis_EPC.gif" alt="3D Roof Shadow Analysis AI" class="media-fit">
+            </div>
+            <div class="floating-signal signal-one"><span>Geo-spatial scan</span><strong>Active</strong></div>
+            <div class="floating-signal signal-two"><span>Yield model</span><strong>15-20 min</strong></div>
+            <div class="floating-signal signal-three"><span>Manual visit</span><strong>Reduced</strong></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="trust-strip-section" aria-label="Trust indicators">
+      <div class="container trust-strip reveal">
+        <div><span class="mini-kicker">Incubation</span><strong>IIT Delhi Incubated</strong></div>
+        <div><span class="mini-kicker">Core engine</span><strong>AI Solar Design</strong></div>
+        <div><span class="mini-kicker">Workflow</span><strong>Zero Site Visit Solar</strong></div>
+        <div><span class="mini-kicker">Output</span><strong>Layouts, yields and BOQs</strong></div>
+      </div>
+    </section>
+
+    <section class="section flow-section" id="flow">
+      <div class="container section-split reveal">
+        <div>
+          <p class="overline"><span></span>Workflow</p>
+          <h2>From property input to decision-ready solar output.</h2>
+        </div>
+        <p class="section-intro">No bloated journey. One address or property input moves through scan, layout, estimate and handover data.</p>
+      </div>
+      <div class="container flow-line reveal">
+        <article>
+          <span>01</span>
+          <h3>Input property</h3>
+          <p>Start with an address, location or property reference.</p>
+        </article>
+        <article>
+          <span>02</span>
+          <h3>Scan rooftop</h3>
+          <p>Detect usable area, roof constraints and shadow exposure remotely.</p>
+        </article>
+        <article>
+          <span>03</span>
+          <h3>Generate outputs</h3>
+          <p>Create layouts, yield view and BOQ-ready data for proposals.</p>
+        </article>
+        <article>
+          <span>04</span>
+          <h3>Route workflow</h3>
+          <p>Send the right next step to consumers, EPCs or installers.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="section why-section" id="why">
+      <div class="container why-layout">
+        <!-- <div class="why-media reveal">
+          <img
+            src="https://images.unsplash.com/photo-1509391366360-2e959784a276?auto=format&amp;fit=crop&amp;w=1100&amp;q=80"
+            alt="Solar panels aligned under clear daylight" loading="lazy">
+          <div class="media-annotation"><span>pvNXT workflow</span><strong>Consumer -> EPC -> Installer</strong></div>
+        </div> -->
+        <div class="why-media reveal">
+          <!-- <img src="https://images.unsplash.com/photo-1509391366360-2e959784a276?auto=format&amp;fit=crop&amp;w=1100&amp;q=80" alt="Solar panels aligned under clear daylight" loading="lazy"> -->
+          <img src="./assets/images/Report_Page Cover Tab MU.svg" alt="Consumer portal proposal preview" loading="lazy">
+        </div>
+        <div class="why-copy reveal">
+          <p class="overline"><span></span>Why Terranxt</p>
+          <h2>A cleaner operating layer for every solar decision.</h2>
+          <p class="lead">Terranxt replaces fragmented pre-sales, manual surveys and spreadsheet-heavy coordination with
+            one role-aware platform that keeps each stakeholder focused on the next decision.</p>
+          <div class="advantage-rail">
+            <article>
+              <span class="rail-number">01</span>
+              <div>
+                <h3>Speed and zero site visits</h3>
+                <p>Generate 3D building digitizations, shadow analysis, accurate energy yields and automated BOQs
+                  without waiting for a manual visit.</p>
+              </div>
+            </article>
+            <article>
+              <span class="rail-number">02</span>
+              <div>
+                <h3>3-way solar ecosystem</h3>
+                <p>Consumers, Solar EPCs and installers collaborate through interfaces designed for their exact roles.
+                </p>
+              </div>
+            </article>
+            <article>
+              <span class="rail-number">03</span>
+              <div>
+                <h3>Soft-cost discipline</h3>
+                <p>AI and geo-spatial workflows help reduce repetitive manual processing across qualification, proposal
+                  and handover stages.</p>
+              </div>
+            </article>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section output-section">
+      <div class="container output-shell reveal">
+        <div class="output-copy">
+          <p class="overline"><span></span>pvNXT platform</p>
+          <h2>One intelligence layer. Three solar workflows.</h2>
+          <p>Keep the front-end experience simple: consumers estimate, EPCs design, installers execute.</p>
+        </div>
+        <div class="output-columns" aria-label="pvNXT workflows">
+          <article id="consumer">
+            <span>Consumer</span>
+            <h3>Free solar estimate</h3>
+            <p>Clear property-based potential and next steps before vendor conversations.</p>
+            <a class="text-link-light" href="https://consumer.pvnxt.com/" target="_blank" rel="noopener noreferrer">Visit Consumer Portal</a>
+          </article>
+          <article id="epc">
+            <span>EPC</span>
+            <h3>Design automation</h3>
+            <p>3D layouts, shadow analysis, yield context and BOQ-ready outputs.</p>
+            <a class="text-link-light" href="https://epc.pvnxt.com/" target="_blank" rel="noopener noreferrer">Explore EPC Suite</a>
+          </article>
+          <article id="installer">
+            <span>Installer</span>
+            <h3>Mobile execution</h3>
+            <p>Task assignments, site checklists and digital handover updates.</p>
+            <a class="text-link-light" href="https://installer.pvnxt.com/" target="_blank" rel="noopener noreferrer">Explore Installer Tools</a>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- <section class="section final-cta-section">
+      <div class="container final-cta reveal">
+        <div>
+          <p class="overline overline-dark"><span></span>Smart routing</p>
+          <h2>Start from the role that fits you.</h2>
+          <p>Choose a consumer estimate, EPC product demo or installer workflow enquiry. Terranxt will route the
+            conversation without confusion.</p>
+        </div>
+        <div class="cta-actions">
+          <a class="btn btn-dark" href="contact.html?role=consumer#contact-form">Book pvNXT Demo</a>
+          <a class="btn btn-light" href="contact.html?role=epc#contact-form">EPC / installer demo</a>
+        </div>
+      </div>
+    </section> -->
+
+    <!-- <section class="section section-soft platform-preview-section">
+      <div class="container preview-layout">
+        <div class="preview-copy reveal">
+          <p class="overline"><span></span>pvNXT platform preview</p>
+          <h2>One login layer. Three precise workflows.</h2>
+          <p class="lead">pvNXT gives consumers credible estimates, EPC teams instant technical outputs and installers
+            mobile execution tools - all connected by the same property intelligence.</p>
+          <div class="flow-list" aria-label="pvNXT workflow flow">
+            <a href="services.html#consumer"><span>01</span><strong>Consumer Portal</strong><small>Free checks and
+                reverse bidding</small></a>
+            <a href="services.html#epc"><span>02</span><strong>EPC Suite</strong><small>Auto 3D layouts, BOQs and
+                CRM</small></a>
+            <a href="services.html#installer"><span>03</span><strong>Installer Tools</strong><small>Mobile tasks,
+                checklists and handovers</small></a>
+          </div>
+        </div>
+        <div class="app-preview reveal" aria-label="App login screen placeholder">
+          <div class="app-frame">
+            <div class="app-topbar"><span></span><span></span><span></span></div>
+            <div class="app-login-mark"><img src="assets/images/rmcool26-pvNXT-login-mobile.svg" alt="Terranxt logo in app login preview">
+            </div>
+            <div class="placeholder-label">[PLACEHOLDER: App Login Screen]</div>
+            <div class="login-lines" aria-hidden="true"><i></i><i></i><i></i></div>
+          </div>
+        </div>
+      </div>
+    </section> -->
+
+    <!-- <section class="section outcomes-section">
+      <div class="container outcomes-layout">
+        <div class="section-intro reveal">
+          <p class="overline"><span></span>Designed for trust</p>
+          <h2>Every workflow speaks to a different solar decision maker.</h2>
+        </div>
+        <div class="outcome-columns reveal">
+          <article><span>Consumers</span>
+            <h3>Understand solar potential before committing.</h3>
+            <p>Free checks and reverse bidding help users compare pathways with less confusion.</p>
+          </article>
+          <article><span>Solar EPCs</span>
+            <h3>Move from lead to proposal with technical confidence.</h3>
+            <p>Auto 3D layouts, energy yields, BOQs and CRM workflows reduce pre-sales friction.</p>
+          </article>
+          <article><span>Installers</span>
+            <h3>Convert field work into accountable digital evidence.</h3>
+            <p>Mobile tools, checklists and handovers keep execution aligned with the design intent.</p>
+          </article>
+        </div>
+      </div>
+    </section> -->
+    
+    <!-- <section class="section outcomes-section">
+      <div class="container outcomes-layout">
+        <div class="section-intro reveal">
+          <p class="overline"><span></span>Designed for trust</p>
+          <h2>Every workflow speaks to a different solar decision maker.</h2>
+        </div>
+        <div class="outcome-columns reveal">
+          <article><span>Consumers</span>
+            <h3>Understand solar potential before committing.</h3>
+            <p>Free checks and reverse bidding help users compare pathways with less confusion.</p>
+          </article>
+          <article><span>Solar EPCs</span>
+            <h3>Move from lead to proposal with technical confidence.</h3>
+            <p>Auto 3D layouts, energy yields, BOQs and CRM workflows reduce pre-sales friction.</p>
+          </article>
+          <article><span>Installers</span>
+            <h3>Convert field work into accountable digital evidence.</h3>
+            <p>Mobile tools, checklists and handovers keep execution aligned with the design intent.</p>
+          </article>
+        </div>
+      </div>
+    </section> -->
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-glow" aria-hidden="true"></div>
+    <div class="container footer-grid">
+      <div class="footer-brand-block">
+        <a class="footer-brand" href="home.html" aria-label="Terranxt home"><img src="assets/images/logo.png"
+            width="224" height="56" alt="Terranxt logo"></a>
+        <p>Terranxt is building the digital backbone of solar with AI, geo-spatial intelligence and role-specific
+          workflows for consumers, EPCs and installers.</p>
+        <div class="footer-tags">
+          <span>IIT Delhi Incubated</span> |
+          <span>AI Solar Design</span> |
+          <span>Zero Site Visit</span>
+        </div>
+      </div>
+      <div class="footer-col">
+        <h2>Quick links</h2>
+        <nav aria-label="Footer navigation"><a href="home.html">Home</a>
+          <a href="services.html#platform">pvNXT Platform</a>
+          <a href="services.html#beyond">Beyond Solar</a>
+          <a href="about.html">About Us</a>
+          <a href="contact.html">Contact</a>
+        </nav>
+      </div>
+      <div class="footer-col app-col">
+        <h2>Flexibility on the Go</h2>
+        <p>Request mobile access for installer field tools, digital checklists and handovers.</p>
+        <div class="store-row">
+          <img src="assets/images/Get_GP.png" alt="Google Play Store badge" width="150" height="50">
+        </div>
+      </div>
+      <div class="footer-col">
+        <h2>Contact</h2>
+        <address>
+          <a href="contact.html#contact-form">Start a product enquiry</a>
+          <a href="https://maps.app.goo.gl/Jyn11jgyqLdDVydn7" target="_blank" rel="noopener" aria-label="Email contact route">12A, M3M Urbana Premium, Sector 67 Gurugram 122101</a>
+        </address>
+        <div class="social-links" aria-label="Social links">
+          <!-- <a href="mailto:support@Terranxt.com" target="_blank" rel="noopener" aria-label="Email contact route">Mail Us</a> -->
+          <a href="https://in.linkedin.com/company/Terranxt" target="_blank" rel="noopener" aria-label="LinkedIn contact route">LinkedIn</a>
+          <a href="https://www.youtube.com/@TerranxtPvtLtd" target="_blank" rel="noopener" aria-label="YouTube contact route">YouTube</a>
+        </div>
+      </div>
+    </div>
+    <div class="container footer-bottom">
+      <span>&copy; 2026 Terranxt. All rights reserved.</span>
+      <div>
+        <a href="contact.html#contact-form">Partnership enquiries</a> |
+        <a href="terms.html">Terms of service</a> |
+        <a href="privacy.html">Privacy policy</a>
+      </div>
+    </div>
+  </footer>
+
+  <a class="whatsapp-widget"
+    href="https://wa.me/918447444157?text=Hello%20Terranxt%2C%20I%20would%20like%20to%20discuss%20solar%20AI%20solutions."
+    target="_blank" rel="noopener" aria-label="Chat with Terranxt on WhatsApp">
+    <svg viewBox="0 0 32 32" aria-hidden="true">
+      <path
+        d="M16.02 3.2A12.6 12.6 0 0 0 5.28 22.36L3.8 28.8l6.62-1.74A12.59 12.59 0 1 0 16.02 3.2Zm0 22.98c-2 0-3.86-.58-5.44-1.58l-.39-.25-3.93 1.03 1.05-3.82-.26-.4a10.29 10.29 0 1 1 8.97 5.02Zm5.72-7.7c-.31-.16-1.85-.91-2.14-1.02-.29-.1-.5-.16-.71.16-.21.31-.82 1.02-1 1.23-.18.21-.37.24-.68.08-.31-.16-1.32-.49-2.52-1.56-.93-.83-1.56-1.86-1.74-2.17-.18-.31-.02-.48.14-.64.14-.14.31-.37.47-.55.16-.18.21-.31.31-.52.1-.21.05-.39-.03-.55-.08-.16-.71-1.71-.97-2.34-.26-.62-.52-.53-.71-.54h-.6c-.21 0-.55.08-.84.39-.29.31-1.1 1.08-1.1 2.63 0 1.55 1.13 3.05 1.29 3.26.16.21 2.23 3.4 5.4 4.77.75.32 1.34.52 1.8.66.76.24 1.45.21 1.99.13.61-.09 1.85-.76 2.11-1.49.26-.73.26-1.36.18-1.49-.08-.13-.29-.21-.6-.37Z" />
+    </svg>
+    <span>WhatsApp</span>
+  </a>
+  <script src="assets/js/main.js" defer></script>
+</body>
+
+</html>

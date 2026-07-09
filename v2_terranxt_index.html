@@ -1,0 +1,1006 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Terranxt — Physical Precision. Digital Intelligence.</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+tailwind.config={theme:{extend:{colors:{teal:{DEFAULT:'#069fb1',50:'#e6f7f9',100:'#b3e8ed',200:'#80d9e1',300:'#4dcad5',400:'#1abbc9',500:'#069fb1',600:'#057f8e',700:'#045f6b',800:'#033f47',900:'#021f24'}},fontFamily:{sans:['Inter','system-ui','sans-serif']}}}}
+</script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script src="https://unpkg.com/lenis@1.1.18/dist/lenis.min.js"></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:auto}
+body{font-family:'Inter',system-ui,sans-serif;background:#0a0f14;color:#1a1f26;overflow-x:hidden}
+::selection{background:rgba(6,159,177,0.25);color:#0a0f14}
+
+/* Custom cursor */
+#cursor-dot{width:6px;height:6px;background:#069fb1;border-radius:50%;position:fixed;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);transition:opacity .2s}
+#cursor-panel{width:28px;height:28px;position:fixed;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);opacity:0;transition:opacity .25s}
+#cursor-panel svg{width:100%;height:100%}
+
+/* Nav */
+.nav-scrolled{background:rgba(10,15,20,0.92)!important;backdrop-filter:blur(16px);border-bottom:1px solid rgba(6,159,177,0.08)}
+
+/* Hero grid bg */
+.hero-grid{background-image:linear-gradient(rgba(6,159,177,0.04) 1px,transparent 1px),linear-gradient(90deg,rgba(6,159,177,0.04) 1px,transparent 1px);background-size:64px 64px}
+
+/* Floating solar panels */
+.solar-panel{position:absolute;border:1px solid rgba(6,159,177,0.15);background:linear-gradient(135deg,rgba(6,159,177,0.03),rgba(6,159,177,0.01));backdrop-filter:blur(2px)}
+.solar-panel::before{content:'';position:absolute;inset:0;background:repeating-linear-gradient(90deg,rgba(6,159,177,0.06) 0px,rgba(6,159,177,0.06) 1px,transparent 1px,transparent 24px),repeating-linear-gradient(0deg,rgba(6,159,177,0.06) 0px,rgba(6,159,177,0.06) 1px,transparent 1px,transparent 24px)}
+
+/* Sun rays */
+.sun-ray{stroke-dasharray:0 600;transition:none}
+
+/* Energy flow dot glow */
+.energy-glow{box-shadow:0 0 16px rgba(6,159,177,0.5),0 0 40px rgba(6,159,177,0.2)}
+
+/* Step node active */
+.node-active{background:#069fb1!important;box-shadow:0 0 12px rgba(6,159,177,0.4)}
+
+/* Mobile menu */
+.mobile-menu{transform:translateX(100%);transition:transform .4s cubic-bezier(.4,0,.2,1)}
+.mobile-menu.open{transform:translateX(0)}
+
+/* Smooth link underline */
+.link-underline{position:relative}
+.link-underline::after{content:'';position:absolute;bottom:-2px;left:0;width:0;height:1px;background:#069fb1;transition:width .3s ease}
+.link-underline:hover::after{width:100%}
+
+/* Button styles */
+.btn-primary{background:#069fb1;color:#fff;padding:12px 28px;font-size:14px;font-weight:500;letter-spacing:0.02em;transition:all .2s;display:inline-flex;align-items:center;gap:8px}
+.btn-primary:hover{background:#058a9a;transform:translateY(-1px)}
+.btn-outline{border:1px solid rgba(6,159,177,0.3);color:#069fb1;padding:12px 28px;font-size:14px;font-weight:500;letter-spacing:0.02em;transition:all .2s;display:inline-flex;align-items:center;gap:8px;background:transparent}
+.btn-outline:hover{border-color:#069fb1;background:rgba(6,159,177,0.06)}
+.btn-dark{background:#fff;color:#0a0f14;padding:12px 28px;font-size:14px;font-weight:500;transition:all .2s;display:inline-flex;align-items:center;gap:8px}
+.btn-dark:hover{background:#e6f7f9;transform:translateY(-1px)}
+
+/* Section reveal */
+.reveal-up{opacity:0;transform:translateY(30px)}
+
+/* Solution tab */
+.sol-tab{padding:10px 20px;font-size:13px;font-weight:500;color:rgba(255,255,255,0.4);border:1px solid rgba(255,255,255,0.08);transition:all .25s;cursor:pointer}
+.sol-tab.active{color:#069fb1;border-color:rgba(6,159,177,0.3);background:rgba(6,159,177,0.06)}
+.sol-tab:hover:not(.active){color:rgba(255,255,255,0.7);border-color:rgba(255,255,255,0.15)}
+
+/* Thin divider */
+.divider{height:1px;background:linear-gradient(to right,transparent,rgba(6,159,177,0.15),transparent)}
+
+@media(max-width:768px){
+  .solar-panel{display:none!important}
+  #cursor-dot,#cursor-panel{display:none!important}
+}
+</style>
+</head>
+<body>
+
+<!-- Custom Cursor -->
+<div id="cursor-dot"></div>
+<div id="cursor-panel">
+  <svg viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <rect x="1" y="1" width="11" height="11" rx="0.5" stroke="#069fb1" stroke-width="1.2"/>
+    <rect x="16" y="1" width="11" height="11" rx="0.5" stroke="#069fb1" stroke-width="1.2"/>
+    <rect x="1" y="16" width="11" height="11" rx="0.5" stroke="#069fb1" stroke-width="1.2"/>
+    <rect x="16" y="16" width="11" height="11" rx="0.5" stroke="#069fb1" stroke-width="1.2"/>
+    <line x1="6.5" y1="1" x2="6.5" y2="12" stroke="#069fb1" stroke-width="0.4" opacity="0.5"/>
+    <line x1="1" y1="6.5" x2="12" y2="6.5" stroke="#069fb1" stroke-width="0.4" opacity="0.5"/>
+    <line x1="21.5" y1="1" x2="21.5" y2="12" stroke="#069fb1" stroke-width="0.4" opacity="0.5"/>
+    <line x1="16" y1="6.5" x2="27" y2="6.5" stroke="#069fb1" stroke-width="0.4" opacity="0.5"/>
+    <line x1="6.5" y1="16" x2="6.5" y2="27" stroke="#069fb1" stroke-width="0.4" opacity="0.5"/>
+    <line x1="1" y1="21.5" x2="12" y2="21.5" stroke="#069fb1" stroke-width="0.4" opacity="0.5"/>
+    <line x1="21.5" y1="16" x2="21.5" y2="27" stroke="#069fb1" stroke-width="0.4" opacity="0.5"/>
+    <line x1="16" y1="21.5" x2="27" y2="21.5" stroke="#069fb1" stroke-width="0.4" opacity="0.5"/>
+  </svg>
+</div>
+
+<!-- Navigation -->
+<nav id="main-nav" class="fixed top-0 left-0 right-0 z-50 transition-all duration-300" style="background:transparent">
+  <div class="max-w-7xl mx-auto px-6 flex items-center justify-between h-[72px]">
+    <a href="#" class="flex items-center gap-2.5">
+      <div class="w-8 h-8 bg-teal flex items-center justify-center" style="border-radius:2px">
+        <span class="text-white text-xs font-semibold">T</span>
+      </div>
+      <span class="text-white font-medium text-[15px] tracking-tight">Terranxt</span>
+    </a>
+    <div class="hidden lg:flex items-center gap-8">
+      <a href="#ecosystem" class="text-white/60 text-[13px] font-medium tracking-wide hover:text-white transition-colors link-underline">Ecosystem</a>
+      <a href="#pvnxt" class="text-white/60 text-[13px] font-medium tracking-wide hover:text-white transition-colors link-underline">pvNXT</a>
+      <a href="#artha" class="text-white/60 text-[13px] font-medium tracking-wide hover:text-white transition-colors link-underline">Invest</a>
+      <a href="#renxt" class="text-white/60 text-[13px] font-medium tracking-wide hover:text-white transition-colors link-underline">Land</a>
+      <a href="#solutions" class="text-white/60 text-[13px] font-medium tracking-wide hover:text-white transition-colors link-underline">Solutions</a>
+      <a href="#contact" class="btn-primary" style="padding:8px 20px;font-size:12px">Contact</a>
+    </div>
+    <button id="menu-toggle" class="lg:hidden text-white p-2">
+      <i data-lucide="menu" class="w-5 h-5"></i>
+    </button>
+  </div>
+</nav>
+
+<!-- Mobile Menu -->
+<div id="mobile-menu" class="mobile-menu fixed inset-0 z-[60] bg-[#0a0f14] flex flex-col">
+  <div class="flex items-center justify-between px-6 h-[72px]">
+    <span class="text-white font-medium text-[15px]">Terranxt</span>
+    <button id="menu-close" class="text-white p-2"><i data-lucide="x" class="w-5 h-5"></i></button>
+  </div>
+  <div class="flex-1 flex flex-col justify-center px-8 gap-6">
+    <a href="#ecosystem" class="mobile-link text-white text-2xl font-light">Ecosystem</a>
+    <a href="#pvnxt" class="mobile-link text-white text-2xl font-light">pvNXT</a>
+    <a href="#artha" class="mobile-link text-white text-2xl font-light">Invest</a>
+    <a href="#renxt" class="mobile-link text-white text-2xl font-light">Land</a>
+    <a href="#solutions" class="mobile-link text-white text-2xl font-light">Solutions</a>
+    <a href="#contact" class="mobile-link text-white text-2xl font-light">Contact</a>
+  </div>
+</div>
+
+<!-- ===== HERO ===== -->
+<section id="hero" class="relative min-h-screen flex items-center bg-[#0a0f14] hero-grid overflow-hidden">
+  <!-- Sun Rays SVG -->
+  <svg id="sun-rays" class="absolute -top-20 -right-20 w-[700px] h-[700px] opacity-0 pointer-events-none" viewBox="0 0 700 700">
+    <g transform="translate(700,0)">
+      <line class="sun-ray" x1="0" y1="0" x2="-600" y2="180" stroke="rgba(6,159,177,0.07)" stroke-width="0.8"/>
+      <line class="sun-ray" x1="0" y1="0" x2="-550" y2="280" stroke="rgba(6,159,177,0.06)" stroke-width="0.8"/>
+      <line class="sun-ray" x1="0" y1="0" x2="-480" y2="380" stroke="rgba(6,159,177,0.05)" stroke-width="0.8"/>
+      <line class="sun-ray" x1="0" y1="0" x2="-380" y2="460" stroke="rgba(6,159,177,0.04)" stroke-width="0.8"/>
+      <line class="sun-ray" x1="0" y1="0" x2="-250" y2="540" stroke="rgba(6,159,177,0.03)" stroke-width="0.8"/>
+      <line class="sun-ray" x1="0" y1="0" x2="-640" y2="100" stroke="rgba(6,159,177,0.08)" stroke-width="0.8"/>
+      <line class="sun-ray" x1="0" y1="0" x2="-580" y2="230" stroke="rgba(6,159,177,0.065)" stroke-width="0.8"/>
+      <line class="sun-ray" x1="0" y1="0" x2="-520" y2="330" stroke="rgba(6,159,177,0.055)" stroke-width="0.8"/>
+      <line class="sun-ray" x1="0" y1="0" x2="-430" y2="420" stroke="rgba(6,159,177,0.045)" stroke-width="0.8"/>
+      <line class="sun-ray" x1="0" y1="0" x2="-310" y2="500" stroke="rgba(6,159,177,0.035)" stroke-width="0.8"/>
+    </g>
+    <circle cx="700" cy="0" r="60" fill="url(#sunGlow)"/>
+    <defs><radialGradient id="sunGlow"><stop offset="0%" stop-color="rgba(6,159,177,0.12)"/><stop offset="100%" stop-color="rgba(6,159,177,0)"/></radialGradient></defs>
+  </svg>
+
+  <!-- Floating Solar Panels -->
+  <div class="solar-panel floating-panel fp-1" style="width:140px;height:90px;top:18%;right:15%;transform:perspective(800px) rotateX(25deg) rotateY(-12deg);border-radius:2px"></div>
+  <div class="solar-panel floating-panel fp-2" style="width:100px;height:65px;top:55%;right:8%;transform:perspective(800px) rotateX(20deg) rotateY(-8deg);border-radius:2px"></div>
+  <div class="solar-panel floating-panel fp-3" style="width:80px;height:52px;top:35%;right:28%;transform:perspective(800px) rotateX(30deg) rotateY(-15deg);border-radius:2px;opacity:0.5"></div>
+
+  <!-- Hero Image Background (right side) -->
+  <div class="absolute top-0 right-0 w-1/2 h-full hidden lg:block">
+    <!-- IMAGE: Hero Right | Size: 1920x1080 | Description: Aerial view of large-scale solar installation with clean grid lines, teal-tinted atmosphere | Theme: premium technical corporate solar | Color Direction: dark with teal accents | Purpose: establish scale and technical precision -->
+    <img src="https://picsum.photos/seed/solar-aerial-grid/1920/1080" alt="Solar installation aerial" class="w-full h-full object-cover opacity-30" style="mask-image:linear-gradient(to right,transparent 0%,black 30%,black 100%);-webkit-mask-image:linear-gradient(to right,transparent 0%,black 30%,black 100%)">
+  </div>
+
+  <div class="relative z-10 max-w-7xl mx-auto px-6 pt-32 pb-20 w-full">
+    <div class="max-w-2xl">
+      <div class="hero-el inline-flex items-center gap-2 px-3 py-1.5 border border-teal/20 bg-teal/5 mb-8" style="border-radius:2px">
+        <div class="w-1.5 h-1.5 bg-teal rounded-full"></div>
+        <span class="text-teal text-[11px] font-medium tracking-[0.15em] uppercase">IIT Delhi Incubated</span>
+      </div>
+      <h1 class="hero-title-line text-white font-light tracking-tight leading-[1.05]" style="font-size:clamp(2.8rem,6vw,5rem)">
+        Physical Precision.
+      </h1>
+      <h1 class="hero-title-line text-white font-light tracking-tight leading-[1.05] mt-1" style="font-size:clamp(2.8rem,6vw,5rem)">
+        Digital Intelligence.
+      </h1>
+      <p class="hero-el text-white/50 text-base md:text-lg font-light leading-relaxed mt-8 max-w-lg">
+        Terranxt delivers end-to-end solar project execution powered by an intelligent digital ecosystem. From land acquisition to commissioning.
+      </p>
+      <div class="hero-cta flex flex-wrap gap-3 mt-10">
+        <a href="https://artha.pvnxt.com/" class="btn-primary">Invest in Solar <i data-lucide="arrow-up-right" class="w-4 h-4"></i></a>
+        <a href="#pvnxt" class="btn-outline">Explore pvNXT</a>
+        <a href="https://renxt.pvnxt.com/" class="btn-outline" style="border-color:rgba(255,255,255,0.1);color:rgba(255,255,255,0.6)">Find Land</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scroll indicator -->
+  <div class="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 hero-el">
+    <span class="text-white/20 text-[10px] tracking-[0.2em] uppercase">Scroll</span>
+    <div class="w-px h-8 bg-gradient-to-b from-teal/40 to-transparent"></div>
+  </div>
+</section>
+
+<!-- ===== ECOSYSTEM ===== -->
+<section id="ecosystem" class="bg-[#f7f8fa] py-24 md:py-32">
+  <div class="max-w-7xl mx-auto px-6">
+    <div class="reveal-up">
+      <span class="text-teal text-[11px] font-medium tracking-[0.15em] uppercase">Ecosystem</span>
+      <h2 class="text-[#1a1f26] font-light tracking-tight mt-3" style="font-size:clamp(1.8rem,3.5vw,3rem)">One Company. Three Powerful Capabilities.</h2>
+    </div>
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-4 mt-14">
+      <!-- pvNXT - Large -->
+      <div class="reveal-up lg:col-span-7 bg-white border border-gray-100 p-8 md:p-10 group hover:border-teal/20 transition-colors duration-300" style="border-radius:3px">
+        <div class="flex items-start justify-between mb-6">
+          <div>
+            <span class="text-[10px] font-medium tracking-[0.2em] uppercase text-gray-400">Digital Platform</span>
+            <h3 class="text-xl font-medium text-[#1a1f26] mt-1.5">pvNXT</h3>
+          </div>
+          <div class="w-10 h-10 bg-teal/5 border border-teal/10 flex items-center justify-center" style="border-radius:2px">
+            <i data-lucide="cpu" class="w-4 h-4 text-teal"></i>
+          </div>
+        </div>
+        <p class="text-gray-500 text-sm leading-relaxed mb-6">Intelligent solar automation platform. Design, automate, and commission solar projects with zero physical site visits.</p>
+        <div class="flex items-center gap-4 text-xs text-gray-400 mb-8">
+          <span class="flex items-center gap-1.5"><i data-lucide="monitor" class="w-3.5 h-3.5"></i>Consumer Portal</span>
+          <span class="flex items-center gap-1.5"><i data-lucide="wrench" class="w-3.5 h-3.5"></i>EPC Portal</span>
+          <span class="flex items-center gap-1.5"><i data-lucide="hard-hat" class="w-3.5 h-3.5"></i>Installer Portal</span>
+        </div>
+        <a href="#pvnxt" class="inline-flex items-center gap-2 text-teal text-sm font-medium group-hover:gap-3 transition-all">
+          Explore pvNXT <i data-lucide="arrow-right" class="w-4 h-4"></i>
+        </a>
+        <!-- IMAGE: pvNXT Ecosystem | Size: 800x400 | Description: Clean digital dashboard interface showing solar project automation, teal UI elements | Theme: technical digital platform | Color Direction: white/teal interface | Purpose: convey digital intelligence -->
+        <div class="mt-6 h-48 bg-gray-50 overflow-hidden" style="border-radius:2px">
+          <img src="https://picsum.photos/seed/solar-dashboard-clean/800/400" alt="pvNXT Platform" class="w-full h-full object-cover opacity-80 group-hover:scale-[1.02] transition-transform duration-700">
+        </div>
+      </div>
+
+      <!-- Artha + Renxt Stack -->
+      <div class="lg:col-span-5 flex flex-col gap-4">
+        <!-- Artha -->
+        <div class="reveal-up bg-white border border-gray-100 p-8 group hover:border-teal/20 transition-colors duration-300 flex-1" style="border-radius:3px">
+          <div class="flex items-start justify-between mb-4">
+            <div>
+              <span class="text-[10px] font-medium tracking-[0.2em] uppercase text-gray-400">Investment Platform</span>
+              <h3 class="text-lg font-medium text-[#1a1f26] mt-1.5">ArthaNxt</h3>
+            </div>
+            <div class="w-9 h-9 bg-teal/5 border border-teal/10 flex items-center justify-center" style="border-radius:2px">
+              <i data-lucide="trending-up" class="w-4 h-4 text-teal"></i>
+            </div>
+          </div>
+          <p class="text-gray-500 text-sm leading-relaxed mb-5">Tokenized green asset investment. Access verified solar projects with transparent returns and real-time tracking.</p>
+          <a href="https://artha.pvnxt.com/" class="inline-flex items-center gap-2 text-teal text-sm font-medium group-hover:gap-3 transition-all">
+            Invest Now <i data-lucide="arrow-up-right" class="w-4 h-4"></i>
+          </a>
+        </div>
+        <!-- Renxt -->
+        <div class="reveal-up bg-white border border-gray-100 p-8 group hover:border-teal/20 transition-colors duration-300 flex-1" style="border-radius:3px">
+          <div class="flex items-start justify-between mb-4">
+            <div>
+              <span class="text-[10px] font-medium tracking-[0.2em] uppercase text-gray-400">Land Solutions</span>
+              <h3 class="text-lg font-medium text-[#1a1f26] mt-1.5">Renxt</h3>
+            </div>
+            <div class="w-9 h-9 bg-teal/5 border border-teal/10 flex items-center justify-center" style="border-radius:2px">
+              <i data-lucide="map-pin" class="w-4 h-4 text-teal"></i>
+            </div>
+          </div>
+          <p class="text-gray-500 text-sm leading-relaxed mb-5">Solar-ready land identification, verification, and acquisition. Streamlined real estate for solar deployment.</p>
+          <a href="https://renxt.pvnxt.com/" class="inline-flex items-center gap-2 text-teal text-sm font-medium group-hover:gap-3 transition-all">
+            Find Land <i data-lucide="arrow-up-right" class="w-4 h-4"></i>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== WHY TERRANXT ===== -->
+<section id="why" class="bg-white py-24 md:py-32">
+  <div class="max-w-7xl mx-auto px-6">
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
+      <div class="lg:col-span-7 reveal-up">
+        <span class="text-teal text-[11px] font-medium tracking-[0.15em] uppercase">The Parent Company</span>
+        <h2 class="text-[#1a1f26] font-light tracking-tight mt-3" style="font-size:clamp(1.8rem,3.5vw,2.8rem)">Built on Research. Proven in Execution.</h2>
+        <p class="text-gray-500 text-[15px] leading-relaxed mt-6 max-w-lg">
+          Terranxt was incubated at IIT Delhi, bringing rigorous engineering discipline to solar energy. We operate at the intersection of physical project execution and digital intelligence — a combination rarely found in the industry.
+        </p>
+        <div class="grid grid-cols-2 gap-6 mt-10">
+          <div class="border-l-2 border-teal/30 pl-4">
+            <div class="text-2xl font-light text-[#1a1f26]">Physical</div>
+            <p class="text-gray-400 text-sm mt-1">End-to-end project execution. Site assessment, engineering, procurement, construction, commissioning.</p>
+          </div>
+          <div class="border-l-2 border-teal/30 pl-4">
+            <div class="text-2xl font-light text-[#1a1f26]">Digital</div>
+            <p class="text-gray-400 text-sm mt-1">AI-powered design, automated workflows, remote monitoring, tokenized investment infrastructure.</p>
+          </div>
+        </div>
+        <div class="flex items-center gap-3 mt-10">
+          <div class="w-8 h-8 bg-[#0a0f14] flex items-center justify-center" style="border-radius:2px">
+            <span class="text-white text-[10px] font-bold">IIT</span>
+          </div>
+          <div>
+            <span class="text-[#1a1f26] text-sm font-medium">IIT Delhi Incubated</span>
+            <p class="text-gray-400 text-xs">Foundation for Research & Innovation in Science & Technology</p>
+          </div>
+        </div>
+      </div>
+      <div class="lg:col-span-5 reveal-up">
+        <div class="relative">
+          <!-- IMAGE: Why Terranxt | Size: 800x1000 | Description: Engineer in hard hat reviewing solar panel installation on rooftop, technical and precise composition | Theme: premium construction technical | Color Direction: warm natural light with teal safety elements | Purpose: show real physical execution capability -->
+          <img src="https://picsum.photos/seed/solar-engineer-roof/800/1000" alt="Terranxt execution" class="w-full h-[480px] object-cover" style="border-radius:3px">
+          <div class="absolute bottom-4 left-4 right-4 bg-white/90 backdrop-blur-md p-4 flex items-center justify-between" style="border-radius:2px">
+            <div>
+              <div class="text-[10px] text-gray-400 uppercase tracking-wider">Projects Delivered</div>
+              <div class="text-xl font-light text-[#1a1f26] mt-0.5">150<span class="text-teal">+</span> MW</div>
+            </div>
+            <div class="w-px h-10 bg-gray-200"></div>
+            <div>
+              <div class="text-[10px] text-gray-400 uppercase tracking-wider">Digital Accuracy</div>
+              <div class="text-xl font-light text-[#1a1f26] mt-0.5">99.2<span class="text-teal">%</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ===== pvNXT PLATFORM ===== -->
+<section id="pvnxt" class="bg-[#0a0f14] py-24 md:py-32 relative overflow-hidden">
+  <!-- Subtle bg grid -->
+  <div class="absolute inset-0" style="background-image:radial-gradient(rgba(6,159,177,0.04) 1px,transparent 1px);background-size:32px 32px"></div>
+  <div class="relative z-10 max-w-7xl mx-auto px-6">
+    <div class="reveal-up max-w-2xl">
+      <span class="text-teal text-[11px] font-medium tracking-[0.15em] uppercase">Intelligent Platform</span>
+      <h2 class="text-white font-light tracking-tight mt-3" style="font-size:clamp(2rem,4vw,3.2rem)">Zero Physical Site Visits.</h2>
+      <p class="text-white/40 text-[15px] leading-relaxed mt-5">pvNXT automates the entire solar lifecycle — from satellite-based design to remote commissioning — eliminating the need for physical site visits entirely.</p>
+    </div>
+
+    <!-- 3 Portals - Asymmetric 5-4-3 -->
+    <div class="grid grid-cols-1 md:grid-cols-12 gap-4 mt-14">
+      <!-- Consumer -->
+      <div class="reveal-up md:col-span-5 bg-white/[0.03] border border-white/[0.06] p-8 group hover:border-teal/20 transition-all duration-300" style="border-radius:3px">
+        <div class="w-10 h-10 bg-teal/10 flex items-center justify-center mb-5" style="border-radius:2px">
+          <i data-lucide="home" class="w-4 h-4 text-teal"></i>
+        </div>
+        <h3 class="text-white text-lg font-medium">Consumer Portal</h3>
+        <p class="text-white/35 text-sm leading-relaxed mt-3 mb-6">Homeowners get instant solar designs, accurate generation estimates, and transparent pricing — all from a satellite image.</p>
+        <ul class="space-y-2 mb-8">
+          <li class="flex items-center gap-2 text-white/40 text-xs"><i data-lucide="check" class="w-3 h-3 text-teal"></i>AI-powered rooftop analysis</li>
+          <li class="flex items-center gap-2 text-white/40 text-xs"><i data-lucide="check" class="w-3 h-3 text-teal"></i>Instant design & pricing</li>
+          <li class="flex items-center gap-2 text-white/40 text-xs"><i data-lucide="check" class="w-3 h-3 text-teal"></i>Real-time project tracking</li>
+        </ul>
+        <a href="https://consumer.pvnxt.com/" class="btn-primary w-full justify-center" style="padding:10px 20px;font-size:13px">Open Consumer Portal</a>
+      </div>
+
+      <!-- EPC -->
+      <div class="reveal-up md:col-span-4 bg-white/[0.03] border border-white/[0.06] p-8 group hover:border-teal/20 transition-all duration-300" style="border-radius:3px">
+        <div class="w-10 h-10 bg-teal/10 flex items-center justify-center mb-5" style="border-radius:2px">
+          <i data-lucide="wrench" class="w-4 h-4 text-teal"></i>
+        </div>
+        <h3 class="text-white text-lg font-medium">EPC Portal</h3>
+        <p class="text-white/35 text-sm leading-relaxed mt-3 mb-6">Engineering teams manage multiple projects with automated design, procurement workflows, and installation tracking.</p>
+        <ul class="space-y-2 mb-8">
+          <li class="flex items-center gap-2 text-white/40 text-xs"><i data-lucide="check" class="w-3 h-3 text-teal"></i>Multi-project dashboard</li>
+          <li class="flex items-center gap-2 text-white/40 text-xs"><i data-lucide="check" class="w-3 h-3 text-teal"></i>Automated BOQ generation</li>
+          <li class="flex items-center gap-2 text-white/40 text-xs"><i data-lucide="check" class="w-3 h-3 text-teal"></i>Field team coordination</li>
+        </ul>
+        <a href="https://epc.pvnxt.com/" class="btn-outline w-full justify-center" style="padding:10px 20px;font-size:13px">Open EPC Portal</a>
+      </div>
+
+      <!-- Installer -->
+      <div class="reveal-up md:col-span-3 bg-white/[0.03] border border-white/[0.06] p-8 group hover:border-teal/20 transition-all duration-300" style="border-radius:3px">
+        <div class="w-10 h-10 bg-teal/10 flex items-center justify-center mb-5" style="border-radius:2px">
+          <i data-lucide="hard-hat" class="w-4 h-4 text-teal"></i>
+        </div>
+        <h3 class="text-white text-lg font-medium">Installer Portal</h3>
+        <p class="text-white/35 text-sm leading-relaxed mt-3 mb-6">Installation crews receive digital work orders, mounting plans, and commissioning checklists.</p>
+        <ul class="space-y-2 mb-8">
+          <li class="flex items-center gap-2 text-white/40 text-xs"><i data-lucide="check" class="w-3 h-3 text-teal"></i>Digital work orders</li>
+          <li class="flex items-center gap-2 text-white/40 text-xs"><i data-lucide="check" class="w-3 h-3 text-teal"></i>Step-by-step guides</li>
+        </ul>
+        <a href="https://installer.pvnxt.com/" class="btn-outline w-full justify-center" style="padding:10px 20px;font-size:13px">Open Installer Portal</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== ARTHA - INVEST ===== -->
+<section id="artha" class="bg-[#f0f4f3] py-24 md:py-32">
+  <div class="max-w-7xl mx-auto px-6">
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
+      <div class="lg:col-span-5 order-2 lg:order-1 reveal-up">
+        <!-- IMAGE: Artha Investment | Size: 800x900 | Description: Aerial view of solar farm with morning light, clean geometric panel rows, professional investment-grade photography | Theme: green investment premium | Color Direction: natural greens with teal panel reflections | Purpose: convey quality and scale of investable assets -->
+        <img src="https://picsum.photos/seed/solar-farm-invest/800/900" alt="Solar investment assets" class="w-full h-[420px] object-cover" style="border-radius:3px">
+      </div>
+      <div class="lg:col-span-7 order-1 lg:order-2 reveal-up">
+        <span class="text-teal text-[11px] font-medium tracking-[0.15em] uppercase">Green Investment</span>
+        <h2 class="text-[#1a1f26] font-light tracking-tight mt-3" style="font-size:clamp(1.8rem,3.5vw,2.8rem)">Invest in Solar Energy Assets.</h2>
+        <p class="text-gray-500 text-[15px] leading-relaxed mt-6 max-w-lg">
+          ArthaNxt tokenizes verified solar projects, making green energy investment accessible, transparent, and traceable. Every MW is backed by real infrastructure, designed and executed by Terranxt.
+        </p>
+        <div class="grid grid-cols-3 gap-6 mt-10">
+          <div>
+            <div class="text-3xl font-light text-[#1a1f26] counter" data-target="50">0</div>
+            <div class="text-gray-400 text-xs mt-1">MW Tokenized</div>
+          </div>
+          <div>
+            <div class="text-3xl font-light text-[#1a1f26]"><span class="counter" data-target="12">0</span>%</div>
+            <div class="text-gray-400 text-xs mt-1">Projected IRR</div>
+          </div>
+          <div>
+            <div class="text-3xl font-light text-[#1a1f26]"><span class="counter" data-target="500">0</span>+</div>
+            <div class="text-gray-400 text-xs mt-1">Investors Onboarded</div>
+          </div>
+        </div>
+        <div class="flex flex-wrap gap-3 mt-10">
+          <a href="https://artha.pvnxt.com/" class="btn-primary">Start Investing <i data-lucide="arrow-up-right" class="w-4 h-4"></i></a>
+          <span class="flex items-center gap-2 text-gray-400 text-xs"><i data-lucide="shield-check" class="w-3.5 h-3.5 text-teal"></i>SEBI Compliant Framework</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== RENXT - LAND ===== -->
+<section id="renxt" class="bg-[#0a0f14] py-24 md:py-32 relative overflow-hidden">
+  <div class="max-w-7xl mx-auto px-6">
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
+      <div class="lg:col-span-6 reveal-up">
+        <span class="text-teal text-[11px] font-medium tracking-[0.15em] uppercase">Land & Real Estate</span>
+        <h2 class="text-white font-light tracking-tight mt-3" style="font-size:clamp(1.8rem,3.5vw,2.8rem)">Solar-Ready Land Solutions.</h2>
+        <p class="text-white/40 text-[15px] leading-relaxed mt-6 max-w-md">
+          Renxt identifies, verifies, and secures land optimized for solar deployment. Complete due diligence — irradiance data, title verification, grid proximity — consolidated in one platform.
+        </p>
+        <div class="space-y-3 mt-8">
+          <div class="flex items-start gap-3">
+            <div class="w-6 h-6 bg-teal/10 flex items-center justify-center flex-shrink-0 mt-0.5" style="border-radius:1px"><i data-lucide="scan" class="w-3 h-3 text-teal"></i></div>
+            <div><span class="text-white/80 text-sm font-medium">Satellite-Based Identification</span><p class="text-white/30 text-xs mt-0.5">AI scans regions for solar-optimal land parcels</p></div>
+          </div>
+          <div class="flex items-start gap-3">
+            <div class="w-6 h-6 bg-teal/10 flex items-center justify-center flex-shrink-0 mt-0.5" style="border-radius:1px"><i data-lucide="file-check" class="w-3 h-3 text-teal"></i></div>
+            <div><span class="text-white/80 text-sm font-medium">Complete Due Diligence</span><p class="text-white/30 text-xs mt-0.5">Title verification, encumbrance checks, regulatory compliance</p></div>
+          </div>
+          <div class="flex items-start gap-3">
+            <div class="w-6 h-6 bg-teal/10 flex items-center justify-center flex-shrink-0 mt-0.5" style="border-radius:1px"><i data-lucide="zap" class="w-3 h-3 text-teal"></i></div>
+            <div><span class="text-white/80 text-sm font-medium">Grid Proximity Analysis</span><p class="text-white/30 text-xs mt-0.5">Substation distance, evacuation capacity, connectivity feasibility</p></div>
+          </div>
+        </div>
+        <a href="https://renxt.pvnxt.com/" class="btn-primary mt-10">Explore Land Portal <i data-lucide="arrow-up-right" class="w-4 h-4"></i></a>
+      </div>
+      <div class="lg:col-span-6 reveal-up">
+        <div class="relative">
+          <!-- IMAGE: Renxt Land | Size: 900x700 | Description: Drone view of open land parcel with overlay grid lines showing solar layout planning, technical and precise | Theme: land survey technical | Color Direction: earthy tones with teal grid overlay | Purpose: show land assessment capability -->
+          <img src="https://picsum.photos/seed/solar-land-drone/900/700" alt="Solar-ready land assessment" class="w-full h-[400px] object-cover" style="border-radius:3px">
+          <div class="absolute top-4 right-4 bg-[#0a0f14]/90 backdrop-blur-md px-4 py-3" style="border-radius:2px">
+            <div class="text-[10px] text-white/40 uppercase tracking-wider">Available Land</div>
+            <div class="text-xl font-light text-white mt-0.5">2,400<span class="text-teal"> acres</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== HOW IT WORKS (GSAP PINNED) ===== -->
+<section id="how-it-works" class="relative bg-[#080c10] overflow-hidden">
+  <div class="max-w-7xl mx-auto px-6 pt-24 pb-8">
+    <div class="text-center reveal-up">
+      <span class="text-teal text-[11px] font-medium tracking-[0.15em] uppercase">Ecosystem Journey</span>
+      <h2 class="text-white font-light tracking-tight mt-3" style="font-size:clamp(1.8rem,3.5vw,2.8rem)">The Full Ecosystem Journey</h2>
+    </div>
+  </div>
+
+  <!-- Pinned content area -->
+  <div id="pin-area" class="max-w-5xl mx-auto px-6 pb-8">
+    <!-- Energy flow path -->
+    <div class="relative mx-auto mt-16 mb-8" style="max-width:800px">
+      <!-- Base line -->
+      <div class="h-px bg-white/[0.06] w-full"></div>
+      <!-- Active line (grows with scroll) -->
+      <div id="active-line" class="absolute top-0 left-0 h-px bg-teal/50" style="width:0%"></div>
+      <!-- Energy dot -->
+      <div id="energy-dot" class="absolute top-1/2 -translate-y-1/2 w-3.5 h-3.5 bg-teal energy-glow" style="left:0%;border-radius:50%"></div>
+      <!-- Step nodes -->
+      <div class="step-node absolute top-1/2 -translate-y-1/2 w-2.5 h-2.5 bg-white/15" style="left:0%;border-radius:50%"></div>
+      <div class="step-node absolute top-1/2 -translate-y-1/2 w-2.5 h-2.5 bg-white/15" style="left:33.33%;border-radius:50%"></div>
+      <div class="step-node absolute top-1/2 -translate-y-1/2 w-2.5 h-2.5 bg-white/15" style="left:66.66%;border-radius:50%"></div>
+      <div class="step-node absolute top-1/2 -translate-y-1/2 w-2.5 h-2.5 bg-white/15" style="left:100%;border-radius:50%"></div>
+      <!-- Step labels -->
+      <div class="absolute -bottom-8 text-[10px] text-white/20 uppercase tracking-widest" style="left:0%;transform:translateX(-50%)">Land</div>
+      <div class="absolute -bottom-8 text-[10px] text-white/20 uppercase tracking-widest" style="left:33.33%;transform:translateX(-50%)">Invest</div>
+      <div class="absolute -bottom-8 text-[10px] text-white/20 uppercase tracking-widest" style="left:66.66%;transform:translateX(-50%)">Automate</div>
+      <div class="absolute -bottom-8 text-[10px] text-white/20 uppercase tracking-widest" style="left:100%;transform:translateX(-50%)">Execute</div>
+    </div>
+
+    <!-- Step content container -->
+    <div id="steps-container" class="relative mt-20" style="min-height:280px">
+      <div class="step-content absolute inset-0 flex items-center opacity-0 pointer-events-none" data-step="0">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center w-full">
+          <div>
+            <span class="text-teal text-xs font-medium">01 — Renxt</span>
+            <h3 class="text-white text-2xl font-light mt-2 tracking-tight">Identify & Secure Land</h3>
+            <p class="text-white/35 text-sm leading-relaxed mt-4 max-w-md">Satellite-based land scanning identifies optimal parcels. Complete due diligence — title verification, irradiance mapping, grid proximity — is automated through the Renxt platform.</p>
+            <a href="https://renxt.pvnxt.com/" class="inline-flex items-center gap-2 text-teal text-sm mt-6 hover:gap-3 transition-all">Explore Renxt <i data-lucide="arrow-right" class="w-4 h-4"></i></a>
+          </div>
+          <div class="hidden md:block">
+            <!-- IMAGE: Step 1 Land | Size: 600x400 | Description: Satellite imagery of land parcels with teal boundary markers and data overlays | Theme: geospatial technical | Color Direction: dark satellite with teal highlights | Purpose: illustrate AI land identification -->
+            <img src="https://picsum.photos/seed/satellite-land-parcel/600/400" alt="Land identification" class="w-full h-56 object-cover opacity-60" style="border-radius:3px">
+          </div>
+        </div>
+      </div>
+      <div class="step-content absolute inset-0 flex items-center opacity-0 pointer-events-none" data-step="1">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center w-full">
+          <div>
+            <span class="text-teal text-xs font-medium">02 — ArthaNxt</span>
+            <h3 class="text-white text-2xl font-light mt-2 tracking-tight">Invest & Tokenize</h3>
+            <p class="text-white/35 text-sm leading-relaxed mt-4 max-w-md">Verified solar projects are tokenized on ArthaNxt, enabling fractional investment with full transparency. Every token represents a measurable unit of green energy infrastructure.</p>
+            <a href="https://artha.pvnxt.com/" class="inline-flex items-center gap-2 text-teal text-sm mt-6 hover:gap-3 transition-all">Explore ArthaNxt <i data-lucide="arrow-right" class="w-4 h-4"></i></a>
+          </div>
+          <div class="hidden md:block">
+            <!-- IMAGE: Step 2 Invest | Size: 600x400 | Description: Clean data visualization showing tokenized investment metrics, green energy returns | Theme: fintech clean | Color Direction: dark bg with teal data viz | Purpose: illustrate tokenized investment -->
+            <img src="https://picsum.photos/seed/green-investment-data/600/400" alt="Tokenized investment" class="w-full h-56 object-cover opacity-60" style="border-radius:3px">
+          </div>
+        </div>
+      </div>
+      <div class="step-content absolute inset-0 flex items-center opacity-0 pointer-events-none" data-step="2">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center w-full">
+          <div>
+            <span class="text-teal text-xs font-medium">03 — pvNXT</span>
+            <h3 class="text-white text-2xl font-light mt-2 tracking-tight">Design & Automate</h3>
+            <p class="text-white/35 text-sm leading-relaxed mt-4 max-w-md">pvNXT generates precise solar designs from satellite data, automates BOQ creation, and orchestrates the entire installation workflow — all without a physical site visit.</p>
+            <a href="https://consumer.pvnxt.com/" class="inline-flex items-center gap-2 text-teal text-sm mt-6 hover:gap-3 transition-all">Explore pvNXT <i data-lucide="arrow-right" class="w-4 h-4"></i></a>
+          </div>
+          <div class="hidden md:block">
+            <!-- IMAGE: Step 3 Automate | Size: 600x400 | Description: Solar design software interface with 3D rooftop model and panel layout | Theme: technical software | Color Direction: dark UI with teal design elements | Purpose: show automated design capability -->
+            <img src="https://picsum.photos/seed/solar-design-3d/600/400" alt="Automated solar design" class="w-full h-56 object-cover opacity-60" style="border-radius:3px">
+          </div>
+        </div>
+      </div>
+      <div class="step-content absolute inset-0 flex items-center opacity-0 pointer-events-none" data-step="3">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center w-full">
+          <div>
+            <span class="text-teal text-xs font-medium">04 — Terranxt</span>
+            <h3 class="text-white text-2xl font-light mt-2 tracking-tight">Execute & Commission</h3>
+            <p class="text-white/35 text-sm leading-relaxed mt-4 max-w-md">Terranxt's engineering teams execute the project with physical precision — procurement, installation, testing, and commissioning — coordinated through pvNXT's digital layer.</p>
+            <a href="#contact" class="inline-flex items-center gap-2 text-teal text-sm mt-6 hover:gap-3 transition-all">Discuss a Project <i data-lucide="arrow-right" class="w-4 h-4"></i></a>
+          </div>
+          <div class="hidden md:block">
+            <!-- IMAGE: Step 4 Execute | Size: 600x400 | Description: Installation team mounting solar panels on structure, precise and technical | Theme: construction precision | Color Direction: natural light, teal equipment accents | Purpose: show physical execution -->
+            <img src="https://picsum.photos/seed/solar-install-precise/600/400" alt="Project execution" class="w-full h-56 object-cover opacity-60" style="border-radius:3px">
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Spacer for pin scroll distance -->
+  <div style="height:300vh"></div>
+</section>
+
+<!-- ===== SOLUTIONS ===== -->
+<section id="solutions" class="bg-white py-24 md:py-32">
+  <div class="max-w-7xl mx-auto px-6">
+    <div class="flex flex-col md:flex-row md:items-end md:justify-between gap-6 reveal-up">
+      <div>
+        <span class="text-teal text-[11px] font-medium tracking-[0.15em] uppercase">Solutions</span>
+        <h2 class="text-[#1a1f26] font-light tracking-tight mt-3" style="font-size:clamp(1.8rem,3.5vw,2.8rem)">Solutions for Every Scale.</h2>
+      </div>
+      <div class="flex gap-2">
+        <button class="sol-tab active" data-sol="residential">Residential</button>
+        <button class="sol-tab" data-sol="commercial">Commercial</button>
+        <button class="sol-tab" data-sol="enterprise">Enterprise</button>
+      </div>
+    </div>
+
+    <!-- Residential -->
+    <div class="sol-content" data-sol="residential">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 mt-12">
+        <div class="lg:col-span-7 reveal-up">
+          <!-- IMAGE: Residential Solar | Size: 1000x600 | Description: Beautiful modern home with rooftop solar panels, golden hour light, premium real estate photography | Theme: residential premium | Color Direction: warm tones with subtle panel blue | Purpose: aspirational residential solar -->
+          <img src="https://picsum.photos/seed/residential-solar-home/1000/600" alt="Residential solar" class="w-full h-[360px] object-cover" style="border-radius:3px">
+        </div>
+        <div class="lg:col-span-5 reveal-up flex flex-col justify-center">
+          <h3 class="text-xl font-medium text-[#1a1f26]">Rooftop Solar for Homes</h3>
+          <p class="text-gray-500 text-sm leading-relaxed mt-4">Get a personalized solar design in minutes through the Consumer Portal. Terranxt handles the rest — engineering, installation, and grid connection.</p>
+          <div class="mt-6 space-y-3">
+            <div class="flex items-center gap-3 p-3 bg-gray-50" style="border-radius:2px">
+              <i data-lucide="monitor" class="w-4 h-4 text-teal flex-shrink-0"></i>
+              <div><span class="text-sm text-[#1a1f26] font-medium">Digital: </span><span class="text-sm text-gray-500">Instant design via pvNXT Consumer Portal</span></div>
+            </div>
+            <div class="flex items-center gap-3 p-3 bg-gray-50" style="border-radius:2px">
+              <i data-lucide="wrench" class="w-4 h-4 text-teal flex-shrink-0"></i>
+              <div><span class="text-sm text-[#1a1f26] font-medium">Physical: </span><span class="text-sm text-gray-500">Precision installation by Terranxt engineers</span></div>
+            </div>
+          </div>
+          <a href="https://consumer.pvnxt.com/" class="btn-primary mt-8 w-fit">Get Your Solar Design <i data-lucide="arrow-right" class="w-4 h-4"></i></a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Commercial -->
+    <div class="sol-content hidden" data-sol="commercial">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 mt-12">
+        <div class="lg:col-span-5 reveal-up flex flex-col justify-center order-2 lg:order-1">
+          <h3 class="text-xl font-medium text-[#1a1f26]">Solar for Commercial Buildings</h3>
+          <p class="text-gray-500 text-sm leading-relaxed mt-4">Office complexes, warehouses, and commercial facilities. pvNXT automates the complex multi-roof design process. ArthaNxt enables co-investment models.</p>
+          <div class="mt-6 space-y-3">
+            <div class="flex items-center gap-3 p-3 bg-gray-50" style="border-radius:2px">
+              <i data-lucide="cpu" class="w-4 h-4 text-teal flex-shrink-0"></i>
+              <div><span class="text-sm text-[#1a1f26] font-medium">Digital: </span><span class="text-sm text-gray-500">Multi-roof automated design via EPC Portal</span></div>
+            </div>
+            <div class="flex items-center gap-3 p-3 bg-gray-50" style="border-radius:2px">
+              <i data-lucide="trending-up" class="w-4 h-4 text-teal flex-shrink-0"></i>
+              <div><span class="text-sm text-[#1a1f26] font-medium">Investment: </span><span class="text-sm text-gray-500">Tokenized project funding through ArthaNxt</span></div>
+            </div>
+          </div>
+          <a href="https://epc.pvnxt.com/" class="btn-primary mt-8 w-fit">Access EPC Portal <i data-lucide="arrow-right" class="w-4 h-4"></i></a>
+        </div>
+        <div class="lg:col-span-7 reveal-up order-1 lg:order-2">
+          <!-- IMAGE: Commercial Solar | Size: 1000x600 | Description: Large warehouse roof with solar panel array, clean industrial photography from elevated angle | Theme: commercial industrial | Color Direction: neutral industrial with teal panel lines | Purpose: show commercial scale -->
+          <img src="https://picsum.photos/seed/commercial-warehouse-solar/1000/600" alt="Commercial solar" class="w-full h-[360px] object-cover" style="border-radius:3px">
+        </div>
+      </div>
+    </div>
+
+    <!-- Enterprise -->
+    <div class="sol-content hidden" data-sol="enterprise">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 mt-12">
+        <div class="lg:col-span-7 reveal-up">
+          <!-- IMAGE: Enterprise Solar | Size: 1000x600 | Description: Vast utility-scale solar farm with rows of panels extending to horizon, dramatic aerial | Theme: utility scale epic | Color Direction: cool blues and greens, teal reflections | Purpose: convey massive scale capability -->
+          <img src="https://picsum.photos/seed/utility-solar-farm-scale/1000/600" alt="Enterprise utility solar" class="w-full h-[360px] object-cover" style="border-radius:3px">
+        </div>
+        <div class="lg:col-span-5 reveal-up flex flex-col justify-center">
+          <h3 class="text-xl font-medium text-[#1a1f26]">Utility-Scale Solar Projects</h3>
+          <p class="text-gray-500 text-sm leading-relaxed mt-4">Ground-mounted solar farms from 1MW to 100MW+. The full ecosystem converges — Renxt secures land, ArthaNxt structures investment, pvNXT designs, Terranxt builds.</p>
+          <div class="mt-6 space-y-3">
+            <div class="flex items-center gap-3 p-3 bg-gray-50" style="border-radius:2px">
+              <i data-lucide="map-pin" class="w-4 h-4 text-teal flex-shrink-0"></i>
+              <div><span class="text-sm text-[#1a1f26] font-medium">Land: </span><span class="text-sm text-gray-500">Acquisition and due diligence via Renxt</span></div>
+            </div>
+            <div class="flex items-center gap-3 p-3 bg-gray-50" style="border-radius:2px">
+              <i data-lucide="trending-up" class="w-4 h-4 text-teal flex-shrink-0"></i>
+              <div><span class="text-sm text-[#1a1f26] font-medium">Capital: </span><span class="text-sm text-gray-500">Project financing through ArthaNxt tokens</span></div>
+            </div>
+            <div class="flex items-center gap-3 p-3 bg-gray-50" style="border-radius:2px">
+              <i data-lucide="cpu" class="w-4 h-4 text-teal flex-shrink-0"></i>
+              <div><span class="text-sm text-[#1a1f26] font-medium">Automation: </span><span class="text-sm text-gray-500">Full project orchestration via pvNXT</span></div>
+            </div>
+          </div>
+          <a href="#contact" class="btn-primary mt-8 w-fit">Discuss Utility Project <i data-lucide="arrow-right" class="w-4 h-4"></i></a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ===== CONTACT / FINAL CTAs ===== -->
+<section id="contact" class="bg-[#0a0f14] py-24 md:py-32 relative overflow-hidden">
+  <div class="absolute inset-0" style="background-image:radial-gradient(rgba(6,159,177,0.03) 1px,transparent 1px);background-size:40px 40px"></div>
+  <div class="relative z-10 max-w-7xl mx-auto px-6">
+    <div class="text-center reveal-up max-w-2xl mx-auto">
+      <span class="text-teal text-[11px] font-medium tracking-[0.15em] uppercase">Get Started</span>
+      <h2 class="text-white font-light tracking-tight mt-3" style="font-size:clamp(2rem,4vw,3.2rem)">Ready to Move Forward?</h2>
+      <p class="text-white/35 text-[15px] leading-relaxed mt-5">Choose your entry point into the Terranxt ecosystem.</p>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-16">
+      <!-- Path 1: Invest -->
+      <div class="reveal-up bg-white/[0.03] border border-white/[0.06] p-8 group hover:border-teal/20 transition-all duration-300 text-center" style="border-radius:3px">
+        <div class="w-12 h-12 bg-teal/10 flex items-center justify-center mx-auto mb-5" style="border-radius:2px">
+          <i data-lucide="trending-up" class="w-5 h-5 text-teal"></i>
+        </div>
+        <h3 class="text-white text-lg font-medium">Invest in Solar</h3>
+        <p class="text-white/30 text-sm mt-3 mb-6">Explore tokenized green energy assets with verified returns on ArthaNxt.</p>
+        <a href="https://artha.pvnxt.com/" class="btn-primary w-full justify-center">Open ArthaNxt <i data-lucide="arrow-up-right" class="w-4 h-4"></i></a>
+      </div>
+      <!-- Path 2: pvNXT -->
+      <div class="reveal-up bg-white/[0.03] border border-white/[0.06] p-8 group hover:border-teal/20 transition-all duration-300 text-center" style="border-radius:3px">
+        <div class="w-12 h-12 bg-teal/10 flex items-center justify-center mx-auto mb-5" style="border-radius:2px">
+          <i data-lucide="cpu" class="w-5 h-5 text-teal"></i>
+        </div>
+        <h3 class="text-white text-lg font-medium">Use pvNXT</h3>
+        <p class="text-white/30 text-sm mt-3 mb-6">Access the intelligent solar platform — as a consumer, EPC, or installer.</p>
+        <div class="flex flex-col gap-2">
+          <a href="https://consumer.pvnxt.com/" class="btn-outline w-full justify-center" style="padding:8px 16px;font-size:12px">Consumer</a>
+          <div class="flex gap-2">
+            <a href="https://epc.pvnxt.com/" class="btn-outline flex-1 justify-center" style="padding:8px 12px;font-size:12px">EPC</a>
+            <a href="https://installer.pvnxt.com/" class="btn-outline flex-1 justify-center" style="padding:8px 12px;font-size:12px">Installer</a>
+          </div>
+        </div>
+      </div>
+      <!-- Path 3: Land / Contact -->
+      <div class="reveal-up bg-white/[0.03] border border-white/[0.06] p-8 group hover:border-teal/20 transition-all duration-300 text-center" style="border-radius:3px">
+        <div class="w-12 h-12 bg-teal/10 flex items-center justify-center mx-auto mb-5" style="border-radius:2px">
+          <i data-lucide="map-pin" class="w-5 h-5 text-teal"></i>
+        </div>
+        <h3 class="text-white text-lg font-medium">Find Land or Contact Us</h3>
+        <p class="text-white/30 text-sm mt-3 mb-6">Browse solar-ready land on Renxt, or speak with our team directly.</p>
+        <div class="flex flex-col gap-2">
+          <a href="https://renxt.pvnxt.com/" class="btn-outline w-full justify-center" style="padding:8px 16px;font-size:12px">Open Renxt</a>
+          <a href="mailto:hello@terranxt.com" class="btn-outline w-full justify-center" style="padding:8px 16px;font-size:12px;border-color:rgba(255,255,255,0.1);color:rgba(255,255,255,0.5)">hello@terranxt.com</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== FOOTER ===== -->
+<footer class="bg-[#060910] py-12 border-t border-white/[0.04]">
+  <div class="max-w-7xl mx-auto px-6">
+    <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-6">
+      <div class="flex items-center gap-2.5">
+        <div class="w-7 h-7 bg-teal flex items-center justify-center" style="border-radius:2px">
+          <span class="text-white text-[10px] font-semibold">T</span>
+        </div>
+        <span class="text-white/60 text-sm font-medium">Terranxt Pvt Ltd</span>
+      </div>
+      <div class="flex items-center gap-6">
+        <a href="https://artha.pvnxt.com/" class="text-white/30 text-xs hover:text-teal transition-colors">ArthaNxt</a>
+        <a href="https://renxt.pvnxt.com/" class="text-white/30 text-xs hover:text-teal transition-colors">Renxt</a>
+        <a href="https://consumer.pvnxt.com/" class="text-white/30 text-xs hover:text-teal transition-colors">pvNXT Consumer</a>
+        <a href="https://epc.pvnxt.com/" class="text-white/30 text-xs hover:text-teal transition-colors">pvNXT EPC</a>
+      </div>
+      <div class="text-white/20 text-xs">IIT Delhi Incubated · © 2025 Terranxt</div>
+    </div>
+  </div>
+</footer>
+
+<!-- ===== SCRIPTS ===== -->
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  // Initialize Lucide icons
+  lucide.createIcons();
+
+  // ===== LENIS SMOOTH SCROLL =====
+  const lenis = new Lenis({
+    lerp: 0.08,
+    smoothWheel: true,
+    wheelMultiplier: 0.8,
+  });
+  lenis.on('scroll', ScrollTrigger.update);
+  gsap.ticker.add((time) => { lenis.raf(time * 1000); });
+  gsap.ticker.lagSmoothing(0);
+
+  // ===== GSAP REGISTRATION =====
+  gsap.registerPlugin(ScrollTrigger);
+
+  // ===== CUSTOM CURSOR =====
+  const cursorDot = document.getElementById('cursor-dot');
+  const cursorPanel = document.getElementById('cursor-panel');
+  let mouseX = 0, mouseY = 0, dotX = 0, dotY = 0, panelX = 0, panelY = 0;
+  let cursorVisible = false;
+  let isHeroSection = false;
+
+  document.addEventListener('mousemove', (e) => {
+    mouseX = e.clientX;
+    mouseY = e.clientY;
+    if (!cursorVisible) {
+      cursorVisible = true;
+      gsap.to([cursorDot, cursorPanel], { opacity: 1, duration: 0.3 });
+    }
+  });
+
+  document.addEventListener('mouseleave', () => {
+    cursorVisible = false;
+    gsap.to([cursorDot, cursorPanel], { opacity: 0, duration: 0.3 });
+  });
+
+  // Show panel cursor on hero and interactive elements
+  const heroSection = document.getElementById('hero');
+  const interactiveEls = document.querySelectorAll('a, button, .sol-tab');
+
+  function updateCursorMode() {
+    const rect = heroSection.getBoundingClientRect();
+    isHeroSection = mouseY >= rect.top && mouseY <= rect.bottom && mouseX >= rect.left && mouseX <= rect.right;
+  }
+
+  document.addEventListener('mousemove', updateCursorMode);
+
+  interactiveEls.forEach(el => {
+    el.addEventListener('mouseenter', () => { gsap.to(cursorPanel, { opacity: 1, scale: 1.3, duration: 0.2 }); gsap.to(cursorDot, { opacity: 0, duration: 0.2 }); });
+    el.addEventListener('mouseleave', () => { gsap.to(cursorPanel, { opacity: isHeroSection ? 1 : 0, scale: 1, duration: 0.2 }); gsap.to(cursorDot, { opacity: 1, duration: 0.2 }); });
+  });
+
+  // Animate cursor positions
+  gsap.ticker.add(() => {
+    dotX += (mouseX - dotX) * 0.15;
+    dotY += (mouseY - dotY) * 0.15;
+    panelX += (mouseX - panelX) * 0.08;
+    panelY += (mouseY - panelY) * 0.08;
+    cursorDot.style.left = dotX + 'px';
+    cursorDot.style.top = dotY + 'px';
+    cursorPanel.style.left = panelX + 'px';
+    cursorPanel.style.top = panelY + 'px';
+
+    // Subtle rotation on panel cursor
+    const dx = mouseX - panelX;
+    const rotation = dx * 0.03;
+    cursorPanel.style.transform = `translate(-50%, -50%) rotate(${rotation}deg)`;
+
+    // Toggle panel visibility in hero
+    if (isHeroSection) {
+      cursorPanel.style.opacity = '1';
+      cursorDot.style.opacity = '0';
+    } else {
+      cursorPanel.style.opacity = '0';
+      cursorDot.style.opacity = '1';
+    }
+  });
+
+  // ===== NAV SCROLL BEHAVIOR =====
+  const nav = document.getElementById('main-nav');
+  ScrollTrigger.create({
+    start: 80,
+    onUpdate: (self) => {
+      if (self.scroll() > 80) {
+        nav.classList.add('nav-scrolled');
+      } else {
+        nav.classList.remove('nav-scrolled');
+      }
+    }
+  });
+
+  // ===== MOBILE MENU =====
+  const menuToggle = document.getElementById('menu-toggle');
+  const menuClose = document.getElementById('menu-close');
+  const mobileMenu = document.getElementById('mobile-menu');
+  const mobileLinks = document.querySelectorAll('.mobile-link');
+
+  menuToggle.addEventListener('click', () => mobileMenu.classList.add('open'));
+  menuClose.addEventListener('click', () => mobileMenu.classList.remove('open'));
+  mobileLinks.forEach(link => link.addEventListener('click', () => mobileMenu.classList.remove('open')));
+
+  // ===== HERO ANIMATIONS =====
+  const heroTl = gsap.timeline({ defaults: { ease: 'power3.out' } });
+  heroTl
+    .from('nav', { y: -20, opacity: 0, duration: 0.8 })
+    .from('.hero-el', { y: 20, opacity: 0, duration: 0.6, stagger: 0.1 }, '-=0.4')
+    .from('.hero-title-line', { y: 50, opacity: 0, duration: 1, stagger: 0.15 }, '-=0.3')
+    .from('.hero-cta', { y: 20, opacity: 0, duration: 0.6, stagger: 0.08 }, '-=0.5');
+
+  // ===== FLOATING SOLAR PANELS =====
+  gsap.to('.fp-1', { y: -15, rotation: 1.5, duration: 5, ease: 'sine.inOut', yoyo: true, repeat: -1 });
+  gsap.to('.fp-2', { y: -12, rotation: -1, duration: 6, ease: 'sine.inOut', yoyo: true, repeat: -1, delay: 1 });
+  gsap.to('.fp-3', { y: -10, x: 8, rotation: 2, duration: 7, ease: 'sine.inOut', yoyo: true, repeat: -1, delay: 2 });
+
+  // ===== SUN RAYS ANIMATION =====
+  const sunRays = document.getElementById('sun-rays');
+  const rays = document.querySelectorAll('.sun-ray');
+
+  ScrollTrigger.create({
+    trigger: '#hero',
+    start: 'top top',
+    end: 'bottom top',
+    scrub: 1,
+    onUpdate: (self) => {
+      const p = self.progress;
+      gsap.to(sunRays, { opacity: Math.min(p * 3, 0.8), duration: 0.1 });
+      rays.forEach((ray, i) => {
+        const len = p * (500 + i * 20);
+        ray.setAttribute('stroke-dasharray', `${len} 600`);
+      });
+    }
+  });
+
+  // ===== SCROLL REVEAL ANIMATIONS =====
+  gsap.utils.toArray('.reveal-up').forEach((el) => {
+    gsap.to(el, {
+      y: 0,
+      opacity: 1,
+      duration: 0.8,
+      ease: 'power2.out',
+      scrollTrigger: {
+        trigger: el,
+        start: 'top 85%',
+        toggleActions: 'play none none none'
+      }
+    });
+  });
+
+  // ===== COUNTER ANIMATION =====
+  document.querySelectorAll('.counter').forEach(el => {
+    const target = parseInt(el.dataset.target);
+    const obj = { val: 0 };
+    gsap.to(obj, {
+      val: target,
+      duration: 2,
+      ease: 'power2.out',
+      scrollTrigger: {
+        trigger: el,
+        start: 'top 85%',
+        toggleActions: 'play none none none'
+      },
+      onUpdate: () => { el.textContent = Math.round(obj.val); }
+    });
+  });
+
+  // ===== HOW IT WORKS - GSAP PINNING =====
+  const pinArea = document.getElementById('pin-area');
+  const energyDot = document.getElementById('energy-dot');
+  const activeLine = document.getElementById('active-line');
+  const stepContents = document.querySelectorAll('.step-content');
+  const stepNodes = document.querySelectorAll('.step-node');
+
+  ScrollTrigger.create({
+    trigger: '#how-it-works',
+    start: 'top top',
+    end: '+=280%',
+    pin: pinArea,
+    scrub: 1,
+    onUpdate: (self) => {
+      const p = self.progress;
+
+      // Move energy dot
+      gsap.set(energyDot, { left: `${p * 100}%` });
+
+      // Grow active line
+      gsap.set(activeLine, { width: `${p * 100}%` });
+
+      // Determine active step
+      const stepIndex = Math.min(3, Math.floor(p * 4));
+
+      // Update step content visibility
+      stepContents.forEach((content, i) => {
+        if (i === stepIndex) {
+          gsap.to(content, { opacity: 1, y: 0, duration: 0.3, pointerEvents: 'auto' });
+        } else {
+          gsap.to(content, { opacity: 0, y: i < stepIndex ? -10 : 10, duration: 0.3, pointerEvents: 'none' });
+        }
+      });
+
+      // Update node styles
+      stepNodes.forEach((node, i) => {
+        if (i <= stepIndex) {
+          node.classList.add('node-active');
+        } else {
+          node.classList.remove('node-active');
+        }
+      });
+    }
+  });
+
+  // ===== SOLUTION TABS =====
+  const solTabs = document.querySelectorAll('.sol-tab');
+  const solContents = document.querySelectorAll('.sol-content');
+
+  solTabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+      const target = tab.dataset.sol;
+      solTabs.forEach(t => t.classList.remove('active'));
+      tab.classList.add('active');
+      solContents.forEach(c => {
+        if (c.dataset.sol === target) {
+          c.classList.remove('hidden');
+          // Re-trigger reveal animations for new content
+          gsap.from(c.querySelectorAll('.reveal-up'), {
+            y: 30, opacity: 0, duration: 0.6, stagger: 0.1, ease: 'power2.out'
+          });
+        } else {
+          c.classList.add('hidden');
+        }
+      });
+    });
+  });
+
+  // ===== SMOOTH SCROLL FOR ANCHOR LINKS =====
+  document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', (e) => {
+      const href = anchor.getAttribute('href');
+      if (href === '#') return;
+      e.preventDefault();
+      const target = document.querySelector(href);
+      if (target) {
+        lenis.scrollTo(target, { offset: -72 });
+      }
+    });
+  });
+
+  // ===== GSAP HOVER STATES ON ECOSYSTEM CARDS =====
+  document.querySelectorAll('#ecosystem .group').forEach(card => {
+    card.addEventListener('mouseenter', () => {
+      gsap.to(card, { y: -4, duration: 0.3, ease: 'power2.out' });
+    });
+    card.addEventListener('mouseleave', () => {
+      gsap.to(card, { y: 0, duration: 0.3, ease: 'power2.out' });
+    });
+  });
+
+  // ===== SUBTLE PARALLAX ON HERO IMAGE =====
+  const heroImg = document.querySelector('#hero img');
+  if (heroImg) {
+    gsap.to(heroImg, {
+      y: 60,
+      ease: 'none',
+      scrollTrigger: {
+        trigger: '#hero',
+        start: 'top top',
+        end: 'bottom top',
+        scrub: 1
+      }
+    });
+  }
+});
+</script>
+</body>
+</html>

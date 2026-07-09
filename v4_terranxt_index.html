@@ -1,0 +1,792 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Terranxt — Building India's Solar Intelligence Layer</title>
+    <meta name="description" content="Terranxt is an IIT Delhi incubated parent company of pvNXT, Artha & Renxt — building the connected infrastructure for India's solar transition.">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        teal: {
+                            50: '#eefcfd', 100: '#d5f7fa', 200: '#aeedf5', 300: '#75dced',
+                            400: '#3ac3de', 500: '#069fb1', 600: '#057f8e', 700: '#076573',
+                            800: '#0a515c', 900: '#0d444d',
+                        },
+                        dark: '#0f172a',
+                    },
+                    fontFamily: { sans: ['Manrope', 'system-ui', 'sans-serif'] },
+                    borderRadius: { soft: '10px', card: '12px' },
+                }
+            }
+        }
+    </script>
+
+    <style>
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Manrope', system-ui, sans-serif; color: #0f172a; background: #fff; -webkit-font-smoothing: antialiased; }
+
+        /* Nav */
+        .nav-scrolled { background: rgba(255,255,255,0.92); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); box-shadow: 0 1px 3px rgba(0,0,0,0.06); }
+
+        /* Image placeholder */
+        .img-placeholder {
+            background: linear-gradient(135deg, #eefcfd 0%, #d5f7fa 50%, #eefcfd 100%);
+            border: 1.5px dashed #aeedf5;
+            display: flex; align-items: center; justify-content: center;
+            color: #069fb1; font-size: 13px; font-weight: 500;
+            border-radius: 10px; letter-spacing: 0.02em;
+            background-size: 200% 200%;
+            animation: shimmer 4s ease-in-out infinite;
+        }
+        @keyframes shimmer { 0%,100% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } }
+
+        /* Portal section */
+        .portal-radial { position: relative; width: 100%; max-width: 560px; aspect-ratio: 1; margin: 0 auto; }
+        .portal-svg { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
+        .portal-node {
+            position: absolute; transform: translate(-50%, -50%);
+            width: 96px; height: 96px; border-radius: 50%;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            background: #fff; border: 2px solid #d5f7fa;
+            transition: all 0.3s ease; cursor: pointer; text-decoration: none; color: #0f172a;
+            box-shadow: 0 2px 12px rgba(6,159,177,0.06);
+        }
+        .portal-node:hover { border-color: #069fb1; box-shadow: 0 4px 24px rgba(6,159,177,0.14); transform: translate(-50%, -50%) scale(1.06); }
+        .portal-center {
+            position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+            width: 120px; height: 120px; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            background: linear-gradient(135deg, #069fb1, #057f8e); color: #fff;
+            font-weight: 700; font-size: 18px; letter-spacing: -0.02em;
+            box-shadow: 0 8px 32px rgba(6,159,177,0.25);
+            z-index: 2;
+        }
+        .portal-node .p-icon { margin-bottom: 2px; color: #069fb1; }
+        .portal-node .p-label { font-size: 10px; font-weight: 600; line-height: 1; }
+
+        /* How it works */
+        .steps-track { position: relative; display: grid; grid-template-columns: repeat(4, 1fr); gap: 0; }
+        .step-item { position: relative; text-align: center; padding: 0 12px; }
+        .step-connector-line { position: absolute; top: 22px; left: calc(12.5% + 24px); right: calc(12.5% + 24px); height: 2px; background: #e2e8f0; z-index: 0; }
+        .step-num {
+            width: 44px; height: 44px; border-radius: 50%; background: #fff; border: 2px solid #d5f7fa;
+            display: inline-flex; align-items: center; justify-content: center;
+            font-weight: 700; font-size: 15px; color: #069fb1;
+            position: relative; z-index: 1; margin-bottom: 16px;
+            transition: all 0.3s ease;
+        }
+        .step-item:hover .step-num { background: #069fb1; color: #fff; border-color: #069fb1; }
+
+        /* CTA sections */
+        .cta-section { background: linear-gradient(135deg, #069fb1 0%, #057f8e 100%); }
+
+        /* Mobile portal grid */
+        @media (max-width: 767px) {
+            .portal-radial { display: none; }
+            .portal-mobile-grid { display: grid !important; }
+            .steps-track { grid-template-columns: 1fr; gap: 24px; }
+            .step-connector-line { display: none; }
+            .step-item { text-align: left; display: flex; gap: 16px; align-items: flex-start; }
+            .step-num { flex-shrink: 0; margin-bottom: 0; }
+        }
+        @media (min-width: 768px) {
+            .portal-mobile-grid { display: none !important; }
+        }
+
+        /* GSAP initial states */
+        .fade-up { opacity: 0; transform: translateY(20px); }
+        .fade-in { opacity: 0; }
+        .scale-in { opacity: 0; transform: scale(0.92); }
+
+        /* Subtle selection color */
+        ::selection { background: #d5f7fa; color: #076573; }
+    </style>
+</head>
+<body class="font-sans text-dark antialiased">
+
+    <!-- ========== NAVIGATION ========== -->
+    <nav id="mainNav" class="fixed top-0 left-0 right-0 z-50 transition-all duration-300">
+        <div class="max-w-7xl mx-auto px-5 md:px-8 h-16 flex items-center justify-between">
+            <a href="#" class="flex items-center gap-2.5">
+                <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-teal-500 to-teal-700 flex items-center justify-center">
+                    <span class="text-white font-bold text-sm">T</span>
+                </div>
+                <span class="text-lg font-bold tracking-tight text-dark">Terranxt</span>
+            </a>
+            <div class="hidden md:flex items-center gap-7">
+                <a href="#about" class="text-[13px] font-medium text-slate-500 hover:text-dark transition-colors">About</a>
+                <a href="#pvnxt" class="text-[13px] font-medium text-slate-500 hover:text-dark transition-colors">pvNXT</a>
+                <a href="#artha" class="text-[13px] font-medium text-slate-500 hover:text-dark transition-colors">Artha</a>
+                <a href="#renxt" class="text-[13px] font-medium text-slate-500 hover:text-dark transition-colors">Renxt</a>
+            </div>
+            <div class="hidden md:flex items-center gap-3">
+                <a href="#contact" class="text-[13px] font-semibold bg-teal-500 text-white px-5 py-2.5 rounded-soft hover:bg-teal-600 transition-colors">Get Started</a>
+            </div>
+            <button id="mobileMenuBtn" class="md:hidden p-2 -mr-2 text-dark" aria-label="Menu">
+                <i data-lucide="menu" class="w-5 h-5"></i>
+            </button>
+        </div>
+        <div id="mobileMenu" class="hidden md:hidden bg-white/95 backdrop-blur-xl border-t border-slate-100 px-5 pb-5">
+            <a href="#about" class="block py-3 text-sm font-medium text-slate-600 border-b border-slate-50">About</a>
+            <a href="#pvnxt" class="block py-3 text-sm font-medium text-slate-600 border-b border-slate-50">pvNXT</a>
+            <a href="#artha" class="block py-3 text-sm font-medium text-slate-600 border-b border-slate-50">Artha</a>
+            <a href="#renxt" class="block py-3 text-sm font-medium text-slate-600 border-b border-slate-50">Renxt</a>
+            <a href="#contact" class="block mt-4 text-center text-sm font-semibold bg-teal-500 text-white px-5 py-3 rounded-soft">Get Started</a>
+        </div>
+    </nav>
+
+
+    <!-- ========== HERO ========== -->
+    <section class="pt-28 pb-16 md:pt-36 md:pb-24 px-5 md:px-8">
+        <div class="max-w-7xl mx-auto">
+            <div class="max-w-3xl fade-up">
+                <div class="inline-flex items-center gap-2 bg-teal-50 text-teal-600 text-[11px] font-semibold uppercase tracking-wider px-3.5 py-1.5 rounded-full mb-7">
+                    <i data-lucide="award" class="w-3.5 h-3.5"></i>
+                    IIT Delhi Incubated
+                </div>
+                <h1 class="text-[2.5rem] md:text-5xl lg:text-[3.5rem] font-bold leading-[1.08] tracking-tight mb-6">
+                    Building India's Solar<br>Intelligence Layer
+                </h1>
+                <p class="text-base md:text-lg text-slate-500 leading-relaxed mb-5 max-w-2xl">
+                    Terranxt is the parent company behind <strong class="text-slate-700 font-semibold">pvNXT</strong>, <strong class="text-slate-700 font-semibold">Artha</strong> &amp; <strong class="text-slate-700 font-semibold">Renxt</strong> — three integrated platforms digitizing, financing, and sustaining India's solar transition.
+                </p>
+                <div class="flex flex-wrap gap-2.5 mb-9">
+                    <span class="inline-flex items-center gap-1.5 text-xs font-medium text-slate-600 bg-slate-50 border border-slate-100 px-3 py-1.5 rounded-soft">
+                        <span class="w-1.5 h-1.5 rounded-full bg-teal-500"></span>Parent of pvNXT
+                    </span>
+                    <span class="inline-flex items-center gap-1.5 text-xs font-medium text-slate-600 bg-slate-50 border border-slate-100 px-3 py-1.5 rounded-soft">
+                        <span class="w-1.5 h-1.5 rounded-full bg-teal-500"></span>Parent of Artha
+                    </span>
+                    <span class="inline-flex items-center gap-1.5 text-xs font-medium text-slate-600 bg-slate-50 border border-slate-100 px-3 py-1.5 rounded-soft">
+                        <span class="w-1.5 h-1.5 rounded-full bg-teal-500"></span>Parent of Renxt
+                    </span>
+                </div>
+                <div class="flex flex-wrap gap-3">
+                    <a href="#pvnxt" class="inline-flex items-center gap-2 bg-teal-500 text-white font-semibold text-sm px-6 py-3 rounded-soft hover:bg-teal-600 transition-colors">
+                        Explore Ecosystem <i data-lucide="arrow-down-right" class="w-4 h-4"></i>
+                    </a>
+                    <a href="#about" class="inline-flex items-center gap-2 bg-white text-dark font-semibold text-sm px-6 py-3 rounded-soft border border-slate-200 hover:border-slate-300 hover:bg-slate-50 transition-all">
+                        Learn More
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- IMAGE: Hero | Size: 1920x1080 | Description: Wide aerial view of a modern solar installation with clean geometric panels against a soft sky, subtle teal gradient overlay on right side | Theme: clean corporate solar | Color Direction: teal accents | Purpose: Hero visual establishing scale and professionalism -->
+    <section class="px-5 md:px-8 pb-16 md:pb-24">
+        <div class="max-w-7xl mx-auto fade-up">
+            <div class="img-placeholder w-full aspect-[16/7] rounded-card">
+                <!-- IMAGE: Hero Banner | Size: 1920x840 | Description: Wide panoramic shot of a large-scale rooftop solar installation at dawn, clean lines, warm light with cool teal-tinted shadows | Theme: clean corporate solar | Color Direction: teal accents | Purpose: Establish visual authority and scale -->
+                <span>Hero Visual — 1920 × 840</span>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- ========== STATS BAR ========== -->
+    <section class="border-y border-slate-100 py-10 px-5 md:px-8 bg-slate-50/50">
+        <div class="max-w-7xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-0 md:divide-x divide-slate-200">
+            <div class="text-center fade-up">
+                <div class="text-2xl md:text-3xl font-bold text-dark tracking-tight">6</div>
+                <div class="text-xs font-medium text-slate-500 mt-1 uppercase tracking-wider">Integrated Portals</div>
+            </div>
+            <div class="text-center fade-up">
+                <div class="text-2xl md:text-3xl font-bold text-dark tracking-tight">100+</div>
+                <div class="text-xs font-medium text-slate-500 mt-1 uppercase tracking-wider">Installer Partners</div>
+            </div>
+            <div class="text-center fade-up">
+                <div class="text-2xl md:text-3xl font-bold text-dark tracking-tight">50+</div>
+                <div class="text-xs font-medium text-slate-500 mt-1 uppercase tracking-wider">Cities Covered</div>
+            </div>
+            <div class="text-center fade-up">
+                <div class="text-2xl md:text-3xl font-bold text-dark tracking-tight">₹200Cr+</div>
+                <div class="text-xs font-medium text-slate-500 mt-1 uppercase tracking-wider">Facilitated</div>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- ========== ABOUT ========== -->
+    <section id="about" class="py-20 md:py-28 px-5 md:px-8">
+        <div class="max-w-7xl mx-auto grid md:grid-cols-2 gap-12 md:gap-20 items-center">
+            <div class="fade-up">
+                <div class="text-[11px] font-semibold uppercase tracking-widest text-teal-500 mb-4">About Terranxt</div>
+                <h2 class="text-2xl md:text-[2rem] font-bold tracking-tight leading-tight mb-5">
+                    One company. Three platforms.<br>One mission.
+                </h2>
+                <p class="text-slate-500 leading-relaxed mb-4">
+                    Terranxt was born out of IIT Delhi's research ecosystem with a clear premise: India's solar transition needs connected infrastructure, not fragmented tools.
+                </p>
+                <p class="text-slate-500 leading-relaxed mb-6">
+                    We built three complementary platforms — <strong class="text-slate-700 font-medium">pvNXT</strong> for operations and data, <strong class="text-slate-700 font-medium">Artha</strong> for finance, and <strong class="text-slate-700 font-medium">Renxt</strong> for lifecycle sustainability — each powerful alone, transformative together.
+                </p>
+                <div class="grid grid-cols-3 gap-4">
+                    <div class="bg-teal-50/70 rounded-soft p-4 text-center">
+                        <div class="text-lg font-bold text-teal-600">pvNXT</div>
+                        <div class="text-[10px] font-medium text-slate-500 mt-1 uppercase tracking-wider">Operations</div>
+                    </div>
+                    <div class="bg-teal-50/70 rounded-soft p-4 text-center">
+                        <div class="text-lg font-bold text-teal-600">Artha</div>
+                        <div class="text-[10px] font-medium text-slate-500 mt-1 uppercase tracking-wider">Finance</div>
+                    </div>
+                    <div class="bg-teal-50/70 rounded-soft p-4 text-center">
+                        <div class="text-lg font-bold text-teal-600">Renxt</div>
+                        <div class="text-[10px] font-medium text-slate-500 mt-1 uppercase tracking-wider">Sustainability</div>
+                    </div>
+                </div>
+            </div>
+            <div class="fade-up">
+                <!-- IMAGE: About | Size: 800x900 | Description: Clean product mockup showing three overlapping device screens (tablet and two phones) displaying pvNXT, Artha, and Renxt interfaces on a minimal white surface with soft shadow | Theme: clean corporate solar | Color Direction: teal accents | Purpose: Visualize the three-platform ecosystem -->
+                <div class="img-placeholder w-full aspect-[4/5] rounded-card">
+                    <span>About Visual — 800 × 900</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- ========== pvNXT 6 PORTALS ========== -->
+    <section id="pvnxt" class="py-20 md:py-28 px-5 md:px-8 bg-slate-50/60 portals-section">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center max-w-xl mx-auto mb-14 fade-up">
+                <div class="text-[11px] font-semibold uppercase tracking-widest text-teal-500 mb-4">pvNXT Ecosystem</div>
+                <h2 class="text-2xl md:text-[2rem] font-bold tracking-tight leading-tight mb-4">
+                    6 Portals. One Data Layer.
+                </h2>
+                <p class="text-slate-500 leading-relaxed text-sm md:text-base">
+                    Every stakeholder in the solar value chain — connected through a single, unified data backbone.
+                </p>
+            </div>
+
+            <!-- Desktop: Radial SVG Layout -->
+            <div class="portal-radial fade-up" id="portalRadial">
+                <svg class="portal-svg" viewBox="0 0 560 560" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <!-- Lines from center (280,280) to each portal -->
+                    <line class="portal-line" x1="280" y1="280" x2="280" y2="104" stroke="#aeedf5" stroke-width="2" stroke-linecap="round"/>
+                    <line class="portal-line" x1="280" y1="280" x2="432.5" y2="192" stroke="#aeedf5" stroke-width="2" stroke-linecap="round"/>
+                    <line class="portal-line" x1="280" y1="280" x2="432.5" y2="368" stroke="#aeedf5" stroke-width="2" stroke-linecap="round"/>
+                    <line class="portal-line" x1="280" y1="280" x2="280" y2="456" stroke="#aeedf5" stroke-width="2" stroke-linecap="round"/>
+                    <line class="portal-line" x1="280" y1="280" x2="127.5" y2="368" stroke="#aeedf5" stroke-width="2" stroke-linecap="round"/>
+                    <line class="portal-line" x1="280" y1="280" x2="127.5" y2="192" stroke="#aeedf5" stroke-width="2" stroke-linecap="round"/>
+                    <!-- Endpoint dots -->
+                    <circle cx="280" cy="104" r="3" fill="#069fb1" opacity="0.4"/>
+                    <circle cx="432.5" cy="192" r="3" fill="#069fb1" opacity="0.4"/>
+                    <circle cx="432.5" cy="368" r="3" fill="#069fb1" opacity="0.4"/>
+                    <circle cx="280" cy="456" r="3" fill="#069fb1" opacity="0.4"/>
+                    <circle cx="127.5" cy="368" r="3" fill="#069fb1" opacity="0.4"/>
+                    <circle cx="127.5" cy="192" r="3" fill="#069fb1" opacity="0.4"/>
+                </svg>
+
+                <!-- Center node -->
+                <div class="portal-center">pvNXT</div>
+
+                <!-- Portal nodes: positions as % of 560px container -->
+                <a href="https://consumer.pvnxt.com/" target="_blank" rel="noopener" class="portal-node" style="top:18.6%; left:50%;">
+                    <i data-lucide="home" class="w-5 h-5 p-icon"></i>
+                    <span class="p-label">Consumer</span>
+                </a>
+                <a href="https://epc.pvnxt.com/" target="_blank" rel="noopener" class="portal-node" style="top:34.3%; left:77.2%;">
+                    <i data-lucide="building-2" class="w-5 h-5 p-icon"></i>
+                    <span class="p-label">EPC</span>
+                </a>
+                <a href="https://installer.pvnxt.com/" target="_blank" rel="noopener" class="portal-node" style="top:65.7%; left:77.2%;">
+                    <i data-lucide="wrench" class="w-5 h-5 p-icon"></i>
+                    <span class="p-label">Installer</span>
+                </a>
+                <a href="#" class="portal-node" style="top:81.4%; left:50%;">
+                    <i data-lucide="store" class="w-5 h-5 p-icon"></i>
+                    <span class="p-label">Dealer</span>
+                </a>
+                <a href="#" class="portal-node" style="top:65.7%; left:22.8%;">
+                    <i data-lucide="factory" class="w-5 h-5 p-icon"></i>
+                    <span class="p-label">OEM</span>
+                </a>
+                <a href="#" class="portal-node" style="top:34.3%; left:22.8%;">
+                    <i data-lucide="handshake" class="w-5 h-5 p-icon"></i>
+                    <span class="p-label">Partner</span>
+                </a>
+            </div>
+
+            <!-- Mobile: 2x3 Grid -->
+            <div class="portal-mobile-grid grid-cols-2 gap-3 max-w-sm mx-auto" style="display:none;">
+                <div class="text-center mb-2 col-span-2">
+                    <div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-gradient-to-br from-teal-500 to-teal-700 text-white font-bold text-sm">pvNXT</div>
+                </div>
+                <a href="https://consumer.pvnxt.com/" target="_blank" rel="noopener" class="flex flex-col items-center gap-2 bg-white border border-slate-100 rounded-card p-5 hover:border-teal-200 hover:shadow-sm transition-all">
+                    <i data-lucide="home" class="w-5 h-5 text-teal-500"></i>
+                    <span class="text-xs font-semibold text-dark">Consumer</span>
+                </a>
+                <a href="https://epc.pvnxt.com/" target="_blank" rel="noopener" class="flex flex-col items-center gap-2 bg-white border border-slate-100 rounded-card p-5 hover:border-teal-200 hover:shadow-sm transition-all">
+                    <i data-lucide="building-2" class="w-5 h-5 text-teal-500"></i>
+                    <span class="text-xs font-semibold text-dark">EPC</span>
+                </a>
+                <a href="https://installer.pvnxt.com/" target="_blank" rel="noopener" class="flex flex-col items-center gap-2 bg-white border border-slate-100 rounded-card p-5 hover:border-teal-200 hover:shadow-sm transition-all">
+                    <i data-lucide="wrench" class="w-5 h-5 text-teal-500"></i>
+                    <span class="text-xs font-semibold text-dark">Installer</span>
+                </a>
+                <a href="#" class="flex flex-col items-center gap-2 bg-white border border-slate-100 rounded-card p-5 hover:border-teal-200 hover:shadow-sm transition-all">
+                    <i data-lucide="store" class="w-5 h-5 text-teal-500"></i>
+                    <span class="text-xs font-semibold text-dark">Dealer</span>
+                </a>
+                <a href="#" class="flex flex-col items-center gap-2 bg-white border border-slate-100 rounded-card p-5 hover:border-teal-200 hover:shadow-sm transition-all">
+                    <i data-lucide="factory" class="w-5 h-5 text-teal-500"></i>
+                    <span class="text-xs font-semibold text-dark">OEM</span>
+                </a>
+                <a href="#" class="flex flex-col items-center gap-2 bg-white border border-slate-100 rounded-card p-5 hover:border-teal-200 hover:shadow-sm transition-all">
+                    <i data-lucide="handshake" class="w-5 h-5 text-teal-500"></i>
+                    <span class="text-xs font-semibold text-dark">Partner</span>
+                </a>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- ========== CTA 1 — After Portals ========== -->
+    <section class="cta-section py-14 px-5 md:px-8">
+        <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6 fade-up">
+            <div>
+                <h3 class="text-lg md:text-xl font-bold text-white tracking-tight">One platform for every solar stakeholder.</h3>
+                <p class="text-teal-100 text-sm mt-1">Explore how pvNXT connects the entire value chain.</p>
+            </div>
+            <a href="https://consumer.pvnxt.com/" target="_blank" rel="noopener" class="inline-flex items-center gap-2 bg-white text-teal-700 font-semibold text-sm px-6 py-3 rounded-soft hover:bg-teal-50 transition-colors flex-shrink-0">
+                Explore pvNXT <i data-lucide="arrow-right" class="w-4 h-4"></i>
+            </a>
+        </div>
+    </section>
+
+
+    <!-- ========== HOW IT WORKS ========== -->
+    <section class="py-20 md:py-28 px-5 md:px-8">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center max-w-xl mx-auto mb-14 fade-up">
+                <div class="text-[11px] font-semibold uppercase tracking-widest text-teal-500 mb-4">How It Works</div>
+                <h2 class="text-2xl md:text-[2rem] font-bold tracking-tight leading-tight mb-4">
+                    From Inquiry to Energy
+                </h2>
+                <p class="text-slate-500 leading-relaxed text-sm md:text-base">
+                    A seamless, data-driven journey — powered by pvNXT's integrated portals.
+                </p>
+            </div>
+
+            <div class="max-w-4xl mx-auto">
+                <div class="steps-track fade-up">
+                    <!-- Connecting line (desktop only) -->
+                    <div class="step-connector-line hidden md:block"></div>
+
+                    <div class="step-item">
+                        <div class="step-num">1</div>
+                        <div>
+                            <div class="font-semibold text-sm mb-1">Inquiry</div>
+                            <p class="text-xs text-slate-500 leading-relaxed">Consumer submits a solar requirement through the portal.</p>
+                        </div>
+                    </div>
+                    <div class="step-item">
+                        <div class="step-num">2</div>
+                        <div>
+                            <div class="font-semibold text-sm mb-1">Design</div>
+                            <p class="text-xs text-slate-500 leading-relaxed">AI-powered system sizing, ROI modelling, and design generation.</p>
+                        </div>
+                    </div>
+                    <div class="step-item">
+                        <div class="step-num">3</div>
+                        <div>
+                            <div class="font-semibold text-sm mb-1">Install</div>
+                            <p class="text-xs text-slate-500 leading-relaxed">Verified installer assigned, tracked end-to-end via the EPC portal.</p>
+                        </div>
+                    </div>
+                    <div class="step-item">
+                        <div class="step-num">4</div>
+                        <div>
+                            <div class="font-semibold text-sm mb-1">Energize</div>
+                            <p class="text-xs text-slate-500 leading-relaxed">Commissioning, monitoring, and lifetime performance tracking.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- ========== ARTHA ========== -->
+    <section id="artha" class="py-20 md:py-28 px-5 md:px-8 bg-slate-50/60">
+        <div class="max-w-7xl mx-auto grid md:grid-cols-2 gap-12 md:gap-20 items-center">
+            <div class="order-2 md:order-1 fade-up">
+                <!-- IMAGE: Artha | Size: 800x900 | Description: Abstract financial illustration showing a solar panel icon connected to growth chart and rupee symbol, clean minimalist style with teal and white palette, soft geometric shapes | Theme: clean corporate solar finance | Color Direction: teal accents | Purpose: Visually communicate solar financing in a premium way -->
+                <div class="img-placeholder w-full aspect-[4/5] rounded-card">
+                    <span>Artha Visual — 800 × 900</span>
+                </div>
+            </div>
+            <div class="order-1 md:order-2 fade-up">
+                <div class="inline-flex items-center gap-2 bg-white border border-slate-200 text-teal-600 text-[11px] font-semibold uppercase tracking-wider px-3.5 py-1.5 rounded-full mb-5">
+                    <i data-lucide="trending-up" class="w-3.5 h-3.5"></i>
+                    Artha by Terranxt
+                </div>
+                <h2 class="text-2xl md:text-[2rem] font-bold tracking-tight leading-tight mb-5">
+                    Smart finance for<br>every solar project.
+                </h2>
+                <p class="text-slate-500 leading-relaxed mb-4">
+                    Artha makes solar accessible by embedding financing directly into the pvNXT workflow. From consumer loans to installer working capital — capital moves as smoothly as data.
+                </p>
+                <ul class="space-y-3 mb-7">
+                    <li class="flex items-start gap-3">
+                        <div class="w-5 h-5 rounded-full bg-teal-50 flex items-center justify-center flex-shrink-0 mt-0.5">
+                            <i data-lucide="check" class="w-3 h-3 text-teal-600"></i>
+                        </div>
+                        <span class="text-sm text-slate-600">Consumer EMI &amp; loan products with instant eligibility</span>
+                    </li>
+                    <li class="flex items-start gap-3">
+                        <div class="w-5 h-5 rounded-full bg-teal-50 flex items-center justify-center flex-shrink-0 mt-0.5">
+                            <i data-lucide="check" class="w-3 h-3 text-teal-600"></i>
+                        </div>
+                        <span class="text-sm text-slate-600">Installer working capital and project financing</span>
+                    </li>
+                    <li class="flex items-start gap-3">
+                        <div class="w-5 h-5 rounded-full bg-teal-50 flex items-center justify-center flex-shrink-0 mt-0.5">
+                            <i data-lucide="check" class="w-3 h-3 text-teal-600"></i>
+                        </div>
+                        <span class="text-sm text-slate-600">Integrated ROI analytics tied to real installation data</span>
+                    </li>
+                </ul>
+                <a href="https://artha.pvnxt.com/" target="_blank" rel="noopener" class="inline-flex items-center gap-2 text-sm font-semibold text-teal-600 hover:text-teal-700 transition-colors">
+                    Visit Artha <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                </a>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- ========== CTA 2 — After Artha ========== -->
+    <section class="py-14 px-5 md:px-8 border-y border-slate-100">
+        <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6 fade-up">
+            <div>
+                <h3 class="text-lg md:text-xl font-bold text-dark tracking-tight">Powering solar with smart finance.</h3>
+                <p class="text-slate-500 text-sm mt-1">See how Artha removes the capital barrier to solar adoption.</p>
+            </div>
+            <a href="https://artha.pvnxt.com/" target="_blank" rel="noopener" class="inline-flex items-center gap-2 bg-dark text-white font-semibold text-sm px-6 py-3 rounded-soft hover:bg-slate-800 transition-colors flex-shrink-0">
+                Explore Artha <i data-lucide="arrow-right" class="w-4 h-4"></i>
+            </a>
+        </div>
+    </section>
+
+
+    <!-- ========== RENXT ========== -->
+    <section id="renxt" class="py-20 md:py-28 px-5 md:px-8">
+        <div class="max-w-7xl mx-auto grid md:grid-cols-2 gap-12 md:gap-20 items-center">
+            <div class="fade-up">
+                <div class="inline-flex items-center gap-2 bg-teal-50 text-teal-600 text-[11px] font-semibold uppercase tracking-wider px-3.5 py-1.5 rounded-full mb-5">
+                    <i data-lucide="recycle" class="w-3.5 h-3.5"></i>
+                    Renxt by Terranxt
+                </div>
+                <h2 class="text-2xl md:text-[2rem] font-bold tracking-tight leading-tight mb-5">
+                    Closing the loop on<br>solar sustainability.
+                </h2>
+                <p class="text-slate-500 leading-relaxed mb-4">
+                    Renxt handles what happens after installation — panel lifecycle management, decommissioning, and responsible recycling. Because real sustainability doesn't end at commissioning.
+                </p>
+                <ul class="space-y-3 mb-7">
+                    <li class="flex items-start gap-3">
+                        <div class="w-5 h-5 rounded-full bg-teal-50 flex items-center justify-center flex-shrink-0 mt-0.5">
+                            <i data-lucide="check" class="w-3 h-3 text-teal-600"></i>
+                        </div>
+                        <span class="text-sm text-slate-600">End-of-life panel collection and logistics</span>
+                    </li>
+                    <li class="flex items-start gap-3">
+                        <div class="w-5 h-5 rounded-full bg-teal-50 flex items-center justify-center flex-shrink-0 mt-0.5">
+                            <i data-lucide="check" class="w-3 h-3 text-teal-600"></i>
+                        </div>
+                        <span class="text-sm text-slate-600">Certified recycling with material recovery tracking</span>
+                    </li>
+                    <li class="flex items-start gap-3">
+                        <div class="w-5 h-5 rounded-full bg-teal-50 flex items-center justify-center flex-shrink-0 mt-0.5">
+                            <i data-lucide="check" class="w-3 h-3 text-teal-600"></i>
+                        </div>
+                        <span class="text-sm text-slate-600">Circular economy reporting and ESG compliance</span>
+                    </li>
+                </ul>
+                <a href="https://renxt.pvnxt.com/" target="_blank" rel="noopener" class="inline-flex items-center gap-2 text-sm font-semibold text-teal-600 hover:text-teal-700 transition-colors">
+                    Visit Renxt <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                </a>
+            </div>
+            <div class="fade-up">
+                <!-- IMAGE: Renxt | Size: 800x900 | Description: Circular economy visual showing a solar panel being transformed through recycling stages, clean infographic style with looping arrows, teal and green palette on white background | Theme: clean corporate sustainability | Color Direction: teal accents | Purpose: Communicate circular economy and panel lifecycle management -->
+                <div class="img-placeholder w-full aspect-[4/5] rounded-card">
+                    <span>Renxt Visual — 800 × 900</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- ========== CTA 3 — Before Footer ========== -->
+    <section id="contact" class="cta-section py-20 md:py-24 px-5 md:px-8">
+        <div class="max-w-2xl mx-auto text-center fade-up">
+            <h2 class="text-2xl md:text-[2rem] font-bold text-white tracking-tight leading-tight mb-4">
+                Building the future of solar, together.
+            </h2>
+            <p class="text-teal-100 text-sm md:text-base leading-relaxed mb-8 max-w-lg mx-auto">
+                Whether you're a consumer, installer, EPC, or financial partner — there's a place for you in the Terranxt ecosystem.
+            </p>
+            <div class="flex flex-wrap justify-center gap-3">
+                <a href="mailto:hello@terranxt.com" class="inline-flex items-center gap-2 bg-white text-teal-700 font-semibold text-sm px-7 py-3.5 rounded-soft hover:bg-teal-50 transition-colors">
+                    <i data-lucide="mail" class="w-4 h-4"></i> Get in Touch
+                </a>
+                <a href="https://consumer.pvnxt.com/" target="_blank" rel="noopener" class="inline-flex items-center gap-2 bg-transparent text-white font-semibold text-sm px-7 py-3.5 rounded-soft border border-white/30 hover:bg-white/10 transition-colors">
+                    Explore pvNXT <i data-lucide="external-link" class="w-4 h-4"></i>
+                </a>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- ========== FOOTER ========== -->
+    <footer class="bg-dark text-white py-16 px-5 md:px-8">
+        <div class="max-w-7xl mx-auto">
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-10 md:gap-12 mb-14">
+                <!-- Brand -->
+                <div class="col-span-2 md:col-span-1">
+                    <div class="flex items-center gap-2.5 mb-4">
+                        <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-teal-400 to-teal-600 flex items-center justify-center">
+                            <span class="text-white font-bold text-sm">T</span>
+                        </div>
+                        <span class="text-lg font-bold tracking-tight">Terranxt</span>
+                    </div>
+                    <p class="text-sm text-slate-400 leading-relaxed mb-5">
+                        IIT Delhi incubated. Building India's solar intelligence layer.
+                    </p>
+                    <div class="flex items-center gap-3">
+                        <a href="#" class="w-9 h-9 rounded-soft bg-white/5 border border-white/10 flex items-center justify-center text-slate-400 hover:text-white hover:bg-white/10 hover:border-white/20 transition-all" aria-label="LinkedIn">
+                            <i data-lucide="linkedin" class="w-4 h-4"></i>
+                        </a>
+                        <a href="#" class="w-9 h-9 rounded-soft bg-white/5 border border-white/10 flex items-center justify-center text-slate-400 hover:text-white hover:bg-white/10 hover:border-white/20 transition-all" aria-label="Twitter">
+                            <i data-lucide="twitter" class="w-4 h-4"></i>
+                        </a>
+                        <a href="#" class="w-9 h-9 rounded-soft bg-white/5 border border-white/10 flex items-center justify-center text-slate-400 hover:text-white hover:bg-white/10 hover:border-white/20 transition-all" aria-label="Instagram">
+                            <i data-lucide="instagram" class="w-4 h-4"></i>
+                        </a>
+                        <a href="#" class="w-9 h-9 rounded-soft bg-white/5 border border-white/10 flex items-center justify-center text-slate-400 hover:text-white hover:bg-white/10 hover:border-white/20 transition-all" aria-label="YouTube">
+                            <i data-lucide="youtube" class="w-4 h-4"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Platforms -->
+                <div>
+                    <div class="text-[11px] font-semibold uppercase tracking-widest text-slate-500 mb-4">Platforms</div>
+                    <ul class="space-y-2.5">
+                        <li><a href="https://consumer.pvnxt.com/" target="_blank" rel="noopener" class="text-sm text-slate-400 hover:text-white transition-colors">Consumer Portal</a></li>
+                        <li><a href="https://epc.pvnxt.com/" target="_blank" rel="noopener" class="text-sm text-slate-400 hover:text-white transition-colors">EPC Portal</a></li>
+                        <li><a href="https://installer.pvnxt.com/" target="_blank" rel="noopener" class="text-sm text-slate-400 hover:text-white transition-colors">Installer Portal</a></li>
+                        <li><a href="https://artha.pvnxt.com/" target="_blank" rel="noopener" class="text-sm text-slate-400 hover:text-white transition-colors">Artha Finance</a></li>
+                        <li><a href="https://renxt.pvnxt.com/" target="_blank" rel="noopener" class="text-sm text-slate-400 hover:text-white transition-colors">Renxt Recycling</a></li>
+                    </ul>
+                </div>
+
+                <!-- Company -->
+                <div>
+                    <div class="text-[11px] font-semibold uppercase tracking-widest text-slate-500 mb-4">Company</div>
+                    <ul class="space-y-2.5">
+                        <li><a href="#about" class="text-sm text-slate-400 hover:text-white transition-colors">About Us</a></li>
+                        <li><a href="#" class="text-sm text-slate-400 hover:text-white transition-colors">Careers</a></li>
+                        <li><a href="#" class="text-sm text-slate-400 hover:text-white transition-colors">Press</a></li>
+                        <li><a href="#" class="text-sm text-slate-400 hover:text-white transition-colors">Blog</a></li>
+                        <li><a href="#contact" class="text-sm text-slate-400 hover:text-white transition-colors">Contact</a></li>
+                    </ul>
+                </div>
+
+                <!-- Contact -->
+                <div>
+                    <div class="text-[11px] font-semibold uppercase tracking-widest text-slate-500 mb-4">Contact</div>
+                    <ul class="space-y-3">
+                        <li class="flex items-start gap-2.5">
+                            <i data-lucide="map-pin" class="w-4 h-4 text-slate-500 mt-0.5 flex-shrink-0"></i>
+                            <span class="text-sm text-slate-400">IIT Delhi Research Park, New Delhi, India</span>
+                        </li>
+                        <li class="flex items-center gap-2.5">
+                            <i data-lucide="mail" class="w-4 h-4 text-slate-500 flex-shrink-0"></i>
+                            <a href="mailto:hello@terranxt.com" class="text-sm text-slate-400 hover:text-white transition-colors">hello@terranxt.com</a>
+                        </li>
+                        <li class="flex items-center gap-2.5">
+                            <i data-lucide="phone" class="w-4 h-4 text-slate-500 flex-shrink-0"></i>
+                            <a href="tel:+911234567890" class="text-sm text-slate-400 hover:text-white transition-colors">+91 123 456 7890</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Bottom bar -->
+            <div class="border-t border-white/10 pt-8 flex flex-col md:flex-row items-center justify-between gap-4">
+                <p class="text-xs text-slate-500">&copy; 2025 Terranxt. All rights reserved.</p>
+                <div class="flex items-center gap-6">
+                    <a href="#" class="text-xs text-slate-500 hover:text-slate-300 transition-colors">Privacy Policy</a>
+                    <a href="#" class="text-xs text-slate-500 hover:text-slate-300 transition-colors">Terms of Service</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+
+    <!-- ========== SCRIPTS ========== -->
+    <script>
+        // Initialize Lucide icons
+        lucide.createIcons();
+
+        // ── Nav scroll behavior ──
+        const nav = document.getElementById('mainNav');
+        let lastScroll = 0;
+        window.addEventListener('scroll', () => {
+            const y = window.scrollY;
+            if (y > 40) {
+                nav.classList.add('nav-scrolled');
+            } else {
+                nav.classList.remove('nav-scrolled');
+            }
+            lastScroll = y;
+        }, { passive: true });
+
+        // ── Mobile menu toggle ──
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        const mobileMenu = document.getElementById('mobileMenu');
+        let menuOpen = false;
+        mobileMenuBtn.addEventListener('click', () => {
+            menuOpen = !menuOpen;
+            mobileMenu.classList.toggle('hidden', !menuOpen);
+            // Swap icon
+            const icon = mobileMenuBtn.querySelector('i');
+            if (menuOpen) {
+                icon.setAttribute('data-lucide', 'x');
+            } else {
+                icon.setAttribute('data-lucide', 'menu');
+            }
+            lucide.createIcons();
+        });
+        // Close mobile menu on link click
+        mobileMenu.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', () => {
+                menuOpen = false;
+                mobileMenu.classList.add('hidden');
+                const icon = mobileMenuBtn.querySelector('i');
+                icon.setAttribute('data-lucide', 'menu');
+                lucide.createIcons();
+            });
+        });
+
+        // ── GSAP Animations ──
+        gsap.registerPlugin(ScrollTrigger);
+
+        // Fade-up elements
+        gsap.utils.toArray('.fade-up').forEach((el, i) => {
+            gsap.to(el, {
+                opacity: 1,
+                y: 0,
+                duration: 0.8,
+                ease: 'power2.out',
+                scrollTrigger: {
+                    trigger: el,
+                    start: 'top 88%',
+                    once: true,
+                },
+                delay: i % 4 * 0.08, // subtle stagger within view
+            });
+        });
+
+        // Fade-in elements
+        gsap.utils.toArray('.fade-in').forEach(el => {
+            gsap.to(el, {
+                opacity: 1,
+                duration: 0.8,
+                ease: 'power2.out',
+                scrollTrigger: {
+                    trigger: el,
+                    start: 'top 88%',
+                    once: true,
+                },
+            });
+        });
+
+        // Scale-in elements
+        gsap.utils.toArray('.scale-in').forEach(el => {
+            gsap.to(el, {
+                opacity: 1,
+                scale: 1,
+                duration: 0.7,
+                ease: 'power2.out',
+                scrollTrigger: {
+                    trigger: el,
+                    start: 'top 85%',
+                    once: true,
+                },
+            });
+        });
+
+        // ── Portal lines animation ──
+        const portalRadial = document.getElementById('portalRadial');
+        if (portalRadial) {
+            const lines = portalRadial.querySelectorAll('.portal-line');
+            const nodes = portalRadial.querySelectorAll('.portal-node');
+            const center = portalRadial.querySelector('.portal-center');
+
+            // Set initial dasharray/offset for lines
+            lines.forEach(line => {
+                const length = line.getTotalLength();
+                line.style.strokeDasharray = length;
+                line.style.strokeDashoffset = length;
+            });
+
+            // Animate center first
+            ScrollTrigger.create({
+                trigger: '.portals-section',
+                start: 'top 70%',
+                once: true,
+                onEnter: () => {
+                    gsap.fromTo(center,
+                        { opacity: 0, scale: 0.7 },
+                        { opacity: 1, scale: 1, duration: 0.6, ease: 'back.out(1.4)' }
+                    );
+
+                    // Then animate lines
+                    gsap.to(lines, {
+                        strokeDashoffset: 0,
+                        duration: 1,
+                        ease: 'power2.out',
+                        stagger: 0.1,
+                        delay: 0.3,
+                    });
+
+                    // Then animate nodes
+                    gsap.fromTo(nodes,
+                        { opacity: 0, scale: 0.8 },
+                        {
+                            opacity: 1, scale: 1, duration: 0.5, ease: 'back.out(1.2)',
+                            stagger: 0.08, delay: 0.6,
+                        }
+                    );
+                }
+            });
+        }
+
+        // ── Step items stagger ──
+        gsap.utils.toArray('.step-item').forEach((item, i) => {
+            gsap.fromTo(item,
+                { opacity: 0, y: 16 },
+                {
+                    opacity: 1, y: 0, duration: 0.6, ease: 'power2.out',
+                    scrollTrigger: { trigger: item, start: 'top 90%', once: true },
+                    delay: i * 0.12,
+                }
+            );
+        });
+    </script>
+</body>
+</html>
