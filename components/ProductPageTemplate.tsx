@@ -79,19 +79,55 @@ export default function ProductPageTemplate({ slug }: ProductPageTemplateProps) 
       </div>
 
       {/* Before vs After */}
-      {product.before && product.after && (
+      {(product.before || product.beforeList) && (product.after || product.afterList) && (
         <div className="mt-12 grid md:grid-cols-2 gap-6">
-          <div className="p-6 rounded-xl border border-[#dbe8ea] bg-white">
-            <h4 className="font-semibold text-[#0f1720] mb-2">Before (manual)</h4>
-            <p className="text-[#5b6b73] text-sm">{product.before}</p>
+          <div className="p-6 rounded-xl border border-red-100 bg-white">
+            <p className="text-xs font-semibold text-red-500 uppercase tracking-wide mb-3">Before</p>
+            {product.beforeList ? (
+              <ul className="space-y-2">
+                {product.beforeList.map((item, i) => (
+                  <li key={i} className="flex items-start gap-2 text-sm text-muted">
+                    <span className="text-red-500 font-semibold flex-shrink-0 mt-0.5">X</span>
+                    <span>{item}</span>
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <p className="text-sm text-muted">{product.before}</p>
+            )}
           </div>
-          <div className="p-6 rounded-xl bg-[#e6f7f9]">
-            <h4 className="font-semibold text-[#0f1720] mb-2">Now (pvNXT)</h4>
-            <p className="text-[#5b6b73] text-sm">{product.after}</p>
+          <div className="p-6 rounded-xl border border-emerald-100 bg-white">
+            <p className="text-xs font-semibold text-emerald-500 uppercase tracking-wide mb-3">After</p>
+            {product.afterList ? (
+              <ul className="space-y-2">
+                {product.afterList.map((item, i) => (
+                  <li key={i} className="flex items-start gap-2 text-sm text-muted">
+                    <span className="text-emerald-500 font-semibold flex-shrink-0 mt-0.5">V</span>
+                    <span>{item}</span>
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <p className="text-sm text-muted">{product.after}</p>
+            )}
           </div>
         </div>
       )}
-
+ 
+      {/* Outcome + Process Impact */}
+      {product.outcome && product.processImpact && (
+        <div className="mt-6 grid md:grid-cols-2 gap-6">
+          <div className="bg-pvnxt-tint border border-pvnxt/20 rounded-2xl p-6">
+            <p className="text-xs font-semibold text-pvnxt-dark uppercase tracking-wide mb-2">Outcome You Get</p>
+            <p className="text-sm text-ink font-medium">{product.outcome}</p>
+          </div>
+          <div className="bg-white border border-line rounded-2xl p-6">
+            <p className="text-xs font-semibold text-muted uppercase tracking-wide mb-2">How It Makes the Overall Process Faster</p>
+            <p className="text-sm text-ink font-medium">{product.processImpact}</p>
+          </div>
+        </div>
+      )}
+ 
       {/* Key Features */}
       <div className="bg-[#f8fcfd] py-12 -mx-6 px-6 lg:-mx-8 lg:px-8 mt-12">
         <h3 className="text-xl font-semibold text-[#0f1720]">Key features</h3>

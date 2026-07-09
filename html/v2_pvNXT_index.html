@@ -1,0 +1,1036 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>pvNXT — 6 Portals. One Data Layer.</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        teal: { 500: '#069fb1', 600: '#058a9a', 700: '#047583', 50: '#eaf9fb', 100: '#d0f1f5' },
+                        off: { 50: '#fafbfc', 100: '#f4f6f8' }
+                    },
+                    fontFamily: { sans: ['Inter', 'sans-serif'] },
+                    borderRadius: { soft: '10px' }
+                }
+            }
+        }
+    </script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body { font-family: 'Inter', sans-serif; color: #1a1a2e; background: #ffffff; }
+        .fade-up { opacity: 0; transform: translateY(30px); }
+        .fade-up-left { opacity: 0; transform: translateX(-30px); }
+        .fade-up-right { opacity: 0; transform: translateX(30px); }
+        .before-item { position: relative; padding-left: 28px; }
+        .before-item::before { content: '✕'; position: absolute; left: 0; top: 1px; color: #ef4444; font-weight: 600; font-size: 14px; }
+        .after-item { position: relative; padding-left: 28px; }
+        .after-item::after { content: '✓'; position: absolute; left: 0; top: 1px; color: #10b981; font-weight: 600; font-size: 14px; }
+        .portal-overview-card { transition: box-shadow 0.3s ease, transform 0.3s ease; }
+        .portal-overview-card:hover { box-shadow: 0 8px 30px rgba(6,159,177,0.12); transform: translateY(-2px); }
+        .eco-step { position: relative; }
+        .eco-step:not(:last-child)::after { content: ''; position: absolute; right: -24px; top: 50%; width: 48px; height: 2px; background: linear-gradient(to right, #069fb1, transparent); }
+        @media (max-width: 768px) { .eco-step:not(:last-child)::after { display: none; } }
+        .mobile-menu { max-height: 0; overflow: hidden; transition: max-height 0.3s ease; }
+        .mobile-menu.open { max-height: 400px; }
+    </style>
+</head>
+<body class="antialiased">
+
+    <!-- ===== 1. NAVIGATION ===== -->
+    <nav id="navbar" class="fixed top-0 left-0 right-0 z-50 bg-white/90 backdrop-blur-md border-b border-gray-100">
+        <div class="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
+            <a href="#" class="text-xl font-bold tracking-tight text-gray-900">pv<span class="text-teal-500">NXT</span></a>
+            <div class="hidden md:flex items-center gap-8">
+                <a href="#portals-overview" class="text-sm text-gray-600 hover:text-teal-500 transition-colors">Portals</a>
+                <a href="#ecosystem" class="text-sm text-gray-600 hover:text-teal-500 transition-colors">Ecosystem</a>
+                <a href="#results" class="text-sm text-gray-600 hover:text-teal-500 transition-colors">Results</a>
+                <a href="#about" class="text-sm text-gray-600 hover:text-teal-500 transition-colors">About</a>
+                <a href="#contact" class="inline-flex items-center px-5 py-2 bg-teal-500 text-white text-sm font-medium rounded-soft hover:bg-teal-600 transition-colors">Request Demo</a>
+            </div>
+            <button id="mobileToggle" class="md:hidden p-2 text-gray-600">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
+            </button>
+        </div>
+        <div id="mobileMenu" class="mobile-menu md:hidden bg-white border-t border-gray-100 px-6">
+            <div class="py-4 flex flex-col gap-4">
+                <a href="#portals-overview" class="text-sm text-gray-600 hover:text-teal-500">Portals</a>
+                <a href="#ecosystem" class="text-sm text-gray-600 hover:text-teal-500">Ecosystem</a>
+                <a href="#results" class="text-sm text-gray-600 hover:text-teal-500">Results</a>
+                <a href="#about" class="text-sm text-gray-600 hover:text-teal-500">About</a>
+                <a href="#contact" class="inline-flex items-center justify-center px-5 py-2.5 bg-teal-500 text-white text-sm font-medium rounded-soft">Request Demo</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- ===== 2. HERO ===== -->
+    <section class="pt-28 pb-20 md:pt-36 md:pb-28 px-6">
+        <div class="max-w-4xl mx-auto text-center">
+            <div class="fade-up">
+                <p class="text-teal-500 text-sm font-medium tracking-wide uppercase mb-4">Solar Project Management</p>
+                <h1 class="text-4xl md:text-6xl font-bold tracking-tight text-gray-900 leading-tight">
+                    6 Portals.<br>One Data Layer.
+                </h1>
+                <p class="mt-2 text-xl md:text-2xl font-light text-teal-500">Zero Physical Site Visits.</p>
+                <p class="mt-3 text-sm text-gray-400">Built by Terranxt</p>
+            </div>
+            <div class="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4 fade-up">
+                <a href="#portals" class="px-8 py-3.5 bg-teal-500 text-white font-medium rounded-soft hover:bg-teal-600 transition-colors text-sm">Explore the Portals</a>
+                <a href="#contact" class="px-8 py-3.5 border border-gray-200 text-gray-700 font-medium rounded-soft hover:border-teal-500 hover:text-teal-500 transition-colors text-sm">Request a Demo</a>
+            </div>
+            <!-- IMAGE: pvNXT Platform Overview — connected portal network visualization | client screenshot yaha aayega | ratio 16:9 | Wpx 800 x Hpx 600 | bg: #ffffff -->
+            <div class="mt-16 fade-up rounded-soft border border-gray-100 bg-white aspect-video flex items-center justify-center">
+                <p class="text-gray-300 text-sm">Hero Visual Placeholder</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA AFTER HERO -->
+    <div class="pb-16 px-6">
+        <div class="max-w-3xl mx-auto text-center fade-up">
+            <p class="text-gray-500 text-sm leading-relaxed">From lead capture to plant monitoring—pvNXT connects each step of your solar project in one platform.</p>
+        </div>
+    </div>
+
+    <!-- ===== 3. THE OLD WAY VS THE pvNXT WAY ===== -->
+    <section class="py-20 md:py-28 px-6 bg-off-50">
+        <div class="max-w-6xl mx-auto">
+            <div class="text-center mb-16 fade-up">
+                <h2 class="text-3xl md:text-4xl font-bold tracking-tight text-gray-900">Old Way vs pvNXT Way</h2>
+                <p class="mt-4 text-gray-500 max-w-xl mx-auto">The solar industry runs on disconnected tools. pvNXT addresses that.</p>
+            </div>
+            <div class="grid md:grid-cols-2 gap-8">
+                <div class="bg-white rounded-soft border border-red-100 p-8 fade-up-left">
+                    <div class="flex items-center gap-3 mb-6">
+                        <div class="w-8 h-8 rounded-full bg-red-50 flex items-center justify-center">
+                            <svg class="w-4 h-4 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+                        </div>
+                        <h3 class="text-lg font-semibold text-gray-900">The Old Way</h3>
+                    </div>
+                    <ul class="space-y-3">
+                        <li class="before-item text-sm text-gray-600">Leads managed in WhatsApp chats</li>
+                        <li class="before-item text-sm text-gray-600">Designs done in manual CAD, takes days</li>
+                        <li class="before-item text-sm text-gray-600">Proposals typed in Word or Excel</li>
+                        <li class="before-item text-sm text-gray-600">Projects tracked on whiteboards</li>
+                        <li class="before-item text-sm text-gray-600">Site visits for every small update</li>
+                        <li class="before-item text-sm text-gray-600">Manual handoffs between teams</li>
+                        <li class="before-item text-sm text-gray-600">Days-to-weeks of delay at each step</li>
+                    </ul>
+                </div>
+                <div class="bg-white rounded-soft border border-emerald-100 p-8 fade-up-right">
+                    <div class="flex items-center gap-3 mb-6">
+                        <div class="w-8 h-8 rounded-full bg-emerald-50 flex items-center justify-center">
+                            <svg class="w-4 h-4 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                        </div>
+                        <h3 class="text-lg font-semibold text-gray-900">The pvNXT Way</h3>
+                    </div>
+                    <ul class="space-y-3">
+                        <li class="after-item text-sm text-gray-600">Every lead tracked in the system</li>
+                        <li class="after-item text-sm text-gray-600">Designs generated in minutes</li>
+                        <li class="after-item text-sm text-gray-600">Proposals created with one click</li>
+                        <li class="after-item text-sm text-gray-600">Projects managed in real time</li>
+                        <li class="after-item text-sm text-gray-600">Site data captured on mobile, remotely</li>
+                        <li class="after-item text-sm text-gray-600">Data flows between portals automatically</li>
+                        <li class="after-item text-sm text-gray-600">Connected, faster, and accurate</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== 4. ONE PLATFORM. SIX PORTALS. ===== -->
+    <section id="portals-overview" class="py-20 md:py-28 px-6">
+        <div class="max-w-6xl mx-auto">
+            <div class="text-center mb-16 fade-up">
+                <h2 class="text-3xl md:text-4xl font-bold tracking-tight text-gray-900">One Platform. Six Portals.</h2>
+                <p class="mt-4 text-gray-500 max-w-xl mx-auto">Every portal feeds into a single data layer. No duplicate entry. No broken handoffs.</p>
+            </div>
+            <div class="grid grid-cols-2 md:grid-cols-3 gap-4 md:gap-6 mb-4">
+                <div class="portal-overview-card bg-white border border-gray-100 rounded-soft p-5 md:p-6 text-center fade-up">
+                    <div class="w-10 h-10 mx-auto mb-3 rounded-lg bg-teal-50 flex items-center justify-center text-teal-500 font-bold text-sm">01</div>
+                    <p class="font-semibold text-gray-900 text-sm">Studio</p>
+                    <p class="text-xs text-gray-400 mt-1">From rooftop to proposal, in one workspace.</p>
+                </div>
+                <div class="portal-overview-card bg-white border border-gray-100 rounded-soft p-5 md:p-6 text-center fade-up">
+                    <div class="w-10 h-10 mx-auto mb-3 rounded-lg bg-teal-50 flex items-center justify-center text-teal-500 font-bold text-sm">02</div>
+                    <p class="font-semibold text-gray-900 text-sm">Connect</p>
+                    <p class="text-xs text-gray-400 mt-1">Solar, minus the jargon.</p>
+                </div>
+                <div class="portal-overview-card bg-white border border-gray-100 rounded-soft p-5 md:p-6 text-center fade-up">
+                    <div class="w-10 h-10 mx-auto mb-3 rounded-lg bg-teal-50 flex items-center justify-center text-teal-500 font-bold text-sm">03</div>
+                    <p class="font-semibold text-gray-900 text-sm">Proposal</p>
+                    <p class="text-xs text-gray-400 mt-1">A proposal customers actually understand.</p>
+                </div>
+                <div class="portal-overview-card bg-white border border-gray-100 rounded-soft p-5 md:p-6 text-center fade-up">
+                    <div class="w-10 h-10 mx-auto mb-3 rounded-lg bg-teal-50 flex items-center justify-center text-teal-500 font-bold text-sm">04</div>
+                    <p class="font-semibold text-gray-900 text-sm">Go</p>
+                    <p class="text-xs text-gray-400 mt-1">Built for rooftops, not desks.</p>
+                </div>
+                <div class="portal-overview-card bg-white border border-gray-100 rounded-soft p-5 md:p-6 text-center fade-up">
+                    <div class="w-10 h-10 mx-auto mb-3 rounded-lg bg-teal-50 flex items-center justify-center text-teal-500 font-bold text-sm">05</div>
+                    <p class="font-semibold text-gray-900 text-sm">Field App</p>
+                    <p class="text-xs text-gray-400 mt-1">One visit, complete site capture.</p>
+                </div>
+                <div class="portal-overview-card bg-white border border-gray-100 rounded-soft p-5 md:p-6 text-center fade-up">
+                    <div class="w-10 h-10 mx-auto mb-3 rounded-lg bg-teal-50 flex items-center justify-center text-teal-500 font-bold text-sm">06</div>
+                    <p class="font-semibold text-gray-900 text-sm">SCADA</p>
+                    <p class="text-xs text-gray-400 mt-1">Every alert, accountable.</p>
+                </div>
+            </div>
+            <div class="hidden md:block h-8 relative" aria-hidden="true">
+                <svg class="w-full h-full" preserveAspectRatio="none">
+                    <line x1="16.67%" y1="0" x2="16.67%" y2="100%" stroke="#069fb1" stroke-width="1" stroke-dasharray="3 4" opacity="0.18"/>
+                    <line x1="50%" y1="0" x2="50%" y2="100%" stroke="#069fb1" stroke-width="1" stroke-dasharray="3 4" opacity="0.18"/>
+                    <line x1="83.33%" y1="0" x2="83.33%" y2="100%" stroke="#069fb1" stroke-width="1" stroke-dasharray="3 4" opacity="0.18"/>
+                </svg>
+            </div>
+            <div class="fade-up">
+                <div class="bg-teal-50 border border-teal-100 rounded-soft py-4 text-center">
+                    <p class="text-teal-500 font-semibold text-sm tracking-wide">ONE DATA LAYER</p>
+                    <p class="text-teal-500/60 text-xs mt-1">All six portals read and write to the same unified data source</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== 5. THE 6 PORTALS (DETAILED) ===== -->
+    <section id="portals" class="pb-8 px-6">
+        <div class="max-w-4xl mx-auto text-center mb-16 fade-up">
+            <h2 class="text-3xl md:text-4xl font-bold tracking-tight text-gray-900">The 6 Portals</h2>
+            <p class="mt-4 text-gray-500 max-w-xl mx-auto">Each portal solves a specific problem. Together, they eliminate the gaps between them.</p>
+        </div>
+    </section>
+
+    <!-- PORTAL 1: STUDIO -->
+    <section class="py-16 md:py-20 px-6 bg-off-50">
+        <div class="max-w-5xl mx-auto">
+            <div class="fade-up">
+                <div class="flex items-center gap-3 mb-1">
+                    <span class="text-teal-500 font-bold text-sm">01</span>
+                    <h3 class="text-2xl md:text-3xl font-bold text-gray-900 tracking-tight">Studio</h3>
+                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-emerald-50 text-emerald-600 border border-emerald-100">Live</span>
+                </div>
+                <p class="text-teal-500 font-medium text-sm mb-8 ml-10">From rooftop to proposal, in one workspace.</p>
+            </div>
+            <div class="grid md:grid-cols-2 gap-8 mb-10">
+                <div class="fade-up-left">
+                    <h4 class="font-semibold text-gray-900 text-sm uppercase tracking-wide mb-2">What is this portal?</h4>
+                    <p class="text-sm text-gray-600 leading-relaxed mb-6">A single EPC workspace where your team goes from raw site data to a proposal-ready design — layout, shadow analysis, BOQ, and report, all created in one place without switching tools.</p>
+                    <h4 class="font-semibold text-gray-900 text-sm uppercase tracking-wide mb-2">Who is it for?</h4>
+                    <p class="text-sm text-gray-600 leading-relaxed mb-6">EPC designers, sales teams, and solar businesses. Currently used by 4+ EPCs.</p>
+                    <h4 class="font-semibold text-gray-900 text-sm uppercase tracking-wide mb-3">Main Features</h4>
+                    <ul class="space-y-2">
+                        <li class="flex items-start gap-2 text-sm text-gray-600"><span class="text-teal-500 mt-0.5">→</span>Solar layout creation</li>
+                        <li class="flex items-start gap-2 text-sm text-gray-600"><span class="text-teal-500 mt-0.5">→</span>Shadow and roof analysis</li>
+                        <li class="flex items-start gap-2 text-sm text-gray-600"><span class="text-teal-500 mt-0.5">→</span>BOQ generation</li>
+                        <li class="flex items-start gap-2 text-sm text-gray-600"><span class="text-teal-500 mt-0.5">→</span>Reports</li>
+                        <li class="flex items-start gap-2 text-sm text-gray-600"><span class="text-teal-500 mt-0.5">→</span>Proposal-ready output</li>
+                        <li class="flex items-start gap-2 text-sm text-gray-600"><span class="text-teal-500 mt-0.5">→</span>Project tracking</li>
+                    </ul>
+                </div>
+                <div class="fade-up-right">
+                    <!-- IMAGE: pvNXT Studio — solar design interface with auto-layout on satellite view | client screenshot yaha aayega | ratio 16:9 | Wpx 800 x Hpx 600 | bg: #ffffff -->
+                    <div class="rounded-soft border border-gray-100 bg-white aspect-[4/3] flex items-center justify-center mb-6">
+                        <p class="text-gray-300 text-sm">Studio Portal Visual</p>
+                    </div>
+                </div>
+            </div>
+            <div class="grid md:grid-cols-2 gap-6 mb-6 fade-up">
+                <div class="bg-white rounded-soft border border-red-100 p-6">
+                    <p class="text-xs font-semibold text-red-500 uppercase tracking-wide mb-3">Before</p>
+                    <ul class="space-y-2">
+                        <li class="before-item text-sm text-gray-600">Manual CAD drawings taking 2–3 days</li>
+                        <li class="before-item text-sm text-gray-600">Sizing errors requiring multiple revisions</li>
+                        <li class="before-item text-sm text-gray-600">Shadow analysis done separately in another tool</li>
+                    </ul>
+                </div>
+                <div class="bg-white rounded-soft border border-emerald-100 p-6">
+                    <p class="text-xs font-semibold text-emerald-500 uppercase tracking-wide mb-3">After</p>
+                    <ul class="space-y-2">
+                        <li class="after-item text-sm text-gray-600">Designs generated in under 15 minutes</li>
+                        <li class="after-item text-sm text-gray-600">Accurate first time, no rework</li>
+                        <li class="after-item text-sm text-gray-600">Shadow analysis built into the design flow</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="grid md:grid-cols-2 gap-6 fade-up">
+                <div class="bg-teal-50 border border-teal-100 rounded-soft p-6">
+                    <p class="text-xs font-semibold text-teal-500 uppercase tracking-wide mb-2">Outcome You Get</p>
+                    <p class="text-sm text-gray-700 font-medium">Design time reduced from days to minutes. Fewer errors, faster turnaround, and designs that feed directly into proposals.</p>
+                </div>
+                <div class="bg-gray-50 border border-gray-100 rounded-soft p-6">
+                    <p class="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-2">How It Makes the Overall Process Faster</p>
+                    <p class="text-sm text-gray-700 font-medium">Eliminates the design bottleneck that delays every downstream step. Proposal and project teams get accurate data without waiting.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- PORTAL 2: CONNECT -->
+    <section class="py-16 md:py-20 px-6">
+        <div class="max-w-5xl mx-auto">
+            <div class="fade-up">
+                <div class="flex items-center gap-3 mb-1">
+                    <span class="text-teal-500 font-bold text-sm">02</span>
+                    <h3 class="text-2xl md:text-3xl font-bold text-gray-900 tracking-tight">Connect</h3>
+                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-emerald-50 text-emerald-600 border border-emerald-100">Live</span>
+                </div>
+                <p class="text-teal-500 font-medium text-sm mb-8 ml-10">Solar, minus the jargon.</p>
+            </div>
+            <div class="grid md:grid-cols-2 gap-8 mb-10">
+                <div class="fade-up-left">
+                    <h4 class="font-semibold text-gray-900 text-sm uppercase tracking-wide mb-2">What is this portal?</h4>
+                    <p class="text-sm text-gray-600 leading-relaxed mb-6">A consumer-facing portal that lets homeowners check feasibility, compare quotes, track their installation, and monitor their plant — all without needing to understand EPC terminology.</p>
+                    <h4 class="font-semibold text-gray-900 text-sm uppercase tracking-wide mb-2">Who is it for?</h4>
+                    <p class="text-sm text-gray-600 leading-relaxed mb-6">Homeowners and solar customers who want a clear, self-service view of their solar journey.</p>
+                    <h4 class="font-semibold text-gray-900 text-sm uppercase tracking-wide mb-3">Main Features</h4>
+                    <ul class="space-y-2">
+                        <li class="flex items-start gap-2 text-sm text-gray-600"><span class="text-teal-500 mt-0.5">→</span>Feasibility check</li>
+                        <li class="flex items-start gap-2 text-sm text-gray-600"><span class="text-teal-500 mt-0.5">→</span>Cost and ROI estimate</li>
+                        <li class="flex items-start gap-2 text-sm text-gray-600"><span class="text-teal-500 mt-0.5">→</span>Quote compare</li>
+                        <li class="flex items-start gap-2 text-sm text-gray-600"><span class="text-teal-500 mt-0.5">→</span>Order and installation tracking</li>
+                        <li class="flex items-start gap-2 text-sm text-gray-600"><span class="text-teal-500 mt-0.5">→</span>Plant monitoring</li>
+                    </ul>
+                </div>
+                <div class="fade-up-right">
+                    <!-- IMAGE: pvNXT Connect — consumer portal showing feasibility and ROI estimate | client screenshot yaha aayega | ratio 16:9 | Wpx 800 x Hpx 600 | bg: #ffffff -->
+                    <div class="rounded-soft border border-gray-100 bg-white aspect-[4/3] flex items-center justify-center mb-6">
+                        <p class="text-gray-300 text-sm">Connect Portal Visual</p>
+                    </div>
+                </div>
+            </div>
+            <div class="grid md:grid-cols-2 gap-6 mb-6 fade-up">
+                <div class="bg-white rounded-soft border border-red-100 p-6">
+                    <p class="text-xs font-semibold text-red-500 uppercase tracking-wide mb-3">Before</p>
+                    <ul class="space-y-2">
+                        <li class="before-item text-sm text-gray-600">Leads scattered across WhatsApp and spreadsheets</li>
+                        <li class="before-item text-sm text-gray-600">Follow-ups missed or forgotten</li>
+                        <li class="before-item text-sm text-gray-600">No visibility into conversion rates</li>
+                    </ul>
+                </div>
+                <div class="bg-white rounded-soft border border-emerald-100 p-6">
+                    <p class="text-xs font-semibold text-emerald-500 uppercase tracking-wide mb-3">After</p>
+                    <ul class="space-y-2">
+                        <li class="after-item text-sm text-gray-600">Every lead tracked automatically</li>
+                        <li class="after-item text-sm text-gray-600">Automated follow-up reminders, nothing slips through</li>
+                        <li class="after-item text-sm text-gray-600">Full pipeline visibility with clear conversion data</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="grid md:grid-cols-2 gap-6 fade-up">
+                <div class="bg-teal-50 border border-teal-100 rounded-soft p-6">
+                    <p class="text-xs font-semibold text-teal-500 uppercase tracking-wide mb-2">Outcome You Get</p>
+                    <p class="text-sm text-gray-700 font-medium">Your sales team stops losing leads in chats and gains clear, real-time visibility into the entire pipeline.</p>
+                </div>
+                <div class="bg-gray-50 border border-gray-100 rounded-soft p-6">
+                    <p class="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-2">How It Makes the Overall Process Faster</p>
+                    <p class="text-sm text-gray-700 font-medium">No more chasing updates across WhatsApp and spreadsheets. Leads move forward automatically, and qualified ones reach design and proposal without manual push.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- PORTAL 3: PROPOSAL -->
+    <section class="py-16 md:py-20 px-6 bg-off-50">
+        <div class="max-w-5xl mx-auto">
+            <div class="fade-up">
+                <div class="flex items-center gap-3 mb-1">
+                    <span class="text-teal-500 font-bold text-sm">03</span>
+                    <h3 class="text-2xl md:text-3xl font-bold text-gray-900 tracking-tight">Proposal</h3>
+                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-emerald-50 text-emerald-600 border border-emerald-100">Live</span>
+                </div>
+                <p class="text-teal-500 font-medium text-sm mb-8 ml-10">A proposal customers actually understand.</p>
+            </div>
+            <div class="grid md:grid-cols-2 gap-8 mb-10">
+                <div class="fade-up-left">
+                    <h4 class="font-semibold text-gray-900 text-sm uppercase tracking-wide mb-2">What is this portal?</h4>
+                    <p class="text-sm text-gray-600 leading-relaxed mb-6">A proposal that auto-generates from Studio's real project data — system details, cost breakdown, subsidy, savings, and solar impact, all laid out in a format customers can actually read and trust.</p>
+                    <h4 class="font-semibold text-gray-900 text-sm uppercase tracking-wide mb-2">Who is it for?</h4>
+                    <p class="text-sm text-gray-600 leading-relaxed mb-6">EPC teams sending proposals to customers. Generated directly from Studio — no manual work needed.</p>
+                    <h4 class="font-semibold text-gray-900 text-sm uppercase tracking-wide mb-3">Main Features</h4>
+                    <ul class="space-y-2">
+                        <li class="flex items-start gap-2 text-sm text-gray-600"><span class="text-teal-500 mt-0.5">→</span>Auto-generated from project data</li>
+                        <li class="flex items-start gap-2 text-sm text-gray-600"><span class="text-teal-500 mt-0.5">→</span>System summary</li>
+                        <li class="flex items-start gap-2 text-sm text-gray-600"><span class="text-teal-500 mt-0.5">→</span>Cost, subsidy, and savings tables</li>
+                        <li class="flex items-start gap-2 text-sm text-gray-600"><span class="text-teal-500 mt-0.5">→</span>Solar impact details</li>
+                        <li class="flex items-start gap-2 text-sm text-gray-600"><span class="text-teal-500 mt-0.5">→</span>Customer-friendly layout</li>
+                    </ul>
+                </div>
+                <div class="fade-up-right">
+                    <!-- IMAGE: pvNXT Proposal — auto-generated proposal with cost subsidy and savings | client screenshot yaha aayega | ratio 16:9 | Wpx 800 x Hpx 600 | bg: #ffffff -->
+                    <div class="rounded-soft border border-gray-100 bg-white aspect-[4/3] flex items-center justify-center mb-6">
+                        <p class="text-gray-300 text-sm">Proposal Portal Visual</p>
+                    </div>
+                </div>
+            </div>
+            <div class="grid md:grid-cols-2 gap-6 mb-6 fade-up">
+                <div class="bg-white rounded-soft border border-red-100 p-6">
+                    <p class="text-xs font-semibold text-red-500 uppercase tracking-wide mb-3">Before</p>
+                    <ul class="space-y-2">
+                        <li class="before-item text-sm text-gray-600">Manual proposals taking 2–4 hours each</li>
+                        <li class="before-item text-sm text-gray-600">Pricing errors from copy-paste</li>
+                        <li class="before-item text-sm text-gray-600">Inconsistent formatting across salespeople</li>
+                    </ul>
+                </div>
+                <div class="bg-white rounded-soft border border-emerald-100 p-6">
+                    <p class="text-xs font-semibold text-emerald-500 uppercase tracking-wide mb-3">After</p>
+                    <ul class="space-y-2">
+                        <li class="after-item text-sm text-gray-600">Proposals generated in under 5 minutes</li>
+                        <li class="after-item text-sm text-gray-600">Pricing pulled directly from design data — zero errors</li>
+                        <li class="after-item text-sm text-gray-600">Consistent, branded output every time</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="grid md:grid-cols-2 gap-6 fade-up">
+                <div class="bg-teal-50 border border-teal-100 rounded-soft p-6">
+                    <p class="text-xs font-semibold text-teal-500 uppercase tracking-wide mb-2">Outcome You Get</p>
+                    <p class="text-sm text-gray-700 font-medium">3x faster proposal generation with zero pricing errors. Customers get a document they can actually understand and trust.</p>
+                </div>
+                <div class="bg-gray-50 border border-gray-100 rounded-soft p-6">
+                    <p class="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-2">How It Makes the Overall Process Faster</p>
+                    <p class="text-sm text-gray-700 font-medium">No manual data entry — everything pulls from Studio through the data layer. Approved proposals move directly into project management without any delay.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- PORTAL 4: GO -->
+    <section class="py-16 md:py-20 px-6">
+        <div class="max-w-5xl mx-auto">
+            <div class="fade-up">
+                <div class="flex items-center gap-3 mb-1">
+                    <span class="text-teal-500 font-bold text-sm">04</span>
+                    <h3 class="text-2xl md:text-3xl font-bold text-gray-900 tracking-tight">Go</h3>
+                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-emerald-50 text-emerald-600 border border-emerald-100">Live</span>
+                </div>
+                <p class="text-teal-500 font-medium text-sm mb-8 ml-10">Built for rooftops, not desks.</p>
+            </div>
+            <div class="grid md:grid-cols-2 gap-8 mb-10">
+                <div class="fade-up-left">
+                    <h4 class="font-semibold text-gray-900 text-sm uppercase tracking-wide mb-2">What is this portal?</h4>
+                    <p class="text-sm text-gray-600 leading-relaxed mb-6">A field-first portal built for installers and site teams — site assignments, daily photo proofs, work status updates, reason-based delay tracking, and verification, all from the rooftop.</p>
+                    <h4 class="font-semibold text-gray-900 text-sm uppercase tracking-wide mb-2">Who is it for?</h4>
+                    <p class="text-sm text-gray-600 leading-relaxed mb-6">Installers, site teams, and EPC managers who need real-time visibility into what's happening on the ground.</p>
+                    <h4 class="font-semibold text-gray-900 text-sm uppercase tracking-wide mb-3">Main Features</h4>
+                    <ul class="space-y-2">
+                        <li class="flex items-start gap-2 text-sm text-gray-600"><span class="text-teal-500 mt-0.5">→</span>Site task assignment</li>
+                        <li class="flex items-start gap-2 text-sm text-gray-600"><span class="text-teal-500 mt-0.5">→</span>Daily photo proof</li>
+                        <li class="flex items-start gap-2 text-sm text-gray-600"><span class="text-teal-500 mt-0.5">→</span>Status updates</li>
+                        <li class="flex items-start gap-2 text-sm text-gray-600"><span class="text-teal-500 mt-0.5">→</span>Delay-reason tracking (weather, human, site)</li>
+                        <li class="flex items-start gap-2 text-sm text-gray-600"><span class="text-teal-500 mt-0.5">→</span>Verification</li>
+                    </ul>
+                </div>
+                <div class="fade-up-right">
+                    <!-- IMAGE: pvNXT Go — installer portal with site tasks and photo proof | client screenshot yaha aayega | ratio 16:9 | Wpx 800 x Hpx 600 | bg: #ffffff -->
+                    <div class="rounded-soft border border-gray-100 bg-white aspect-[4/3] flex items-center justify-center mb-6">
+                        <p class="text-gray-300 text-sm">Go Portal Visual</p>
+                    </div>
+                </div>
+            </div>
+            <div class="grid md:grid-cols-2 gap-6 mb-6 fade-up">
+                <div class="bg-white rounded-soft border border-red-100 p-6">
+                    <p class="text-xs font-semibold text-red-500 uppercase tracking-wide mb-3">Before</p>
+                    <ul class="space-y-2">
+                        <li class="before-item text-sm text-gray-600">Projects tracked on whiteboards and spreadsheets</li>
+                        <li class="before-item text-sm text-gray-600">Delays discovered only when clients complain</li>
+                        <li class="before-item text-sm text-gray-600">No visibility across multiple sites</li>
+                    </ul>
+                </div>
+                <div class="bg-white rounded-soft border border-emerald-100 p-6">
+                    <p class="text-xs font-semibold text-emerald-500 uppercase tracking-wide mb-3">After</p>
+                    <ul class="space-y-2">
+                        <li class="after-item text-sm text-gray-600">Real-time tracking across all projects</li>
+                        <li class="after-item text-sm text-gray-600">Proactive delay alerts before issues escalate</li>
+                        <li class="after-item text-sm text-gray-600">Complete visibility from a single dashboard</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="grid md:grid-cols-2 gap-6 fade-up">
+                <div class="bg-teal-50 border border-teal-100 rounded-soft p-6">
+                    <p class="text-xs font-semibold text-teal-500 uppercase tracking-wide mb-2">Outcome You Get</p>
+                    <p class="text-sm text-gray-700 font-medium">On-time delivery and predictable project cycles. No surprises, no missed deadlines.</p>
+                </div>
+                <div class="bg-gray-50 border border-gray-100 rounded-soft p-6">
+                    <p class="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-2">How It Makes the Overall Process Faster</p>
+                    <p class="text-sm text-gray-700 font-medium">Parallel workflows replace sequential handoffs. Field teams and office teams work on the same data simultaneously — no waiting for someone to "send an update."</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- PORTAL 5: FIELD APP -->
+    <section class="py-16 md:py-20 px-6 bg-off-50">
+        <div class="max-w-5xl mx-auto">
+            <div class="fade-up">
+                <div class="flex items-center gap-3 mb-1">
+                    <span class="text-teal-500 font-bold text-sm">05</span>
+                    <h3 class="text-2xl md:text-3xl font-bold text-gray-900 tracking-tight">Field App</h3>
+                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-500 border border-gray-200">Internal</span>
+                </div>
+                <p class="text-teal-500 font-medium text-sm mb-8 ml-10">One visit, complete site capture.</p>
+            </div>
+            <div class="grid md:grid-cols-2 gap-8 mb-10">
+                <div class="fade-up-left">
+                    <h4 class="font-semibold text-gray-900 text-sm uppercase tracking-wide mb-2">What is this portal?</h4>
+                    <p class="text-sm text-gray-600 leading-relaxed mb-6">A field capture app that ensures every site visit produces a complete handoff — site data, roof details, keepouts, measurements, photos, and structured notes, all captured in one go.</p>
+                    <h4 class="font-semibold text-gray-900 text-sm uppercase tracking-wide mb-2">Who is it for?</h4>
+                    <p class="text-sm text-gray-600 leading-relaxed mb-6">Field survey teams who visit sites and need to pass clean data to the design team.</p>
+                    <h4 class="font-semibold text-gray-900 text-sm uppercase tracking-wide mb-3">Main Features</h4>
+                    <ul class="space-y-2">
+                        <li class="flex items-start gap-2 text-sm text-gray-600"><span class="text-teal-500 mt-0.5">→</span>Site data capture</li>
+                        <li class="flex items-start gap-2 text-sm text-gray-600"><span class="text-teal-500 mt-0.5">→</span>Roof details and keepouts</li>
+                        <li class="flex items-start gap-2 text-sm text-gray-600"><span class="text-teal-500 mt-0.5">→</span>Measurements</li>
+                        <li class="flex items-start gap-2 text-sm text-gray-600"><span class="text-teal-500 mt-0.5">→</span>Photos</li>
+                        <li class="flex items-start gap-2 text-sm text-gray-600"><span class="text-teal-500 mt-0.5">→</span>Structured handoff notes</li>
+                    </ul>
+                </div>
+                <div class="fade-up-right">
+                    <!-- IMAGE: pvNXT Field App — site capture with roof details and measurements | client screenshot yaha aayega | ratio 16:9 | Wpx 800 x Hpx 600 | bg: #ffffff -->
+                    <div class="rounded-soft border border-gray-100 bg-white aspect-[4/3] flex items-center justify-center mb-6">
+                        <p class="text-gray-300 text-sm">Field App Visual</p>
+                    </div>
+                </div>
+            </div>
+            <div class="grid md:grid-cols-2 gap-6 mb-6 fade-up">
+                <div class="bg-white rounded-soft border border-red-100 p-6">
+                    <p class="text-xs font-semibold text-red-500 uppercase tracking-wide mb-3">Before</p>
+                    <ul class="space-y-2">
+                        <li class="before-item text-sm text-gray-600">Site visits gave incomplete handoffs</li>
+                        <li class="before-item text-sm text-gray-600">Design team had to ask for missing details later</li>
+                        <li class="before-item text-sm text-gray-600">Multiple visits sometimes needed to gather everything</li>
+                    </ul>
+                </div>
+                <div class="bg-white rounded-soft border border-emerald-100 p-6">
+                    <p class="text-xs font-semibold text-emerald-500 uppercase tracking-wide mb-3">After</p>
+                    <ul class="space-y-2">
+                        <li class="after-item text-sm text-gray-600">One visit captures site data, roof details, keepouts, measurements, photos, and handoff notes</li>
+                        <li class="after-item text-sm text-gray-600">Design team gets everything they need the first time</li>
+                        <li class="after-item text-sm text-gray-600">Proposals move faster because data is complete</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="grid md:grid-cols-2 gap-6 fade-up">
+                <div class="bg-teal-50 border border-teal-100 rounded-soft p-6">
+                    <p class="text-xs font-semibold text-teal-500 uppercase tracking-wide mb-2">Outcome You Get</p>
+                    <p class="text-sm text-gray-700 font-medium">A cleaner handoff in one visit. Fewer missing details, fewer revisits, and proposals that move faster because the data is complete.</p>
+                </div>
+                <div class="bg-gray-50 border border-gray-100 rounded-soft p-6">
+                    <p class="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-2">How It Makes the Overall Process Faster</p>
+                    <p class="text-sm text-gray-700 font-medium">One clean visit replaces multiple back-and-forths. Design team gets structured data on day one — no waiting for missing information to come through.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- PORTAL 6: SCADA -->
+    <section class="py-16 md://py-20 px-6">
+        <div class="max-w-5xl mx-auto">
+            <div class="fade-up">
+                <div class="flex items-center gap-3 mb-1">
+                    <span class="text-teal-500 font-bold text-sm">06</span>
+                    <h3 class="text-2xl md:text-3xl font-bold text-gray-900 tracking-tight">SCADA</h3>
+                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-amber-50 text-amber-600 border border-amber-100">In progress</span>
+                </div>
+                <p class="text-teal-500 font-medium text-sm mb-8 ml-10">Every alert, accountable.</p>
+            </div>
+            <div class="grid md:grid-cols-2 gap-8 mb-10">
+                <div class="fade-up-left">
+                    <h4 class="font-semibold text-gray-900 text-sm uppercase tracking-wide mb-2">What is this portal?</h4>
+                    <p class="text-sm text-gray-600 leading-relaxed mb-6">A role-based monitoring dashboard that gives every stakeholder the right view — plant visibility, live alerts, inverter and string issues, work orders with clear assignments, and a full activity log, all in one flow.</p>
+                    <h4 class="font-semibold text-gray-900 text-sm uppercase tracking-wide mb-2">Who is it for?</h4>
+                    <p class="text-sm text-gray-600 leading-relaxed mb-6">EPC managers, plant owners, field techs, and O&M owners. Currently used for audits and by Aston Greens EPC.</p>
+                    <h4 class="font-semibold text-gray-900 text-sm uppercase tracking-wide mb-3">Main Features</h4>
+                    <ul class="space-y-2">
+                        <li class="flex items-start gap-2 text-sm text-gray-600"><span class="text-teal-500 mt-0.5">→</span>Role-based views (Manager, Owner, Tech, O&M)</li>
+                        <li class="flex items-start gap-2 text-sm text-gray-600"><span class="text-teal-500 mt-0.5">→</span>Live alerts</li>
+                        <li class="flex items-start gap-2 text-sm text-gray-600"><span class="text-teal-500 mt-0.5">→</span>Work orders and assignment</li>
+                        <li class="flex items-start gap-2 text-sm text-gray-600"><span class="text-teal-500 mt-0.5">→</span>Activity history</li>
+                        <li class="flex items-start gap-2 text-sm text-gray-600"><span class="text-teal-500 mt-0.5">→</span>Plant-level monitoring</li>
+                    </ul>
+                </div>
+                <div class="fade-up-right">
+                    <!-- IMAGE: pvNXT SCADA — role-based monitoring with alerts and work orders | client screenshot yaha aayega | ratio 16:9 | Wpx 800 x Hpx 600 | bg: #ffffff -->
+                    <div class="rounded-soft border border-gray-100 bg-white aspect-[4/3] flex items-center justify-center mb-6">
+                        <p class="text-gray-300 text-sm">SCADA Portal Visual</p>
+                    </div>
+                </div>
+            </div>
+            <div class="grid md:grid-cols-2 gap-6 mb-6 fade-up">
+                <div class="bg-white rounded-soft border border-red-100 p-6">
+                    <p class="text-xs font-semibold text-red-500 uppercase tracking-wide mb-3">Before</p>
+                    <ul class="space-y-2">
+                        <li class="before-item text-sm text-gray-600">O&M teams did manual checks with scattered screenshots</li>
+                        <li class="before-item text-sm text-gray-600">Alerts came in late, sometimes days after the issue</li>
+                        <li class="before-item text-sm text-gray-600">Unclear issue ownership — who handles what?</li>
+                    </ul>
+                </div>
+                <div class="bg-white rounded-soft border border-emerald-100 p-6">
+                    <p class="text-xs font-semibold text-emerald-500 uppercase tracking-wide mb-3">After</p>
+                    <ul class="space-y-2">
+                        <li class="after-item text-sm text-gray-600">Role-based dashboard with live alerts and work orders</li>
+                        <li class="after-item text-sm text-gray-600">Issues flagged instantly with clear assignments</li>
+                        <li class="after-item text-sm text-gray-600">Full activity history — every action is traceable</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="grid md:grid-cols-2 gap-6 fade-up">
+                <div class="bg-teal-50 border border-teal-100 rounded-soft p-6">
+                    <p class="text-xs font-semibold text-teal-500 uppercase tracking-wide mb-2">Outcome You Get</p>
+                    <p class="text-sm text-gray-700 font-medium">Your team moves from reactive checking to visible, accountable operations. Every alert has a clear owner — no more dropped issues.</p>
+                </div>
+                <div class="bg-gray-50 border border-gray-100 rounded-soft p-6">
+                    <p class="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-2">How It Makes the Overall Process Faster</p>
+                    <p class="text-sm text-gray-700 font-medium">No more chasing who is responsible for an issue. Alerts are assigned, tracked, and resolved in a defined flow — so problems get fixed faster, not lost in threads.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA AFTER 6 PORTALS -->
+    <section class="py-16 px-6 bg-teal-500">
+        <div class="max-w-3xl mx-auto text-center fade-up">
+            <h2 class="text-2xl md:text-3xl font-bold text-white tracking-tight">See How It All Connects</h2>
+            <p class="mt-4 text-teal-100 text-sm max-w-lg mx-auto">Six portals working as one system. No gaps, no re-entry, no delays.</p>
+            <div class="mt-8 flex flex-col sm:flex-row items-center justify-center gap-4">
+                <a href="#ecosystem" class="px-8 py-3.5 bg-white text-teal-500 font-medium rounded-soft hover:bg-gray-50 transition-colors text-sm">Explore the Ecosystem</a>
+                <a href="#contact" class="px-8 py-3.5 border border-white/30 text-white font-medium rounded-soft hover:bg-white/10 transition-colors text-sm">Request a Demo</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== 6. HOW THE ENTIRE ECOSYSTEM WORKS ===== -->
+    <section id="ecosystem" class="py-20 md:py-28 px-6 bg-off-50">
+        <div class="max-w-6xl mx-auto">
+            <div class="text-center mb-16 fade-up">
+                <h2 class="text-3xl md:text-4xl font-bold tracking-tight text-gray-900">How the Ecosystem Works</h2>
+                <p class="mt-4 text-gray-500 max-w-xl mx-auto">One connected flow from lead to commissioning. Data enters once and moves forward without re-entry.</p>
+            </div>
+            <div class="grid grid-cols-2 md:grid-cols-6 gap-4 mb-12">
+                <div class="eco-step text-center fade-up">
+                    <div class="bg-white border border-gray-100 rounded-soft p-4 mb-2">
+                        <div class="w-10 h-10 mx-auto rounded-lg bg-teal-50 flex items-center justify-center text-teal-500 font-bold text-xs">01</div>
+                    </div>
+                    <p class="text-xs font-semibold text-gray-900">Connect</p>
+                    <p class="text-[10px] text-gray-400 mt-0.5">Feasibility & Quote</p>
+                </div>
+                <div class="eco-step text-center fade-up">
+                    <div class="bg-white border border-gray-100 rounded-soft p-4 mb-2">
+                        <div class="w-10 h-10 mx-auto rounded-lg bg-teal-50 flex items-center justify-center text-teal-500 font-bold text-xs">02</div>
+                    </div>
+                    <p class="text-xs font-semibold text-gray-900">Studio</p>
+                    <p class="text-[10px] text-gray-400 mt-0.5">Design & Output</p>
+                </div>
+                <div class="eco-step text-center fade-up">
+                    <div class="bg-white border border-gray-100 rounded-soft p-4 mb-2">
+                        <div class="w-10 h-10 mx-auto rounded-lg bg-teal-50 flex items-center justify-center text-teal-500 font-bold text-xs">03</div>
+                    </div>
+                    <p class="text-xs font-semibold text-gray-900">Proposal</p>
+                    <p class="text-[10px] text-gray-400 mt-0.5">Auto-Generate</p>
+                </div>
+                <div class="eco-step text-center fade-up">
+                    <div class="bg-white border border-gray-100 rounded-soft p-4 mb-2">
+                        <div class="w-10 h-10 mx-auto rounded-lg bg-teal-50 flex items-center justify-center text-teal-500 font-bold text-xs">04</div>
+                    </div>
+                    <p class="text-xs font-semibold text-gray-900">Go</p>
+                    <p class="text-[10px] text-gray-400 mt-0.5">Track Installation</p>
+                </div>
+                <div class="eco-step text-center fade-up">
+                    <div class="bg-white border border-gray-100 rounded-soft p-4 mb-2">
+                        <div class="w-10 h-10 mx-auto rounded-lg bg-teal-50 flex items-center justify-center text-teal-500 font-bold text-xs">05</div>
+                    </div>
+                    <p class="text-xs font-semibold text-gray-900">Field App</p>
+                    <p class="text-[10px] text-gray-400 mt-0.5">Site Capture</p>
+                </div>
+                <div class="eco-step text-center fade-up">
+                    <div class="bg-white border border-gray-100 rounded-soft p-4 mb-2">
+                        <div class="w-10 h-10 mx-auto rounded-lg bg-teal-50 flex items-center justify-center text-teal-500 font-bold text-xs">06</div>
+                    </div>
+                    <p class="text-xs font-semibold text-gray-900">SCADA</p>
+                    <p class="text-[10px] text-gray-400 mt-0.5">Monitor & Alert</p>
+                </div>
+            </div>
+            <div class="max-w-3xl mx-auto fade-up">
+                <div class="bg-white border border-gray-100 rounded-soft p-8">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-6">What Changes With a Connected System</h3>
+                    <div class="space-y-5">
+                        <div class="flex items-start gap-3">
+                            <div class="w-6 h-6 rounded-full bg-teal-50 flex items-center justify-center flex-shrink-0 mt-0.5">
+                                <span class="text-teal-500 text-xs font-bold">1</span>
+                            </div>
+                            <div>
+                                <p class="text-sm font-medium text-gray-900">The customer starts the flow</p>
+                                <p class="text-sm text-gray-500 mt-1">A homeowner checks feasibility and gets a quote through Connect. When they proceed, the data moves straight to Studio — no one has to re-enter anything.</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start gap-3">
+                            <div class="w-6 h-6 rounded-full bg-teal-50 flex items-center justify-center flex-shrink-0 mt-0.5">
+                                <span class="text-teal-500 text-xs font-bold">2</span>
+                            </div>
+                            <div>
+                                <p class="text-sm font-medium text-gray-900">Design to proposal, no manual step</p>
+                                <p class="text-sm text-gray-500 mt-1">Studio produces the layout, BOQ, and report in one workspace. Proposal auto-generates from that data — no manual creation, no copy-paste, no waiting.</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start gap-3">
+                            <div class="w-6 h-6 rounded-full bg-teal-50 flex items-center justify-center flex-shrink-0 mt-0.5">
+                                <span class="text-teal-500 text-xs font-bold">3</span>
+                            </div>
+                            <div>
+                                <p class="text-sm font-medium text-gray-900">Site execution stays visible</p>
+                                <p class="text-sm text-gray-500 mt-1">Field App captures complete site data in one visit and feeds it to Studio. Go gives EPC real-time progress with daily photo proofs and delay reasons — no more chasing installers on WhatsApp.</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start gap-3">
+                            <div class="w-6 h-6 rounded-full bg-teal-50 flex items-center justify-center flex-shrink-0 mt-0.5">
+                                <span class="text-teal-500 text-xs font-bold">4</span>
+                            </div>
+                            <div>
+                                <p class="text-sm font-medium text-gray-900">Operations stay accountable</p>
+                                <p class="text-sm text-gray-500 mt-1">SCADA gives each stakeholder the right view — live alerts, assigned work orders, and full activity history. Every issue has a clear owner, so nothing gets dropped.</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start gap-3">
+                            <div class="w-6 h-6 rounded-full bg-teal-50 flex items-center justify-center flex-shrink-0 mt-0.5">
+                                <span class="text-teal-500 text-xs font-bold">5</span>
+                            </div>
+                            <div>
+                                <p class="text-sm font-medium text-gray-900">The impact is cumulative</p>
+                                <p class="text-sm text-gray-500 mt-1">Each portal removes its own manual steps. The connections between them remove the handoff delays. Together, the overall project timeline shrinks significantly.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- IMAGE: pvNXT Ecosystem — horizontal flow diagram showing data through all 6 portals | client screenshot yaha aayega | ratio 16:9 | Wpx 800 x Hpx 600 | bg: #ffffff -->
+            <div class="mt-10 rounded-soft border border-gray-100 bg-white aspect-[16/5] flex items-center justify-center fade-up">
+                <p class="text-gray-300 text-sm">Ecosystem Flow Diagram</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA AFTER ECOSYSTEM -->
+    <section class="py-16 px-6">
+        <div class="max-w-3xl mx-auto text-center fade-up">
+            <h2 class="text-2xl md:text-3xl font-bold tracking-tight text-gray-900">Start Using pvNXT</h2>
+            <p class="mt-4 text-gray-500 text-sm max-w-lg mx-auto">Choose the portal that fits your role—or get access to the full platform.</p>
+            <div class="mt-8 flex flex-col sm:flex-row items-center justify-center gap-4">
+                <a href="https://consumer.pvnxt.com/" target="_blank" class="px-8 py-3.5 bg-teal-500 text-white font-medium rounded-soft hover:bg-teal-600 transition-colors text-sm">Consumer Portal</a>
+                <a href="https://epc.pvnxt.com/" target="_blank" class="px-8 py-3.5 bg-teal-500 text-white font-medium rounded-soft hover:bg-teal-600 transition-colors text-sm">EPC Portal</a>
+                <a href="https://installer.pvnxt.com/" target="_blank" class="px-8 py-3.5 bg-teal-500 text-white font-medium rounded-soft hover:bg-teal-600 transition-colors text-sm">Installer Portal</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== 7. WHO USES pvNXT ===== -->
+    <section class="py-20 md:py-28 px-6 bg-off-50">
+        <div class="max-w-6xl mx-auto">
+            <div class="text-center mb-16 fade-up">
+                <h2 class="text-3xl md:text-4xl font-bold tracking-tight text-gray-900">Who Uses pvNXT</h2>
+                <p class="mt-4 text-gray-500 max-w-xl mx-auto">Built for every team in the solar project lifecycle.</p>
+            </div>
+            <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div class="bg-white border border-gray-100 rounded-soft p-6 fade-up">
+                    <div class="w-10 h-10 rounded-lg bg-teal-50 flex items-center justify-center mb-4">
+                        <svg class="w-5 h-5 text-teal-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/></svg>
+                    </div>
+                    <h3 class="font-semibold text-gray-900 text-sm mb-2">EPC Companies</h3>
+                    <p class="text-xs text-gray-500 leading-relaxed">Manage multiple projects end-to-end with full visibility and control.</p>
+                </div>
+                <div class="bg-white border border-gray-100 rounded-soft p-6 fade-up">
+                    <div class="w-10 h-10 rounded-lg bg-teal-50 flex items-center justify-center mb-4">
+                        <svg class="w-5 h-5 text-teal-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.066 2.573c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.573 1.066c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.066-2.573c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+                    </div>
+                    <h3 class="font-semibold text-gray-900 text-sm mb-2">Solar Installers</h3>
+                    <p class="text-xs text-gray-500 leading-relaxed">From site survey to commissioning, execute work with digital tools.</p>
+                </div>
+                <div class="bg-white border border-gray-100 rounded-soft p-6 fade-up">
+                    <div class="w-10 h-10 rounded-lg bg-teal-50 flex items-center justify-center mb-4">
+                        <svg class="w-5 h-5 text-teal-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
+                    </div>
+                    <h3 class="font-semibold text-gray-900 text-sm mb-2">O&M Teams</h3>
+                    <p class="text-xs text-gray-500 leading-relaxed">Monitor plant performance, identify faults early, and maintain uptime.</p>
+                </div>
+                <div class="bg-white border border-gray-100 rounded-soft p-6 fade-up">
+                    <div class="w-10 h-10 rounded-lg bg-teal-50 flex items-center justify-center mb-4">
+                        <svg class="w-5 h-5 text-teal-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
+                    </div>
+                    <h3 class="font-semibold text-gray-900 text-sm mb-2">Project Managers</h3>
+                    <p class="text-xs text-gray-500 leading-relaxed">Track milestones, allocate resources, and deliver projects on schedule.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== 8. REAL RESULTS ===== -->
+    <section id="results" class="py-20 md:py-28 px-6">
+        <div class="max-w-6xl mx-auto">
+            <div class="text-center mb-16 fade-up">
+                <h2 class="text-3xl md:text-4xl font-bold tracking-tight text-gray-900">Real Results</h2>
+                <p class="mt-4 text-gray-500 max-w-xl mx-auto">Measured improvements from teams using pvNXT.</p>
+            </div>
+            <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div class="bg-off-50 border border-gray-100 rounded-soft p-8 text-center fade-up">
+                    <p class="text-4xl md:text-5xl font-bold text-teal-500 tracking-tight">90%</p>
+                    <p class="text-sm text-gray-500 mt-3">Reduction in design time</p>
+                </div>
+                <div class="bg-off-50 border border-gray-100 rounded-soft p-8 text-center fade-up">
+                    <p class="text-4xl md:text-5xl font-bold text-teal-500 tracking-tight">0</p>
+                    <p class="text-sm text-gray-500 mt-3">Unnecessary site visits</p>
+                </div>
+                <div class="bg-off-50 border border-gray-100 rounded-soft p-8 text-center fade-up">
+                    <p class="text-4xl md:text-5xl font-bold text-teal-500 tracking-tight">3x</p>
+                    <p class="text-sm text-gray-500 mt-3">Faster proposal generation</p>
+                </div>
+                <div class="bg-off-50 border border-gray-100 rounded-soft p-8 text-center fade-up">
+                    <p class="text-4xl md:text-5xl font-bold text-teal-500 tracking-tight">40%</p>
+                    <p class="text-sm text-gray-500 mt-3">Faster project delivery</p>
+                </div>
+            </div>
+            <div class="mt-12 grid sm:grid-cols-3 gap-6 fade-up">
+                <div class="flex items-start gap-3">
+                    <span class="text-teal-500 font-bold text-sm mt-0.5">→</span>
+                    <p class="text-sm text-gray-600"><span class="font-medium text-gray-900">Full data traceability.</span> Every action, change, and approval is logged.</p>
+                </div>
+                <div class="flex items-start gap-3">
+                    <span class="text-teal-500 font-bold text-sm mt-0.5">→</span>
+                    <p class="text-sm text-gray-600"><span class="font-medium text-gray-900">Better team coordination.</span> Teams work from the same data, not different versions.</p>
+                </div>
+                <div class="flex items-start gap-3">
+                    <span class="text-teal-500 font-bold text-sm mt-0.5">→</span>
+                    <p class="text-sm text-gray-600"><span class="font-medium text-gray-900">Scalable operations.</span> Handle more projects without adding headcount.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== 9. GET STARTED ===== -->
+    <section class="py-20 md:py-28 px-6 bg-off-50">
+        <div class="max-w-4xl mx-auto text-center">
+            <div class="fade-up">
+                <h2 class="text-3xl md:text-4xl font-bold tracking-tight text-gray-900">Get Started</h2>
+                <p class="mt-4 text-gray-500 max-w-lg mx-auto">Select the portal that matches your role, or contact us for a full platform walkthrough.</p>
+            </div>
+            <div class="mt-12 grid sm:grid-cols-3 gap-6">
+                <a href="https://consumer.pvnxt.com/" target="_blank" class="bg-white border border-gray-100 rounded-soft p-6 text-center hover:border-teal-500/30 hover:shadow-lg transition-all fade-up group">
+                    <div class="w-12 h-12 mx-auto rounded-lg bg-teal-50 flex items-center justify-center mb-4 group-hover:bg-teal-500 transition-colors">
+                        <svg class="w-6 h-6 text-teal-500 group-hover:text-white transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
+                    </div>
+                    <h3 class="font-semibold text-gray-900 text-sm mb-1">Consumer Portal</h3>
+                    <p class="text-xs text-gray-400">For homeowners and businesses exploring solar</p>
+                </a>
+                <a href="https://epc.pvnxt.com/" target="_blank" class="bg-white border border-gray-100 rounded-soft p-6 text-center hover:border-teal-500/30 hover:shadow-lg transition-all fade-up group">
+                    <div class="w-12 h-12 mx-auto rounded-lg bg-teal-50 flex items-center justify-center mb-4 group-hover:bg-teal-500 transition-colors">
+                        <svg class="w-6 h-6 text-teal-500 group-hover:text-white transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/></svg>
+                    </div>
+                    <h3 class="font-semibold text-gray-900 text-sm mb-1">EPC Portal</h3>
+                    <p class="text-xs text-gray-400">For EPC companies managing solar projects</p>
+                </a>
+                <a href="https://installer.pvnxt.com/" target="_blank" class="bg-white border border-gray-100 rounded-soft p-6 text-center hover:border-teal-500/30 hover:shadow-lg transition-all fade-up group">
+                    <div class="w-12 h-12 mx-auto rounded-lg bg-teal-50 flex items-center justify-center mb-4 group-hover:bg-teal-500 transition-colors">
+                        <svg class="w-6 h-6 text-teal-500 group-hover:text-white transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.066 2.573c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.573 1.066c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.066-2.573c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+                    </div>
+                    <h3 class="font-semibold text-gray-900 text-sm mb-1">Installer Portal</h3>
+                    <p class="text-xs text-gray-400">For installation teams on the ground</p>
+                </a>
+            </div>
+            <div class="mt-10 fade-up">
+                <a href="#contact" class="inline-flex items-center px-8 py-3.5 border border-gray-200 text-gray-700 font-medium rounded-soft hover:border-teal-500 hover:text-teal-500 transition-colors text-sm">Or Request a Full Demo</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== 10. ABOUT pvNXT ===== -->
+    <section id="about" class="py-20 md:py-28 px-6">
+        <div class="max-w-3xl mx-auto text-center fade-up">
+            <h2 class="text-3xl md:text-4xl font-bold tracking-tight text-gray-900">About pvNXT</h2>
+            <div class="mt-8 space-y-4 text-sm text-gray-600 leading-relaxed max-w-xl mx-auto">
+                <p>pvNXT is a connected solar project management platform that removes the gaps between design, sales, execution, and monitoring.</p>
+                <p>Built by <span class="font-semibold text-gray-900">Terranxt Pvt Ltd</span>—an IIT Delhi incubated company focused on making solar project delivery faster and more predictable.</p>
+            </div>
+            <!-- IMAGE: pvNXT About Terranxt — team photo with IIT Delhi incubation center | client screenshot yaha aayega | ratio 16:9 | Wpx 800 x Hpx 600 | bg: #ffffff -->
+            <div class="mt-10 rounded-soft border border-gray-100 bg-white aspect-[12/5] flex items-center justify-center">
+                <p class="text-gray-300 text-sm">Terranxt / Team Visual</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== 11. CONTACT / FINAL CTA ===== -->
+    <section id="contact" class="py-20 md:py-28 px-6 bg-gray-900">
+        <div class="max-w-3xl mx-auto text-center fade-up">
+            <h2 class="text-3xl md:text-4xl font-bold tracking-tight text-white">Talk to Our Team</h2>
+            <p class="mt-4 text-gray-400 text-sm max-w-lg mx-auto">Tell us about your solar projects. We will show you how pvNXT fits your workflow.</p>
+            <form id="demoForm" class="mt-10 max-w-md mx-auto" onsubmit="return handleDemoSubmit(event)">
+                <div class="space-y-4">
+                    <input type="text" placeholder="Your Name" required class="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-soft text-white text-sm placeholder-gray-500 focus:outline-none focus:border-teal-500 transition-colors">
+                    <input type="email" placeholder="Work Email" required class="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-soft text-white text-sm placeholder-gray-500 focus:outline-none focus:border-teal-500 transition-colors">
+                    <input type="text" placeholder="Company Name" class="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-soft text-white text-sm placeholder-gray-500 focus:outline-none focus:border-teal-500 transition-colors">
+                    <select class="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-soft text-gray-500 text-sm focus:outline-none focus:border-teal-500 transition-colors">
+                        <option value="">Select Your Role</option>
+                        <option value="epc">EPC Company</option>
+                        <option value="installer">Installer</option>
+                        <option value="om">O&M Team</option>
+                        <option value="pm">Project Manager</option>
+                        <option value="other">Other</option>
+                    </select>
+                    <button type="submit" class="w-full px-8 py-3.5 bg-teal-500 text-white font-medium rounded-soft hover:bg-teal-600 transition-colors text-sm">Request a Demo</button>
+                </div>
+                <p id="formMessage" class="mt-4 text-sm text-teal-400 hidden">Thank you. We will be in touch shortly.</p>
+            </form>
+        </div>
+    </section>
+
+    <!-- ===== FOOTER ===== -->
+    <footer class="py-12 px-6 bg-gray-950 border-t border-gray-800">
+        <div class="max-w-6xl mx-auto">
+            <div class="flex flex-col md:flex-row items-center justify-between gap-6">
+                <div>
+                    <p class="text-white font-bold text-lg">pv<span class="text-teal-500">NXT</span></p>
+                    <p class="text-gray-500 text-xs mt-1">Built by Terranxt Pvt Ltd · IIT Delhi Incubated</p>
+                </div>
+                <div class="flex items-center gap-6">
+                    <a href="https://consumer.pvnxt.com/" target="_blank" class="text-gray-500 text-xs hover:text-teal-500 transition-colors">Consumer</a>
+                    <a href="https://epc.pvnxt.com/" target="_blank" class="text-gray-500 text-xs hover:text-teal-500 transition-colors">EPC</a>
+                    <a href="https://installer.pvnxt.com/" target="_blank" class="text-gray-500 text-xs hover:text-teal-500 transition-colors">Installer</a>
+                    <a href="#contact" class="text-gray-500 text-xs hover:text-teal-500 transition-colors">Contact</a>
+                </div>
+                <p class="text-gray-600 text-xs">&copy; 2025 Terranxt Pvt Ltd. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- ===== GSAP SCRIPTS ===== -->
+    <script>
+        gsap.registerPlugin(ScrollTrigger);
+
+        const mobileToggle = document.getElementById('mobileToggle');
+        const mobileMenu = document.getElementById('mobileMenu');
+        mobileToggle.addEventListener('click', () => {
+            mobileMenu.classList.toggle('open');
+        });
+        mobileMenu.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', () => mobileMenu.classList.remove('open'));
+        });
+
+        function handleDemoSubmit(e) {
+            e.preventDefault();
+            const msg = document.getElementById('formMessage');
+            msg.classList.remove('hidden');
+            e.target.reset();
+            setTimeout(() => msg.classList.add('hidden'), 5000);
+            return false;
+        }
+
+        gsap.utils.toArray('.fade-up').forEach(el => {
+            gsap.to(el, {
+                opacity: 1,
+                y: 0,
+                duration: 0.7,
+                ease: 'power2.out',
+                scrollTrigger: {
+                    trigger: el,
+                    start: 'top 88%',
+                    toggleActions: 'play none none none'
+                }
+            });
+        });
+
+        gsap.utils.toArray('.fade-up-left').forEach(el => {
+            gsap.to(el, {
+                opacity: 1,
+                x: 0,
+                duration: 0.7,
+                ease: 'power2.out',
+                scrollTrigger: {
+                    trigger: el,
+                    start: 'top 85%',
+                    toggleActions: 'play none none none'
+                }
+            });
+        });
+
+        gsap.utils.toArray('.fade-up-right').forEach(el => {
+            gsap.to(el, {
+                opacity: 1,
+                x: 0,
+                duration: 0.7,
+                ease: 'power2.out',
+                scrollTrigger: {
+                    trigger: el,
+                    start: 'top 85%',
+                    toggleActions: 'play none none none'
+                }
+            });
+        });
+
+        gsap.utils.toArray('.portal-overview-card').forEach((card, i) => {
+            gsap.to(card, {
+                opacity: 1,
+                y: 0,
+                duration: 0.5,
+                delay: i * 0.08,
+                ease: 'power2.out',
+                scrollTrigger: {
+                    trigger: card.parentElement,
+                    start: 'top 85%',
+                    toggleActions: 'play none none none'
+                }
+            });
+        });
+
+        gsap.utils.toArray('.eco-step').forEach((step, i) => {
+            gsap.to(step, {
+                opacity: 1,
+                y: 0,
+                duration: 0.5,
+                delay: i * 0.1,
+                ease: 'power2.out',
+                scrollTrigger: {
+                    trigger: step.parentElement,
+                    start: 'top 85%',
+                    toggleActions: 'play none none none'
+                }
+            });
+        });
+
+        gsap.utils.toArray('#results .text-4xl, #results .text-5xl').forEach(stat => {
+            const text = stat.textContent;
+            const numMatch = text.match(/[\d.]+/);
+            if (numMatch) {
+                const suffix = text.replace(numMatch[0], '');
+                const target = parseFloat(numMatch[0]);
+                const obj = { val: 0 };
+                gsap.to(obj, {
+                    val: target,
+                    duration: 1.5,
+                    ease: 'power1.out',
+                    scrollTrigger: {
+                        trigger: stat,
+                        start: 'top 85%',
+                        toggleActions: 'play none none none'
+                    },
+                    onUpdate: () => {
+                        stat.textContent = (Number.isInteger(target) ? Math.round(obj.val) : obj.val.toFixed(0)) + suffix;
+                    }
+                });
+            }
+        });
+
+        const navbar = document.getElementById('navbar');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 10) {
+                navbar.classList.add('shadow-sm');
+            } else {
+                navbar.classList.remove('shadow-sm');
+            }
+        });
+    </script>
+</body>
+</html>
