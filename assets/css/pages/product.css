@@ -2,7 +2,7 @@
 .product-hero { padding: 140px 0 80px; background: radial-gradient(circle at 30% 20%, rgba(6,159,177,.1), transparent 50%), linear-gradient(180deg, #f8fcfd 0%, #fff 100%); }
 .product-hero-meta { display: flex; align-items: center; gap: 8px; font-size: .82rem; color: var(--muted); margin: 18px 0 24px; }
 .product-badge { display: inline-block; font-size: .65rem; font-weight: 800; letter-spacing: .06em; text-transform: uppercase; padding: 3px 10px; border-radius: 999px; }
-.badge-live { background: rgba(6,159,177,.12); color: var(--brand-dark); }
+.badge-live { background: rgba(6,159,177,.12); color: var(--brand-dark); }\n.badge-inprogress { background: rgba(251,191,36,.12); color: #f59e0b; }
 .product-hero-cta { display: flex; flex-wrap: wrap; gap: 12px; }
 .product-hero-visual { position: relative; min-height: 380px; display: grid; place-items: center; }
 .product-visual-placeholder { width: 100%; max-width: 560px; aspect-ratio: 4/3; border-radius: 24px; background: linear-gradient(135deg, rgba(6,159,177,.06), rgba(6,159,177,.12)); border: 1px solid var(--line); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 14px; }

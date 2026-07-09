@@ -461,13 +461,13 @@ STEP 1: Create the file at `products/studio.html` with the following complete HT
           </div>
           <div class="comparison-card comparison-after">
             <div class="comparison-header">
-              <div class="comparison-circle after-circle">V</div>
+              <div class="comparison-circle after-circle">✓</div>
               <h3>After (pvNXT Studio)</h3>
             </div>
             <ul class="comparison-list">
-              <li><span class="marker-after">V</span>Designs generated in under 15 minutes</li>
-              <li><span class="marker-after">V</span>Accurate first time, no rework</li>
-              <li><span class="marker-after">V</span>Shadow analysis built into the design flow</li>
+              <li><span class="marker-after">✓</span>Designs generated in under 15 minutes</li>
+              <li><span class="marker-after">✓</span>Accurate first time, no rework</li>
+              <li><span class="marker-after">✓</span>Shadow analysis built into the design flow</li>
             </ul>
           </div>
         </div>

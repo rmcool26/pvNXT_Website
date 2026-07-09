@@ -1,0 +1,289 @@
+Read and strictly follow the instructions in `docs/agent.md`. Those rules apply to this task.
+
+PROJECT CONTEXT:
+We are adding dedicated product pages to the pvNXT website (static HTML/CSS/JS, v3-main branch). The existing pages use a shared design system: CSS variables in assets/css/style.css, page-specific CSS in assets/css/pages/product.css. Header and footer are JS-loaded from components/. We must follow this exact architecture.
+
+This is a NEW file: `products/scada.html`. The `products/` directory already exists. This page must follow the same page shell structure as the other product pages.
+
+---
+
+TASK: Create `products/scada.html` — pvNXT SCADA Monitoring dedicated product page.
+
+STEP 1: Create the file at `products/scada.html` with the following complete HTML:
+
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>pvNXT SCADA — Plant Monitoring | pvNXT by Terranxt</title>
+  <meta name="description" content="pvNXT SCADA Monitoring brings accountability to solar plant operations. Role-based dashboards, live alerts, work orders, and activity history — every alert has an owner.">
+  <meta name="theme-color" content="#069fb1">
+  <meta property="og:title" content="pvNXT SCADA — Plant Monitoring">
+  <meta property="og:description" content="Role-based views, live alerts, work orders & assignment, activity history. Every alert has an owner.">
+  <meta property="og:type" content="website">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/css/style.css">
+  <link rel="stylesheet" href="../assets/css/pages/product.css">
+</head>
+<body data-page="product">
+  <a class="skip-link" href="#main">Skip to main content</a>
+  <div class="page-loader" data-loader aria-hidden="true">
+    <div class="loader-orbit"><span></span><span></span><span></span></div>
+  </div>
+  <div id="header-placeholder"></div>
+
+  <main id="main">
+
+    <!-- ===== PRODUCT HERO ===== -->
+    <section class="page-hero product-hero">
+      <div class="container page-hero-grid">
+        <div class="reveal">
+          <p class="overline"><span></span><a href="../index.html" style="color:inherit;text-decoration:none;">pvNXT</a> / SCADA</p>
+          <h1>SCADA Monitoring</h1>
+          <p class="lead">Every alert, accountable.</p>
+          <div class="product-hero-meta">
+            <span>For: EPC managers, plant owners, field techs, O&M owners</span>
+            <span>•</span>
+            <span class="product-badge badge-inprogress">In Progress</span>
+          </div>
+          <div class="product-hero-cta">
+            <a href="../contact.html#contact-form" class="btn btn-primary">Request a Demo</a>
+            <a href="https://scada.pvnxt.com/" target="_blank" rel="noopener" class="btn btn-secondary">Visit live portal ↗</a>
+          </div>
+        </div>
+        <div class="reveal">
+          <div class="product-hero-visual" aria-label="pvNXT SCADA preview">
+            <div class="product-visual-placeholder">
+              <div class="product-visual-icon">
+                <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+              </div>
+              <p class="product-visual-label">[ pvNXT SCADA — monitoring dashboard | role-based view | 1280x720px | bg: #ffffff ]</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== PRODUCT OVERVIEW ===== -->
+    <section class="section" id="overview">
+      <div class="container product-overview">
+        <p class="overline"><span></span>Overview</p>
+        <h2>What is SCADA Monitoring?</h2>
+        <p class="lead">pvNXT SCADA Monitoring brings accountability to solar plant operations. Role-based dashboards show exactly what each user needs to see. Live alerts flag issues instantly. Work orders assign ownership. Activity history tracks every action. From reactive checking to proactive operations — every alert has an owner.</p>
+      </div>
+    </section>
+
+    <!-- ===== CAPABILITIES ===== -->
+    <section class="section section-soft" id="capabilities">
+      <div class="container">
+        <p class="overline"><span></span>What it does</p>
+        <h2>Operations, accountable.</h2>
+        <div class="capabilities-grid">
+          <div class="capability-item">
+            <div class="capability-icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>
+            </div>
+            <div>
+              <h3>Role-based views</h3>
+              <p>Different dashboards for different roles. Plant owners see generation and savings. O&M teams see alerts and work orders. EPC managers see everything.</p>
+            </div>
+          </div>
+          <div class="capability-item">
+            <div class="capability-icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="3"/><path d="M12 1v6m0 6v6m-7-10.5l5.2 3m1.6-9.2l5.2 3M5 17.5l5.2-3m1.6 9.2l5.2-3"/></svg>
+            </div>
+            <div>
+              <h3>Live alerts</h3>
+              <p>Instant alerts when plant performance drops or equipment fails. No more manual checks, no more late discoveries.</p>
+            </div>
+          </div>
+          <div class="capability-item">
+            <div class="capability-icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14,2 14,8 20,8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+            </div>
+            <div>
+              <h3>Work orders & assignment</h3>
+              <p>Create work orders from alerts. Assign to specific team members. Track status until resolved. Every alert gets an owner.</p>
+            </div>
+          </div>
+          <div class="capability-item">
+            <div class="capability-icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><polyline points="12,6 12,12 16,14"/></svg>
+            </div>
+            <div>
+              <h3>Activity history</h3>
+              <p>Complete history of alerts, work orders, and resolutions. Audit trail for compliance. Learn from past issues.</p>
+            </div>
+          </div>
+          <div class="capability-item">
+            <div class="capability-icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M18 20V10"/><path d="M12 20V4"/><path d="M6 20v-6"/></svg>
+            </div>
+            <div>
+              <h3>Plant-level monitoring</h3>
+              <p>Monitor multiple plants from one dashboard. Fleet-wide visibility. Spot underperforming plants instantly.</p>
+            </div>
+          </div>
+          <div class="capability-item">
+            <div class="capability-icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22,4 12,14.01 9,11.01"/></svg>
+            </div>
+            <div>
+              <h3>Performance reporting</h3>
+              <p>Automated performance reports. Generation vs targets, downtime analysis, maintenance logs — all at your fingertips.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== BEFORE vs AFTER ===== -->
+    <section class="section" id="comparison">
+      <div class="container">
+        <p class="overline"><span></span>Before and After</p>
+        <h2>The difference SCADA makes.</h2>
+        <div class="comparison-grid">
+          <div class="comparison-card comparison-before">
+            <div class="comparison-header">
+              <div class="comparison-circle before-circle">X</div>
+              <h3>Before</h3>
+            </div>
+            <ul class="comparison-list">
+              <li><span class="marker-before">X</span>Manual checks with screenshots</li>
+              <li><span class="marker-before">X</span>Late alerts, issues discovered days later</li>
+              <li><span class="marker-before">X</span>Unclear who owns the issue</li>
+            </ul>
+          </div>
+          <div class="comparison-card comparison-after">
+            <div class="comparison-header">
+              <div class="comparison-circle after-circle">✓</div>
+              <h3>After (pvNXT SCADA)</h3>
+            </div>
+            <ul class="comparison-list">
+              <li><span class="marker-after">✓</span>Role-based dashboard with live alerts</li>
+              <li><span class="marker-after">✓</span>Instant issue flagging</li>
+              <li><span class="marker-after">✓</span>Full traceable history with ownership</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== OUTCOME + IMPACT ===== -->
+    <section class="section section-soft" id="outcome">
+      <div class="container">
+        <div class="outcome-grid">
+          <div class="outcome-card">
+            <p class="overline"><span></span>Outcome You Get</p>
+            <p class="outcome-text">From reactive checking to visible, accountable operations. Every alert has an owner, every issue gets resolved.</p>
+          </div>
+          <div class="outcome-card">
+            <p class="overline"><span></span>Process Impact</p>
+            <p class="outcome-text">No more chasing who is responsible. Alerts assigned, tracked, resolved in defined flow. Operations run smoothly.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== KEY FEATURES ===== -->
+    <section class="section" id="features">
+      <div class="container">
+        <p class="overline"><span></span>Key features</p>
+        <h2>Everything O&M teams need.</h2>
+        <div class="features-grid">
+          <div class="feature-card">Role-based views</div>
+          <div class="feature-card">Live alerts</div>
+          <div class="feature-card">Work orders & assignment</div>
+          <div class="feature-card">Activity history</div>
+          <div class="feature-card">Plant-level monitoring</div>
+          <div class="feature-card">Performance reporting</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== WHO IT'S FOR ===== -->
+    <section class="section section-soft" id="who">
+      <div class="container">
+        <p class="overline"><span></span>Who it's for</p>
+        <h2>Built for operations teams.</h2>
+        <div class="who-chips">
+          <span class="who-chip">EPC managers</span>
+          <span class="who-chip">Plant owners</span>
+          <span class="who-chip">Field techs</span>
+          <span class="who-chip">O&M owners</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== THE ATLAS CONNECTION ===== -->
+    <section class="section" id="atlas-connection">
+      <div class="container atlas-note">
+        <p class="overline"><span></span>Powered by Atlas</p>
+        <h2>Satellite data. Operational excellence.</h2>
+        <p class="lead">SCADA monitors plants designed with Atlas data. Accurate design means better performance tracking. See how the <a href="../index.html#how-it-works" class="text-link">Atlas pipeline works</a>.</p>
+      </div>
+    </section>
+
+    <!-- ===== ECOSYSTEM NAV ===== -->
+    <section class="section section-soft" id="ecosystem-nav">
+      <div class="container">
+        <p class="overline"><span></span>Part of the pvNXT suite</p>
+        <h2>Explore other products.</h2>
+        <div class="eco-nav-grid">
+          <a href="studio.html" class="eco-nav-card">Studio <span>EPC design workspace →</span></a>
+          <a href="connect.html" class="eco-nav-card">Connect <span>Consumer portal →</span></a>
+          <a href="go.html" class="eco-nav-card">Go <span>Installer field portal →</span></a>
+          <a href="proposal.html" class="eco-nav-card">Proposal <span>Auto-generated proposals →</span></a>
+          <a href="field-app.html" class="eco-nav-card">Field App <span>Site survey capture →</span></a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== FINAL CTA ===== -->
+    <section class="section cta-final" id="cta">
+      <div class="container">
+        <div class="cta-final-inner">
+          <p class="overline"><span></span>Get started</p>
+          <h2>See SCADA in action.</h2>
+          <p class="lead">Book a demo for your operations team. We'll show you how SCADA brings accountability to plant monitoring.</p>
+          <div class="cta-final-buttons">
+            <a href="../contact.html#contact-form" class="btn btn-primary">Request a Demo</a>
+            <a href="https://scada.pvnxt.com/" target="_blank" rel="noopener" class="btn btn-secondary">Visit live portal ↗</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <div id="footer-placeholder"></div>
+  <script src="../assets/js/main.js"></script>
+</body>
+</html>
+
+STEP 2: The CSS file `assets/css/pages/product.css` already exists. This page will use the same CSS file — NO CSS CHANGES NEEDED.
+
+---
+
+CRITICAL RULES:
+- Use the existing `products/` directory
+- Use the existing `assets/css/pages/product.css` (DO NOT create a new CSS file)
+- Use existing CSS variables from style.css (--brand, --brand-dark, --ink, --muted, --line, --mist, --paper)
+- Use existing utility classes: .section, .section-soft, .container, .overline, .lead, .btn, .btn-primary, .btn-secondary, .text-link, .page-hero, .page-hero-grid, .reveal
+- The page shell must match the other product pages
+- All CSS is already in assets/css/pages/product.css — DO NOT touch style.css or any other CSS files
+- DO NOT change any existing file except creating this new file (products/scada.html)
+- Links to other product pages — all pages now exist except this one. The links are READY.
+- Nav paths: use `../` prefix for links back to root since this file is in products/ subdirectory
+- Status badge: use `badge-inprogress` class (not badge-live) for products in progress
+- Add CSS for `badge-inprogress` in product.css if it doesn't exist: `.badge-inprogress { background: rgba(251,191,36,.12); color: #f59e0b; }`
+
+When done, reply "TASK FINISHED SUCCESSFULLY" and confirm:
+1. products/scada.html created with all 10 sections
+2. Added `badge-inprogress` CSS to product.css (if not already present)
+3. Page uses existing design system (CSS variables, utility classes)
+4. No other existing files were modified

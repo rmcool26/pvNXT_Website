@@ -1,0 +1,283 @@
+Read and strictly follow the instructions in `docs/agent.md`. Those rules apply to this task.
+
+PROJECT CONTEXT:
+We are adding dedicated product pages to the pvNXT website (static HTML/CSS/JS, v3-main branch). The existing pages (index.html, about.html, contact.html, products/studio.html, products/connect.html, products/go.html) use a shared design system: CSS variables in assets/css/style.css, page-specific CSS in assets/css/pages/product.css. Header and footer are JS-loaded from components/. We must follow this exact architecture.
+
+This is a NEW file: `products/proposal.html`. The `products/` directory already exists. This page must follow the same page shell structure as the other product pages — same head, same meta tags, same CSS links, same header/footer placeholders.
+
+---
+
+TASK: Create `products/proposal.html` — pvNXT Proposal System dedicated product page.
+
+STEP 1: Create the file at `products/proposal.html` with the following complete HTML:
+
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>pvNXT Proposal — Automated Customer Proposals | pvNXT by Terranxt</title>
+  <meta name="description" content="pvNXT Proposal auto-generates customer proposals from project data. System summary, cost tables, subsidy details, and savings estimates — in minutes.">
+  <meta name="theme-color" content="#069fb1">
+  <meta property="og:title" content="pvNXT Proposal — Automated Customer Proposals">
+  <meta property="og:description" content="Auto-generated proposals from project data. System summary, cost + subsidy + savings tables, solar impact, customer-friendly layout.">
+  <meta property="og:type" content="website">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/css/style.css">
+  <link rel="stylesheet" href="../assets/css/pages/product.css">
+</head>
+<body data-page="product">
+  <a class="skip-link" href="#main">Skip to main content</a>
+  <div class="page-loader" data-loader aria-hidden="true">
+    <div class="loader-orbit"><span></span><span></span><span></span></div>
+  </div>
+  <div id="header-placeholder"></div>
+
+  <main id="main">
+
+    <!-- ===== PRODUCT HERO ===== -->
+    <section class="page-hero product-hero">
+      <div class="container page-hero-grid">
+        <div class="reveal">
+          <p class="overline"><span></span><a href="../index.html" style="color:inherit;text-decoration:none;">pvNXT</a> / Proposal</p>
+          <h1>Proposal System</h1>
+          <p class="lead">Automated customer proposals.</p>
+          <div class="product-hero-meta">
+            <span>For: EPC teams presenting to customers</span>
+            <span>•</span>
+            <span class="product-badge badge-live">Live</span>
+          </div>
+          <div class="product-hero-cta">
+            <a href="../contact.html#contact-form" class="btn btn-primary">Request a Demo</a>
+          </div>
+        </div>
+        <div class="reveal">
+          <div class="product-hero-visual" aria-label="pvNXT Proposal preview">
+            <div class="product-visual-placeholder">
+              <div class="product-visual-icon">
+                <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14,2 14,8 20,8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+              </div>
+              <p class="product-visual-label">[ pvNXT Proposal — proposal document | sample view | 1280x720px | bg: #ffffff ]</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== PRODUCT OVERVIEW ===== -->
+    <section class="section" id="overview">
+      <div class="container product-overview">
+        <p class="overline"><span></span>Overview</p>
+        <h2>What is the Proposal System?</h2>
+        <p class="lead">pvNXT Proposal auto-generates customer proposals from project data. No manual data entry, no copy-paste errors. Pull design data from Studio, add pricing and subsidies, and generate a customer-ready proposal in minutes. Consistent, accurate, and professional every time.</p>
+      </div>
+    </section>
+
+    <!-- ===== CAPABILITIES ===== -->
+    <section class="section section-soft" id="capabilities">
+      <div class="container">
+        <p class="overline"><span></span>What it does</p>
+        <h2>Proposals, automated.</h2>
+        <div class="capabilities-grid">
+          <div class="capability-item">
+            <div class="capability-icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14,2 14,8 20,8"/></svg>
+            </div>
+            <div>
+              <h3>Auto-generated from project data</h3>
+              <p>Pulls design data directly from Studio. No manual entry, no copy-paste. System specs, layout, and components auto-populate.</p>
+            </div>
+          </div>
+          <div class="capability-item">
+            <div class="capability-icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>
+            </div>
+            <div>
+              <h3>Cost + subsidy + savings tables</h3>
+              <p>Auto-calculates system cost, applicable subsidies, and savings estimates. Clear tables customers can understand.</p>
+            </div>
+          </div>
+          <div class="capability-item">
+            <div class="capability-icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M18 20V10"/><path d="M12 20V4"/><path d="M6 20v-6"/></svg>
+            </div>
+            <div>
+              <h3>System summary</h3>
+              <p>Clean summary of system specs — capacity, panel count, inverter details, estimated generation. Everything the customer needs to know.</p>
+            </div>
+          </div>
+          <div class="capability-item">
+            <div class="capability-icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+            </div>
+            <div>
+              <h3>Solar impact</h3>
+              <p>Shows environmental impact — CO2 saved, trees planted equivalent, lifetime energy generation. Helps close deals with eco-conscious customers.</p>
+            </div>
+          </div>
+          <div class="capability-item">
+            <div class="capability-icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="9" y1="21" x2="9" y2="9"/></svg>
+            </div>
+            <div>
+              <h3>Customer-friendly layout</h3>
+              <p>Professional, branded proposal layout. Easy to read, easy to share. Customize with your logo and colors.</p>
+            </div>
+          </div>
+          <div class="capability-item">
+            <div class="capability-icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="9,11 12,14 22,4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>
+            </div>
+            <div>
+              <h3>Approval workflow</h3>
+              <p>Proposals flow directly to project management upon approval. No manual handoff, no data re-entry.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== BEFORE vs AFTER ===== -->
+    <section class="section" id="comparison">
+      <div class="container">
+        <p class="overline"><span></span>Before and After</p>
+        <h2>The difference Proposal makes.</h2>
+        <div class="comparison-grid">
+          <div class="comparison-card comparison-before">
+            <div class="comparison-header">
+              <div class="comparison-circle before-circle">X</div>
+              <h3>Before</h3>
+            </div>
+            <ul class="comparison-list">
+              <li><span class="marker-before">X</span>Manual proposals taking 2-4 hours</li>
+              <li><span class="marker-before">X</span>Pricing errors from copy-paste</li>
+              <li><span class="marker-before">X</span>Inconsistent formatting across team</li>
+            </ul>
+          </div>
+          <div class="comparison-card comparison-after">
+            <div class="comparison-header">
+              <div class="comparison-circle after-circle">✓</div>
+              <h3>After (pvNXT Proposal)</h3>
+            </div>
+            <ul class="comparison-list">
+              <li><span class="marker-after">✓</span>Generated in 5 minutes</li>
+              <li><span class="marker-after">✓</span>Pricing from design data — zero errors</li>
+              <li><span class="marker-after">✓</span>Consistent output every time</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== OUTCOME + IMPACT ===== -->
+    <section class="section section-soft" id="outcome">
+      <div class="container">
+        <div class="outcome-grid">
+          <div class="outcome-card">
+            <p class="overline"><span></span>Outcome You Get</p>
+            <p class="outcome-text">3x faster proposal generation with zero pricing errors. Professional output that wins more deals.</p>
+          </div>
+          <div class="outcome-card">
+            <p class="overline"><span></span>Process Impact</p>
+            <p class="outcome-text">No manual data entry. Everything pulls from Studio. Approved proposals flow directly to project management.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== KEY FEATURES ===== -->
+    <section class="section" id="features">
+      <div class="container">
+        <p class="overline"><span></span>Key features</p>
+        <h2>Everything for winning proposals.</h2>
+        <div class="features-grid">
+          <div class="feature-card">Auto-generated from project data</div>
+          <div class="feature-card">System summary</div>
+          <div class="feature-card">Cost + subsidy + savings tables</div>
+          <div class="feature-card">Solar impact</div>
+          <div class="feature-card">Customer-friendly layout</div>
+          <div class="feature-card">Approval workflow</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== WHO IT'S FOR ===== -->
+    <section class="section section-soft" id="who">
+      <div class="container">
+        <p class="overline"><span></span>Who it's for</p>
+        <h2>Built for sales teams.</h2>
+        <div class="who-chips">
+          <span class="who-chip">EPC teams</span>
+          <span class="who-chip">Sales</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== THE ATLAS CONNECTION ===== -->
+    <section class="section" id="atlas-connection">
+      <div class="container atlas-note">
+        <p class="overline"><span></span>Powered by Atlas</p>
+        <h2>Satellite data. Winning proposals.</h2>
+        <p class="lead">Proposal pulls accurate design data from Studio, which uses Atlas satellite models. No manual measurements, no errors. See how the <a href="../index.html#how-it-works" class="text-link">Atlas pipeline works</a>.</p>
+      </div>
+    </section>
+
+    <!-- ===== ECOSYSTEM NAV ===== -->
+    <section class="section section-soft" id="ecosystem-nav">
+      <div class="container">
+        <p class="overline"><span></span>Part of the pvNXT suite</p>
+        <h2>Explore other products.</h2>
+        <div class="eco-nav-grid">
+          <a href="studio.html" class="eco-nav-card">Studio <span>EPC design workspace →</span></a>
+          <a href="connect.html" class="eco-nav-card">Connect <span>Consumer portal →</span></a>
+          <a href="go.html" class="eco-nav-card">Go <span>Installer field portal →</span></a>
+          <a href="field-app.html" class="eco-nav-card">Field App <span>Site survey capture →</span></a>
+          <a href="scada.html" class="eco-nav-card">SCADA <span>Plant monitoring →</span></a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== FINAL CTA ===== -->
+    <section class="section cta-final" id="cta">
+      <div class="container">
+        <div class="cta-final-inner">
+          <p class="overline"><span></span>Get started</p>
+          <h2>See Proposal in action.</h2>
+          <p class="lead">Book a demo for your sales team. We'll show you how Proposal turns designs into winning proposals in minutes.</p>
+          <div class="cta-final-buttons">
+            <a href="../contact.html#contact-form" class="btn btn-primary">Request a Demo</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <div id="footer-placeholder"></div>
+  <script src="../assets/js/main.js"></script>
+</body>
+</html>
+
+STEP 2: The CSS file `assets/css/pages/product.css` already exists. This page will use the same CSS file — NO CSS CHANGES NEEDED.
+
+---
+
+CRITICAL RULES:
+- Use the existing `products/` directory
+- Use the existing `assets/css/pages/product.css` (DO NOT create a new CSS file)
+- Use existing CSS variables from style.css (--brand, --brand-dark, --ink, --muted, --line, --mist, --paper)
+- Use existing utility classes: .section, .section-soft, .container, .overline, .lead, .btn, .btn-primary, .btn-secondary, .text-link, .page-hero, .page-hero-grid, .reveal
+- The page shell must match the other product pages
+- All CSS is already in assets/css/pages/product.css — DO NOT touch style.css or any other CSS files
+- DO NOT change any existing file except creating this new file (products/proposal.html)
+- Links to other product pages — some pages don't exist yet. The links are READY for when they're created.
+- Nav paths: use `../` prefix for links back to root since this file is in products/ subdirectory
+
+When done, reply "TASK FINISHED SUCCESSFULLY" and confirm:
+1. products/proposal.html created with all 10 sections
+2. No CSS file changes (uses existing product.css)
+3. Page uses existing design system (CSS variables, utility classes)
+4. No existing files were modified
