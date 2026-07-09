@@ -221,28 +221,67 @@
     max-width: 720px;
   }
 }
-@media (max-width: 640px) {
-  .hero-proof-row { display: grid; gap: 12px; }
-  .smart-cta { display: grid; }
-  .hero-visual { min-height: 380px; }
-  .solar-canvas { height: 360px; }
-  .floating-signal { display: none; }
-  .roof-plane { width: 84%; }
-  .solar-canvas .placeholder-label { bottom: 24px; border-radius: 18px; }
-  .trust-strip { grid-template-columns: 1fr; }
-  .trust-strip div { border-right: 0; border-bottom: 1px solid var(--line); }
-  .trust-strip div:last-child { border-bottom: 0; }
-  .why-media, .why-media img { min-height: 330px; height: 330px; border-radius: 28px; }
-  .advantage-rail article { grid-template-columns: 1fr; gap: 6px; }
-  .app-frame { min-height: 360px; border-radius: 28px; }
-  .login-lines { left: 34px; right: 34px; }
-  .proof-matrix {
-    grid-template-columns: 1fr;
-  }
-  .proof-matrix article {
-    min-height: auto;
-    padding: 24px;
-  }
+
+/* ===== S3: THE MAGIC ===== */
+.magic-section { padding: 118px 0; background: radial-gradient(circle at 50% 30%, rgba(6,159,177,.06), transparent 50%), linear-gradient(180deg, #f9fcfd 0%, #fff 100%); }
+.magic-header { text-align: center; max-width: 640px; margin: 0 auto 72px; }
+.magic-header .overline { justify-content: center; }
+.magic-header h2 { margin-bottom: 14px; }
+.magic-header .lead { margin: 0 auto; }
+
+/* Atlas Pipeline */
+.magic-atlas { max-width: 960px; margin: 0 auto 96px; }
+.atlas-illustration { display: flex; align-items: center; justify-content: center; gap: 0; padding: 48px 0; background: linear-gradient(180deg, rgba(6,159,177,.03), rgba(6,159,177,.06)); border-radius: var(--radius-xl); border: 1px solid var(--line); }
+.atlas-stage { display: flex; flex-direction: column; align-items: center; text-align: center; flex: 0 0 180px; }
+.atlas-stage-icon { width: 72px; height: 72px; border-radius: 50%; background: #fff; border: 1px solid rgba(6,159,177,.18); display: flex; align-items: center; justify-content: center; margin-bottom: 14px; box-shadow: 0 8px 30px rgba(6,159,177,.08); }
+.atlas-stage-title { font-size: .92rem; font-weight: 800; color: var(--ink); margin: 0 0 4px; }
+.atlas-stage-desc { font-size: .82rem; color: var(--brand-dark); font-weight: 600; margin: 0 0 2px; }
+.atlas-stage-note { font-size: .72rem; color: var(--muted); margin: 0; }
+.atlas-connector { flex: 0 0 80px; display: flex; align-items: center; justify-content: center; padding-bottom: 32px; }
+.atlas-caption { text-align: center; font-size: .82rem; color: var(--muted); margin-top: 18px; line-height: 1.65; }
+
+/* Ecosystem Hub */
+.magic-ecosystem { max-width: 960px; margin: 0 auto; }
+.ecosystem-label { text-align: center; font-size: .73rem; font-weight: 800; color: var(--muted); text-transform: uppercase; letter-spacing: .12em; margin-bottom: 32px; }
+
+/* Desktop Hub */
+.eco-hub-desktop { display: block; position: relative; width: 100%; max-width: 700px; aspect-ratio: 1/1; margin: 0 auto 0; }
+.eco-center { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; z-index: 2; }
+.eco-center-circle { width: 90px; height: 90px; border-radius: 50%; background: linear-gradient(135deg, rgba(6,159,177,.18), rgba(6,159,177,.08)); border: 2px solid var(--brand); display: flex; align-items: center; justify-content: center; box-shadow: 0 0 60px rgba(6,159,177,.15); }
+.eco-center-label { font-size: .65rem; font-weight: 800; color: var(--brand-dark); text-align: center; line-height: 1.3; letter-spacing: .06em; }
+.eco-nodes { position: absolute; inset: 0; }
+.eco-node { position: absolute; display: flex; flex-direction: column; align-items: center; gap: 3px; width: 110px; }
+.node-1 { left: 50%; top: 2%; transform: translateX(-50%); }
+.node-2 { right: 6%; top: 14%; }
+.node-3 { right: 0%; top: 42%; }
+.node-4 { right: 6%; bottom: 14%; }
+.node-5 { left: 50%; bottom: 2%; transform: translateX(-50%); }
+.node-6 { left: 6%; bottom: 14%; }
+.node-7 { left: 0%; top: 42%; }
+.eco-node-dot { width: 12px; height: 12px; border-radius: 50%; background: var(--brand); box-shadow: 0 0 12px rgba(6,159,177,.35); }
+.eco-node-name { font-size: .78rem; font-weight: 800; color: var(--ink); }
+.eco-node-func { font-size: .68rem; color: var(--muted); }
+.eco-hub-lines { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; z-index: 0; }
+
+/* Mobile Hub */
+.eco-hub-mobile { display: none; }
+.eco-mobile-list { display: flex; flex-direction: column; gap: 0; }
+.eco-mobile-item { display: flex; align-items: flex-start; gap: 14px; padding: 14px 0; border-bottom: 1px solid var(--line); }
+.eco-mobile-num { width: 28px; height: 28px; border-radius: 50%; background: rgba(6,159,177,.12); display: flex; align-items: center; justify-content: center; font-size: .73rem; font-weight: 800; color: var(--brand-dark); flex-shrink: 0; }
+.eco-mobile-item strong { display: block; font-size: .88rem; color: var(--ink); }
+.eco-mobile-item span { font-size: .76rem; color: var(--muted); }
+
+.ecosystem-caption { text-align: center; font-size: .88rem; color: var(--muted); margin-top: 24px; font-weight: 500; }
+
+.magic-cta { text-align: center; margin-top: 48px; }
+
+@media (max-width: 860px) {
+  .magic-atlas { margin-bottom: 64px; }
+  .atlas-illustration { flex-direction: column; gap: 16px; padding: 36px 24px; }
+  .atlas-stage { flex: none; }
+  .atlas-connector { flex: none; transform: rotate(90deg); padding: 0; }
+  .eco-hub-desktop { display: none; }
+  .eco-hub-mobile { display: block; }
 }
 
 /* ===== S2: THE STORY ===== */
