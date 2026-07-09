@@ -1,3 +1,16 @@
+Read and strictly follow the instructions in `docs/agent.md`. Those rules apply to this task.
+
+PROJECT CONTEXT:
+We are updating the pvNXT website (static HTML/CSS/JS, v3-main branch). The `services.html` page currently has Terranxt branding and a plain CTA section. We need to update it to pvNXT branding and redesign the CTA section to be more visually appealing.
+
+This is an EXISTING file: `services.html` in the root directory. We will MODIFY this file to make it pvNXT-focused and improve the CTA design.
+
+---
+
+TASK: Update `services.html` — Transform from Terranxt-focused to pvNXT-focused + Redesign CTA section.
+
+STEP 1: Read the existing `services.html` to understand current structure, then REPLACE the entire content with the following complete HTML:
+
 <!doctype html>
 <html lang="en">
 <head>
@@ -242,3 +255,92 @@
 </body>
 
 </html>
+
+STEP 2: Update `assets/css/pages/services.css` to add styles for the redesigned CTA section. Add the following CSS at the END of the existing services.css file:
+
+/* ===== SERVICES CTA — REDESIGNED ===== */
+
+.services-cta-inner {
+  max-width: 960px;
+  margin: 0 auto;
+}
+
+.services-cta-visual {
+  position: relative;
+  border-radius: 24px;
+  overflow: hidden;
+  background: radial-gradient(circle at 20% 80%, rgba(6,159,177,.08), transparent 40%),
+              radial-gradient(circle at 80% 20%, rgba(6,159,177,.05), transparent 35%);
+  border: 1px solid rgba(6,159,177,.15);
+}
+
+.cta-bg-pattern {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: 
+    radial-gradient(circle at 20% 50%, rgba(6,159,177,.06) 1px, transparent 1px),
+    radial-gradient(circle at 80% 50%, rgba(6,159,177,.04) 1px, transparent 1px);
+  background-size: 60px 60px, 80px 80px;
+  opacity: .6;
+  pointer-events: none;
+}
+
+.cta-content {
+  position: relative;
+  z-index: 1;
+  padding: 80px 40px;
+  text-align: center;
+}
+
+.cta-content .overline {
+  justify-content: center;
+}
+
+.cta-content h2 {
+  font-size: clamp(1.6rem, 3.5vw, 2.2rem);
+  margin-top: 16px;
+}
+
+.cta-content .lead {
+  max-width: 600px;
+  margin: 0 auto 32px;
+}
+
+/* Responsive */
+@media (max-width: 860px) {
+  .cta-content {
+    padding: 60px 28px;
+  }
+}
+
+@media (max-width: 560px) {
+  .cta-content {
+    padding: 48px 20px;
+  }
+  
+  .cta-content h2 {
+    font-size: 1.4rem;
+  }
+}
+
+---
+
+CRITICAL RULES:
+- MODIFY the existing `services.html` file (do not create a new file)
+- ADD CSS to the END of `assets/css/pages/services.css` (do not replace existing CSS)
+- Use existing CSS variables from style.css (--brand, --brand-dark, --ink, --muted, --line, --mist, --paper)
+- Use existing utility classes where possible: .section, .container, .overline, .lead, .btn, .btn-primary, .btn-secondary
+- The page shell (head, meta, fonts, loader, header placeholder, footer placeholder) must match the existing structure
+- DO NOT touch: components/header.html, components/footer.html, assets/js/main.js, assets/css/style.css
+- The CTA section now has a decorative background with gradient orbs and dot pattern
+- Updated the CTA button from "Talk to Terranxt" to "Request a Demo" (primary) + "Explore Products" (secondary)
+
+When done, reply "TASK FINISHED SUCCESSFULLY" and confirm:
+1. services.html updated with pvNXT branding (all sections)
+2. "Beyond Solar" section updated (mentions pvNXT extensions)
+3. CTA section redesigned with visual background
+4. assets/css/pages/services.css updated with new styles at the END
+5. No other existing files were modified except services.html and services.css
