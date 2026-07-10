@@ -320,4 +320,14 @@
       if (event.target.matches('input, select, textarea')) setFieldError(event.target, '');
     });
   }
+
+  /* Staggered reveal for product cards */
+  const productCardsNew = document.querySelectorAll('.products-grid-new .reveal');
+  if (productCardsNew.length && typeof gsap !== 'undefined') {
+    gsap.set(productCardsNew, { opacity: 0, y: 30 });
+    gsap.to(productCardsNew, {
+      opacity: 1, y: 0, duration: .6, stagger: .08, ease: 'power2.out',
+      scrollTrigger: { trigger: '.products-grid-new', start: 'top 82%', toggleActions: 'play none none none' }
+    });
+  }
 })();
