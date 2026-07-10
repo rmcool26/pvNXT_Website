@@ -1,176 +1,6 @@
 (function () {
-  var headerTemplate = `<header class="site-header" data-header>
-  <div class="container header-inner">
-    <a href="/home.html" class="logo" aria-label="pvNXT Home">
-      <svg width="120" height="32" viewBox="0 0 120 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <text x="10" y="24" font-family="Inter, sans-serif" font-weight="800" font-size="20" fill="#069fb1">pvNXT</text>
-      </svg>
-    </a>
-
-    <nav class="main-nav" data-nav>
-      <ul class="nav-list">
-        <li><a href="/home.html" class="nav-link">Home</a></li>
-        <li class="nav-dropdown" data-dropdown>
-          <button class="nav-link nav-dropdown-trigger" data-dropdown-trigger>
-            Products
-            <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 4.5l3 3 3-3"/></svg>
-          </button>
-          <ul class="nav-dropdown-menu" data-dropdown-menu>
-            <li><a href="/products/studio.html" class="dropdown-link">Studio — EPC Design</a></li>
-            <li><a href="/products/connect.html" class="dropdown-link">Connect — Consumer Portal</a></li>
-            <li><a href="/products/go.html" class="dropdown-link">Go — Installer Portal</a></li>
-            <li><a href="/products/proposal.html" class="dropdown-link">Proposal — Auto Proposals</a></li>
-            <li><a href="/products/field-app.html" class="dropdown-link">Field App — Site Survey</a></li>
-            <li><a href="/products/scada.html" class="dropdown-link">SCADA — Plant Monitoring</a></li>
-          </ul>
-        </li>
-        <li><a href="/about.html" class="nav-link">About</a></li>
-        <li><a href="/contact.html" class="nav-link">Contact</a></li>
-      </ul>
-    </nav>
-
-    <div class="header-actions">
-      <a href="/contact.html#contact-form" class="btn btn-primary btn-sm">Request Demo</a>
-    </div>
-
-    <button class="mobile-menu-toggle" data-mobile-toggle aria-label="Toggle menu">
-      <span></span>
-      <span></span>
-      <span></span>
-    </button>
-  </div>
-
-  <style>
-.nav-dropdown { position: relative; }
-.nav-dropdown-trigger { display: flex; align-items: center; gap: 4px; background: none; border: none; cursor: pointer; font: inherit; }
-.nav-dropdown-menu { 
-  position: absolute; 
-  top: 100%; 
-  left: 0; 
-  min-width: 240px; 
-  background: #fff; 
-  border: 1px solid var(--line); 
-  border-radius: 12px; 
-  padding: 8px; 
-  box-shadow: 0 12px 36px rgba(6,159,177,.08); 
-  opacity: 0; 
-  visibility: hidden; 
-  transform: translateY(-8px); 
-  transition: opacity .2s ease, transform .2s ease, visibility .2s ease; 
-  z-index: 100;
-}
-.nav-dropdown[data-open="true"] .nav-dropdown-menu {
-  opacity: 1;
-  visibility: visible;
-  transform: translateY(0);
-}
-.dropdown-link { 
-  display: block; 
-  padding: 10px 14px; 
-  border-radius: 8px; 
-  font-size: .88rem; 
-  color: var(--ink); 
-  text-decoration: none; 
-  transition: background .15s ease; 
-}
-.dropdown-link:hover { background: rgba(6,159,177,.08); color: var(--brand-dark); }
-.btn-sm { padding: 8px 18px; font-size: .85rem; }
-</style>
-</header>`;
-
-  var footerTemplate = `<footer class="site-footer" data-footer>
-  <div class="container">
-    <div class="footer-grid">
-      
-      <!-- Column 1: Brand -->
-      <div class="footer-brand">
-        <a href="/home.html" class="footer-logo" aria-label="pvNXT Home">
-          <svg width="100" height="28" viewBox="0 0 100 28" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <text x="8" y="20" font-family="Inter, sans-serif" font-weight="800" font-size="16" fill="#069fb1">pvNXT</text>
-          </svg>
-        </a>
-        <p class="footer-tagline">Solar operations, connected.</p>
-        <p class="footer-desc">pvNXT is a connected solar workflow suite by Terranxt — an IIT Delhi-FITT incubated deep-tech startup.</p>
-      </div>
-
-      <!-- Column 2: Quick Links -->
-      <div class="footer-links">
-        <h4 class="footer-heading">Quick Links</h4>
-        <ul class="footer-list">
-          <li><a href="/home.html" class="footer-link">Home</a></li>
-          <li><a href="/about.html" class="footer-link">About pvNXT</a></li>
-          <li><a href="/contact.html#contact-form" class="footer-link">Contact Us</a></li>
-          <li><a href="/contact.html#contact-form" class="footer-link">Request Demo</a></li>
-        </ul>
-      </div>
-
-      <!-- Column 3: Products -->
-      <div class="footer-products">
-        <h4 class="footer-heading">Products</h4>
-        <ul class="footer-list">
-          <li><a href="/products/studio.html" class="footer-link">Studio — EPC Design</a></li>
-          <li><a href="/products/connect.html" class="footer-link">Connect — Consumer Portal</a></li>
-          <li><a href="/products/go.html" class="footer-link">Go — Installer Portal</a></li>
-          <li><a href="/products/proposal.html" class="footer-link">Proposal System</a></li>
-          <li><a href="/products/field-app.html" class="footer-link">Field App</a></li>
-          <li><a href="/products/scada.html" class="footer-link">SCADA Monitoring</a></li>
-        </ul>
-      </div>
-
-      <!-- Column 4: Contact -->
-      <div class="footer-contact">
-        <h4 class="footer-heading">Contact</h4>
-        <p class="footer-text">IIT Delhi incubation ecosystem<br>New Delhi, India</p>
-        <a href="/contact.html#contact-form" class="footer-link">Start a product enquiry</a>
-        <div class="footer-social" style="margin-top:16px;display:flex;gap:12px;">
-          <a href="https://linkedin.com/company/pvnxt" target="_blank" rel="noopener" class="footer-social-link" aria-label="LinkedIn">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
-          </a>
-          <a href="https://twitter.com/pvnxt" target="_blank" rel="noopener" class="footer-social-link" aria-label="X (Twitter)">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4l11.733 16h4.267l-11.733-16H4zm0 16l11.733-16h4.267l-11.733 16H4z" transform="scale(.85)"/></svg>
-          </a>
-          <a href="https://youtube.com/@pvNXT" target="_blank" rel="noopener" class="footer-social-link" aria-label="YouTube">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="10,8 16,12 10,16"/></svg>
-          </a>
-        </div>
-      </div>
-
-    </div>
-
-    <!-- Footer Bottom -->
-    <div class="footer-bottom">
-      <p class="footer-copyright">© 2026 pvNXT by Terranxt. All rights reserved.</p>
-      <div class="footer-legal">
-        <a href="/contact.html#contact-form" class="footer-legal-link">Partnership enquiries</a>
-      </div>
-    </div>
-
-  </div>
-  <style>
-.footer-social-link { 
-  display: inline-flex; 
-  align-items: center; 
-  justify-content: center; 
-  width: 36px; 
-  height: 36px; 
-  border-radius: 8px; 
-  background: rgba(6,159,177,.08); 
-  color: var(--brand-dark); 
-  transition: background .2s ease, color .2s ease; 
-}
-.footer-social-link:hover { 
-  background: var(--brand); 
-  color: #fff; 
-}
-.footer-text { 
-  font-size: .88rem; 
-  color: var(--muted); 
-  line-height: 1.6; 
-  margin-bottom: 8px; 
-}
-</style>
-</footer>`;
-
+  var headerTemplate = `<header class="site-header" data-header> <div class="header-progress" data-progress></div> <div class="nav-shell"> <a href="/index.html" class="brand" aria-label="pvNXT Home"> <svg width="110" height="28" viewBox="0 0 110 28" fill="none" xmlns="http://www.w3.org/2000/svg"> <text x="0" y="21" font-family="Inter, sans-serif" font-weight="800" font-size="18" fill="#069fb1">pvNXT</text> </svg> </a> <nav class="nav-links"> <a href="/index.html" class="nav-link">Home</a> <div class="portal-wrap"> <button class="portal-button" data-portal-toggle aria-expanded="false"> Products <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6l4 4 4-4"/></svg> </button> <div class="portal-menu" id="portal-menu"> <a href="/products/studio.html" class="portal-item"> <div class="portal-item-mark"></div> <div><strong>Studio</strong><small>EPC Design</small></div> </a> <a href="/products/connect.html" class="portal-item"> <div class="portal-item-mark"></div> <div><strong>Connect</strong><small>Consumer Portal</small></div> </a> <a href="/products/go.html" class="portal-item"> <div class="portal-item-mark"></div> <div><strong>Go</strong><small>Installer Portal</small></div> </a> <a href="/products/proposal.html" class="portal-item"> <div class="portal-item-mark"></div> <div><strong>Proposal</strong><small>Auto Proposals</small></div> </a> <a href="/products/field-app.html" class="portal-item"> <div class="portal-item-mark"></div> <div><strong>Field App</strong><small>Site Survey</small></div> </a> <a href="/products/scada.html" class="portal-item"> <div class="portal-item-mark"></div> <div><strong>SCADA</strong><small>Plant Monitoring</small></div> </a> </div> </div> <a href="/about.html" class="nav-link">About</a> <a href="/contact.html" class="nav-link">Contact</a> </nav> <div class="nav-actions"> <a href="/contact.html#contact-form" class="btn btn-primary">Request Demo</a> </div> <button class="menu-toggle" data-menu-toggle aria-expanded="false" aria-label="Open navigation"> <span></span><span></span><span></span> </button> </div> <div class="mobile-panel" data-mobile-menu> <div class="mobile-links"> <a href="/index.html" class="nav-link">Home</a> <a href="/about.html" class="nav-link">About</a> <a href="/contact.html" class="nav-link">Contact</a> </div> <div class="mobile-portal"> <p class="mobile-portal-title">Products</p> <a href="/products/studio.html" class="portal-item"><div class="portal-item-mark"></div><div><strong>Studio</strong><small>EPC Design</small></div></a> <a href="/products/connect.html" class="portal-item"><div class="portal-item-mark"></div><div><strong>Connect</strong><small>Consumer Portal</small></div></a> <a href="/products/go.html" class="portal-item"><div class="portal-item-mark"></div><div><strong>Go</strong><small>Installer Portal</small></div></a> <a href="/products/proposal.html" class="portal-item"><div class="portal-item-mark"></div><div><strong>Proposal</strong><small>Auto Proposals</small></div></a> <a href="/products/field-app.html" class="portal-item"><div class="portal-item-mark"></div><div><strong>Field App</strong><small>Site Survey</small></div></a> <a href="/products/scada.html" class="portal-item"><div class="portal-item-mark"></div><div><strong>SCADA</strong><small>Plant Monitoring</small></div></a> </div> <div style="margin-top:16px"> <a href="/contact.html#contact-form" class="btn btn-primary" style="width:100%">Request Demo</a> </div> </div> </header>`;
+  var footerTemplate = `<footer class="site-footer" data-footer> <div class="footer-glow" aria-hidden="true"></div> <div class="container"> <div class="footer-grid"> <!-- Column 1: Brand --> <div> <a href="/index.html" class="footer-brand" aria-label="pvNXT Home"> <svg width="110" height="28" viewBox="0 0 110 28" fill="none" xmlns="http://www.w3.org/2000/svg"> <text x="0" y="21" font-family="Inter, sans-serif" font-weight="800" font-size="18" fill="#069fb1">pvNXT</text> </svg> </a> <div class="footer-brand-block"> <p>Solar operations, connected.</p> <p>pvNXT is a connected solar workflow suite by Terranxt — IIT Delhi-FITT incubated.</p> </div> <div class="footer-trust"> <span>IIT Delhi Incubated</span> <span>AI + Geo-spatial</span> <span>Zero Site Visit</span> </div> </div> <!-- Column 2: Quick Links --> <div class="footer-col"> <h2>Quick Links</h2> <nav> <a href="/index.html">Home</a> <a href="/about.html">About pvNXT</a> <a href="/contact.html#contact-form">Contact Us</a> <a href="/contact.html#contact-form">Request Demo</a> </nav> </div> <!-- Column 3: Products --> <div class="footer-col"> <h2>Products</h2> <nav> <a href="/products/studio.html">Studio — EPC Design</a> <a href="/products/connect.html">Connect — Consumer Portal</a> <a href="/products/go.html">Go — Installer Portal</a> <a href="/products/proposal.html">Proposal System</a> <a href="/products/field-app.html">Field App</a> <a href="/products/scada.html">SCADA Monitoring</a> </nav> </div> <!-- Column 4: Contact + Social --> <div class="footer-col"> <h2>Contact</h2> <address> IIT Delhi incubation ecosystem<br>New Delhi, India </address> <div class="social-links"> <a href="https://linkedin.com/company/pvnxt" target="_blank" rel="noopener">LinkedIn</a> <a href="https://twitter.com/pvnxt" target="_blank" rel="noopener">X</a> <a href="https://youtube.com/@pvNXT" target="_blank" rel="noopener">YouTube</a> </div> </div> </div> <div class="footer-bottom"> <span>© 2026 pvNXT by Terranxt. All rights reserved.</span> <a href="/contact.html#contact-form" style="color:rgba(231,246,248,.72)">Partnership enquiries</a> </div> </div> </footer>`;
   var whatsappTemplate = `
 <a class="whatsapp-widget" href="https://wa.me/918447444157?text=Hello%20Terranxt%2C%20I%20would%20like%20to%20discuss%20solar%20AI%20solutions." target="_blank" rel="noopener noreferrer" aria-label="Chat with Terranxt on WhatsApp">
   <svg viewBox="0 0 32 32" aria-hidden="true">
@@ -179,20 +9,16 @@
     </svg>
     <span>WhatsApp</span>
 </a>`;
-
   function inject(id, template) {
     var target = document.getElementById(id);
     if (target) target.innerHTML = template;
   }
-
   function mount() {
     inject('header-placeholder', headerTemplate);
     inject('footer-placeholder', footerTemplate);
     inject('whatsapp-placeholder', whatsappTemplate);
   }
-
   window.TerranxtComponents = { mount: mount };
-
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', mount, { once: true });
   } else {
