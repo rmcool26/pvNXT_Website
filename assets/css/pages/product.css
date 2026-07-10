@@ -2,7 +2,8 @@
 .product-hero { padding: 140px 0 80px; background: radial-gradient(circle at 30% 20%, rgba(6,159,177,.1), transparent 50%), linear-gradient(180deg, #f8fcfd 0%, #fff 100%); }
 .product-hero-meta { display: flex; align-items: center; gap: 8px; font-size: .82rem; color: var(--muted); margin: 18px 0 24px; }
 .product-badge { display: inline-block; font-size: .65rem; font-weight: 800; letter-spacing: .06em; text-transform: uppercase; padding: 3px 10px; border-radius: 999px; }
-.badge-live { background: rgba(6,159,177,.12); color: var(--brand-dark); }\n.badge-inprogress { background: rgba(251,191,36,.12); color: #f59e0b; }
+.badge-live { background: rgba(6,159,177,.12); color: var(--brand-dark); }
+.badge-inprogress { background: rgba(251,191,36,.12); color: #f59e0b; }
 .product-hero-cta { display: flex; flex-wrap: wrap; gap: 12px; }
 .product-hero-visual { position: relative; min-height: 380px; display: grid; place-items: center; }
 .product-visual-placeholder { width: 100%; max-width: 560px; aspect-ratio: 4/3; border-radius: 24px; background: linear-gradient(135deg, rgba(6,159,177,.06), rgba(6,159,177,.12)); border: 1px solid var(--line); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 14px; }
@@ -14,12 +15,12 @@
 .product-overview .lead { margin-top: 16px; }
 
 /* Capabilities */
-.capabilities-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 18px; margin-top: 40px; }
-.capability-item { display: flex; gap: 16px; padding: 20px 22px; background: #fff; border: 1px solid var(--line); border-radius: 16px; transition: border-color .25s ease, box-shadow .25s ease; }
-.capability-item:hover { border-color: rgba(6,159,177,.3); box-shadow: 0 12px 36px rgba(6,159,177,.06); }
-.capability-icon { width: 36px; height: 36px; border-radius: 10px; background: rgba(6,159,177,.1); display: flex; align-items: center; justify-content: center; color: var(--brand); flex-shrink: 0; }
-.capability-item h3 { font-size: .92rem; margin-bottom: 3px; }
-.capability-item p { font-size: .82rem; color: var(--muted); margin: 0; line-height: 1.5; }
+.capabilities-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 18px; margin-top: 40px; position: relative; z-index: 1; }
+.capability-item { display: flex; gap: 16px; padding: 20px 22px; background: rgba(255,255,255,.04); border: 1px solid rgba(6,159,177,.15); border-radius: 16px; transition: border-color .25s ease, box-shadow .25s ease; }
+.capability-item:hover { border-color: rgba(6,159,177,.35); box-shadow: 0 12px 36px rgba(6,159,177,.1); }
+.capability-icon { width: 36px; height: 36px; border-radius: 10px; background: rgba(6,159,177,.15); display: flex; align-items: center; justify-content: center; color: #84e6ee; flex-shrink: 0; }
+.capability-item h3 { font-size: .92rem; margin-bottom: 3px; color: #fff; }
+.capability-item p { font-size: .82rem; color: rgba(255,255,255,.6); margin: 0; line-height: 1.5; }
 
 /* Before vs After */
 .comparison-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; margin-top: 40px; }
@@ -82,3 +83,11 @@
   .product-hero { padding: 120px 0 60px; }
   .product-hero-visual { min-height: 260px; }
 }
+
+/* ===== DARK: Capabilities Section Background ===== */
+#capabilities { background: radial-gradient(circle at 70% 20%, rgba(6,159,177,.12), transparent 55%), linear-gradient(135deg, #031d2a, #082b3b) !important; position: relative; overflow: hidden; }
+#capabilities::before { content: ""; position: absolute; inset: 0; background-image: linear-gradient(rgba(255,255,255,.04) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.04) 1px, transparent 1px); background-size: 58px 58px; mask-image: linear-gradient(to right, transparent, #000 20%, #000 80%, transparent); pointer-events: none; z-index: 0; }
+#capabilities .overline { color: #84e6ee; position: relative; z-index: 1; }
+#capabilities .overline span { background: #84e6ee; }
+#capabilities h2 { color: #fff; position: relative; z-index: 1; }
+#capabilities .container { position: relative; z-index: 1; }
