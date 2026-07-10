@@ -234,3 +234,23 @@
     grid-template-columns: 1fr;
   }
 }
+
+/* ===== DARK: The Solution Section ===== */
+#solution { background: radial-gradient(circle at 50% 30%, rgba(6,159,177,.12), transparent 55%), linear-gradient(135deg, #031d2a, #082b3b) !important; position: relative; overflow: hidden; }
+#solution::before { content: ""; position: absolute; inset: 0; background-image: linear-gradient(rgba(255,255,255,.04) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.04) 1px, transparent 1px); background-size: 58px 58px; mask-image: linear-gradient(to right, transparent, #000 20%, #000 80%, transparent); pointer-events: none; z-index: 0; }
+#solution .overline { color: #84e6ee; position: relative; z-index: 1; }
+#solution .overline span { background: #84e6ee; }
+#solution h2 { color: #fff; position: relative; z-index: 1; }
+#solution .lead, #solution p { color: rgba(255,255,255,.7); position: relative; z-index: 1; }
+#solution .container { position: relative; z-index: 1; }
+#solution strong, #solution h3 { color: #000; }
+
+/* ===== DARK: Backed By Section ===== */
+#backed-by { background: radial-gradient(circle at 20% 50%, rgba(6,159,177,.1), transparent 55%), linear-gradient(135deg, #082b3b, #031d2a); position: relative; overflow: hidden; }
+#backed-by::before { content: ""; position: absolute; inset: 0; background-image: linear-gradient(rgba(255,255,255,.04) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.04) 1px, transparent 1px); background-size: 58px 58px; mask-image: linear-gradient(to right, transparent, #000 20%, #000 80%, transparent); pointer-events: none; z-index: 0; }
+#backed-by .overline { color: rgba(255,255,255,.5); position: relative; z-index: 1; }
+#backed-by .overline span { background: rgba(255,255,255,.5); }
+#backed-by h2 { color: #fff; position: relative; z-index: 1; }
+#backed-by h3 { color: #fff; position: relative; z-index: 1; }
+#backed-by .lead, #backed-by p { color: rgba(255,255,255,.65); position: relative; z-index: 1; }
+#backed-by .container { position: relative; z-index: 1; }

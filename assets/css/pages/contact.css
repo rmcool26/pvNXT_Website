@@ -99,3 +99,15 @@
   }
 }
 
+/* ===== DARK: Select Your Role Section ===== */
+#role-section { background: radial-gradient(circle at 50% 30%, rgba(6,159,177,.12), transparent 55%), linear-gradient(135deg, #031d2a, #082b3b) !important; position: relative; overflow: hidden; }
+#role-section::before { content: ""; position: absolute; inset: 0; background-image: linear-gradient(rgba(255,255,255,.04) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.04) 1px, transparent 1px); background-size: 58px 58px; mask-image: linear-gradient(to right, transparent, #000 20%, #000 80%, transparent); pointer-events: none; z-index: 0; }
+#role-section .overline { color: #84e6ee; position: relative; z-index: 1; }
+#role-section .overline span { background: #84e6ee; }
+#role-section h2 { color: #fff; position: relative; z-index: 1; }
+#role-section h3 { color: #fff; position: relative; z-index: 1; }
+#role-section .lead, #role-section p { color: rgba(255,255,255,.7); position: relative; z-index: 1; }
+#role-section .container { position: relative; z-index: 1; }
+#role-section a, #role-section .role-card { background: rgba(255,255,255,.04); border: 1px solid rgba(6,159,177,.15); color: #fff; }
+#role-section a:hover, #role-section .role-card:hover { background: rgba(6,159,177,.08); border-color: rgba(6,159,177,.3); box-shadow: 0 8px 30px rgba(6,159,177,.12); }
+
