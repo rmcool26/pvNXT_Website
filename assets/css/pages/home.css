@@ -368,7 +368,92 @@
 .cta-final-inner { text-align: center; max-width: 560px; margin: 0 auto; }
 .cta-final-inner .overline { justify-content: center; }
 .cta-final-inner .lead { margin: 0 auto 32px; }
-.cta-final-buttons { display: flex; flex-wrap: wrap; gap: 14px; justify-content: center; }
+
+/* ===== S4: PRODUCTS (Beyond Solar Design) ===== */
+
+.output-section {
+  padding: 100px 0;
+  background: #fff;
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+}
+
+.output-shell {
+  display: grid;
+  grid-template-columns: 1fr 1.2fr;
+  gap: 60px;
+  align-items: start;
+}
+
+.output-copy {
+  position: sticky;
+  top: 118px; /* Matches .section padding */
+  max-width: 400px;
+}
+
+.output-copy p:last-child {
+  font-size: .95rem;
+  color: var(--muted);
+  line-height: 1.6;
+  margin-top: 16px;
+}
+
+.output-columns {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+}
+
+.output-columns article {
+  padding: 28px 24px;
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  transition: border-color .25s ease, box-shadow .25s ease;
+}
+
+.output-columns article:hover {
+  border-color: rgba(6,159,177,.3);
+  box-shadow: 0 12px 36px rgba(6,159,177,.06);
+}
+
+.output-columns article span {
+  display: block;
+  font-size: .78rem;
+  font-weight: 700;
+  color: var(--brand-dark);
+  text-transform: uppercase;
+  letter-spacing: .06em;
+  margin-bottom: 14px;
+}
+
+.output-columns article h3 {
+  font-size: 1.08rem;
+  margin-bottom: 10px;
+}
+
+.output-columns article p {
+  font-size: .88rem;
+  color: var(--muted);
+  line-height: 1.6;
+  margin-bottom: 18px;
+}
+
+/* Responsive */
+@media (max-width: 860px) {
+  .output-shell {
+    grid-template-columns: 1fr;
+  }
+  
+  .output-copy {
+    position: static;
+    max-width: 100%;
+  }
+  
+  .output-columns {
+    grid-template-columns: 1fr;
+  }
+}
 
 /* ===== S6: REAL RESULTS ===== */
 .results-section { background: radial-gradient(circle at 50% 0%, rgba(6,159,177,.06), transparent 60%); }
