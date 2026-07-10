@@ -1,123 +1,174 @@
 (function () {
-  var headerTemplate = `
-<header class="site-header" data-header>
-  <div class="header-progress" data-progress></div>
-  <div class="nav-shell">
-    <a class="brand" href="index.html" aria-label="Terranxt home">
-      <img src="assets/images/logo.png" width="224" height="56" alt="Terranxt logo">
+  var headerTemplate = `<header class="site-header" data-header>
+  <div class="container header-inner">
+    <a href="/home.html" class="logo" aria-label="pvNXT Home">
+      <svg width="120" height="32" viewBox="0 0 120 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <text x="10" y="24" font-family="Inter, sans-serif" font-weight="800" font-size="20" fill="#069fb1">pvNXT</text>
+      </svg>
     </a>
-    <nav class="nav-links" aria-label="Primary navigation">
-      <a class="nav-link" href="index.html" data-nav="home">Home</a>
-      <a class="nav-link" href="services.html#platform" data-nav="platform">pvNXT Platform</a>
-      <a class="nav-link" href="about.html" data-nav="about">About</a>
-      <a class="nav-link" href="contact.html" data-nav="contact">Contact</a>
+
+    <nav class="main-nav" data-nav>
+      <ul class="nav-list">
+        <li><a href="/home.html" class="nav-link">Home</a></li>
+        <li class="nav-dropdown" data-dropdown>
+          <button class="nav-link nav-dropdown-trigger" data-dropdown-trigger>
+            Products
+            <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 4.5l3 3 3-3"/></svg>
+          </button>
+          <ul class="nav-dropdown-menu" data-dropdown-menu>
+            <li><a href="/products/studio.html" class="dropdown-link">Studio — EPC Design</a></li>
+            <li><a href="/products/connect.html" class="dropdown-link">Connect — Consumer Portal</a></li>
+            <li><a href="/products/go.html" class="dropdown-link">Go — Installer Portal</a></li>
+            <li><a href="/products/proposal.html" class="dropdown-link">Proposal — Auto Proposals</a></li>
+            <li><a href="/products/field-app.html" class="dropdown-link">Field App — Site Survey</a></li>
+            <li><a href="/products/scada.html" class="dropdown-link">SCADA — Plant Monitoring</a></li>
+          </ul>
+        </li>
+        <li><a href="/about.html" class="nav-link">About</a></li>
+        <li><a href="/contact.html" class="nav-link">Contact</a></li>
+      </ul>
     </nav>
-    <div class="nav-actions">
-      <div class="portal-wrap">
-        <button class="portal-button" type="button" data-portal-toggle aria-expanded="false" aria-controls="portal-menu">
-          <span>pvNXT Portal</span>
-          <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M4.3 6.1 8 9.8l3.7-3.7" /></svg>
-        </button>
-        <div class="portal-menu" id="portal-menu" role="menu" aria-label="Portal login options">
-          <a href="https://consumer.pvnxt.com/" target="_blank" rel="noopener noreferrer" class="portal-item" role="menuitem">
-            <span class="portal-item-mark" aria-hidden="true"></span>
-            <span><strong>Consumer</strong><small>Free checks and reverse bidding</small></span>
+
+    <div class="header-actions">
+      <a href="/contact.html#contact-form" class="btn btn-primary btn-sm">Request Demo</a>
+    </div>
+
+    <button class="mobile-menu-toggle" data-mobile-toggle aria-label="Toggle menu">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+  </div>
+
+  <style>
+.nav-dropdown { position: relative; }
+.nav-dropdown-trigger { display: flex; align-items: center; gap: 4px; background: none; border: none; cursor: pointer; font: inherit; }
+.nav-dropdown-menu { 
+  position: absolute; 
+  top: 100%; 
+  left: 0; 
+  min-width: 240px; 
+  background: #fff; 
+  border: 1px solid var(--line); 
+  border-radius: 12px; 
+  padding: 8px; 
+  box-shadow: 0 12px 36px rgba(6,159,177,.08); 
+  opacity: 0; 
+  visibility: hidden; 
+  transform: translateY(-8px); 
+  transition: opacity .2s ease, transform .2s ease, visibility .2s ease; 
+  z-index: 100;
+}
+.nav-dropdown[data-open="true"] .nav-dropdown-menu {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+.dropdown-link { 
+  display: block; 
+  padding: 10px 14px; 
+  border-radius: 8px; 
+  font-size: .88rem; 
+  color: var(--ink); 
+  text-decoration: none; 
+  transition: background .15s ease; 
+}
+.dropdown-link:hover { background: rgba(6,159,177,.08); color: var(--brand-dark); }
+.btn-sm { padding: 8px 18px; font-size: .85rem; }
+</style>
+</header>`;
+
+  var footerTemplate = `<footer class="site-footer" data-footer>
+  <div class="container">
+    <div class="footer-grid">
+      
+      <!-- Column 1: Brand -->
+      <div class="footer-brand">
+        <a href="/home.html" class="footer-logo" aria-label="pvNXT Home">
+          <svg width="100" height="28" viewBox="0 0 100 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <text x="8" y="20" font-family="Inter, sans-serif" font-weight="800" font-size="16" fill="#069fb1">pvNXT</text>
+          </svg>
+        </a>
+        <p class="footer-tagline">Solar operations, connected.</p>
+        <p class="footer-desc">pvNXT is a connected solar workflow suite by Terranxt — an IIT Delhi-FITT incubated deep-tech startup.</p>
+      </div>
+
+      <!-- Column 2: Quick Links -->
+      <div class="footer-links">
+        <h4 class="footer-heading">Quick Links</h4>
+        <ul class="footer-list">
+          <li><a href="/home.html" class="footer-link">Home</a></li>
+          <li><a href="/about.html" class="footer-link">About pvNXT</a></li>
+          <li><a href="/contact.html#contact-form" class="footer-link">Contact Us</a></li>
+          <li><a href="/contact.html#contact-form" class="footer-link">Request Demo</a></li>
+        </ul>
+      </div>
+
+      <!-- Column 3: Products -->
+      <div class="footer-products">
+        <h4 class="footer-heading">Products</h4>
+        <ul class="footer-list">
+          <li><a href="/products/studio.html" class="footer-link">Studio — EPC Design</a></li>
+          <li><a href="/products/connect.html" class="footer-link">Connect — Consumer Portal</a></li>
+          <li><a href="/products/go.html" class="footer-link">Go — Installer Portal</a></li>
+          <li><a href="/products/proposal.html" class="footer-link">Proposal System</a></li>
+          <li><a href="/products/field-app.html" class="footer-link">Field App</a></li>
+          <li><a href="/products/scada.html" class="footer-link">SCADA Monitoring</a></li>
+        </ul>
+      </div>
+
+      <!-- Column 4: Contact -->
+      <div class="footer-contact">
+        <h4 class="footer-heading">Contact</h4>
+        <p class="footer-text">IIT Delhi incubation ecosystem<br>New Delhi, India</p>
+        <a href="/contact.html#contact-form" class="footer-link">Start a product enquiry</a>
+        <div class="footer-social" style="margin-top:16px;display:flex;gap:12px;">
+          <a href="https://linkedin.com/company/pvnxt" target="_blank" rel="noopener" class="footer-social-link" aria-label="LinkedIn">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
           </a>
-          <a href="https://epc.pvnxt.com/" target="_blank" rel="noopener noreferrer" class="portal-item" role="menuitem">
-            <span class="portal-item-mark" aria-hidden="true"></span>
-            <span><strong>Solar EPC</strong><small>Auto 3D layouts and BOQs</small></span>
+          <a href="https://twitter.com/pvnxt" target="_blank" rel="noopener" class="footer-social-link" aria-label="X (Twitter)">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4l11.733 16h4.267l-11.733-16H4zm0 16l11.733-16h4.267l-11.733 16H4z" transform="scale(.85)"/></svg>
           </a>
-          <a href="https://installer.pvnxt.com/" target="_blank" rel="noopener noreferrer" class="portal-item" role="menuitem">
-            <span class="portal-item-mark" aria-hidden="true"></span>
-            <span><strong>Installer</strong><small>Mobile tasks and handovers</small></span>
+          <a href="https://youtube.com/@pvNXT" target="_blank" rel="noopener" class="footer-social-link" aria-label="YouTube">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="10,8 16,12 10,16"/></svg>
           </a>
         </div>
       </div>
-      <button class="menu-toggle" type="button" data-menu-toggle aria-controls="mobile-menu" aria-expanded="false" aria-label="Open navigation">
-        <span></span><span></span><span></span>
-      </button>
-    </div>
-  </div>
-  <div class="mobile-panel" id="mobile-menu" data-mobile-menu>
-    <nav class="mobile-links" aria-label="Mobile navigation">
-      <a class="nav-link" href="index.html" data-nav="home">Home</a>
-      <a class="nav-link" href="services.html#platform" data-nav="platform">pvNXT Platform</a>
-      <a class="nav-link" href="services.html#beyond" data-nav="beyond">Beyond Solar</a>
-      <a class="nav-link" href="about.html" data-nav="about">About Us</a>
-      <a class="nav-link" href="contact.html" data-nav="contact">Contact</a>
-    </nav>
-    <div class="mobile-portal">
-      <p class="mobile-portal-title">pvNXT Portal</p>
-      <a href="https://consumer.pvnxt.com/" target="_blank" rel="noopener noreferrer" class="portal-item">
-        <span class="portal-item-mark" aria-hidden="true"></span>
-        <span><strong>Consumer</strong><small>Free checks and reverse bidding</small></span>
-      </a>
-      <a href="https://epc.pvnxt.com/" target="_blank" rel="noopener noreferrer" class="portal-item">
-        <span class="portal-item-mark" aria-hidden="true"></span>
-        <span><strong>Solar EPC</strong><small>Auto 3D layouts and BOQs</small></span>
-      </a>
-      <a href="https://installer.pvnxt.com/" target="_blank" rel="noopener noreferrer" class="portal-item">
-        <span class="portal-item-mark" aria-hidden="true"></span>
-        <span><strong>Installer</strong><small>Mobile tasks and handovers</small></span>
-      </a>
-    </div>
-  </div>
-</header>`;
 
-  var footerTemplate = `
-<footer class="site-footer">
-  <div class="footer-glow" aria-hidden="true"></div>
-  <div class="container footer-grid">
-    <div class="footer-brand-block">
-      <a class="footer-brand" href="index.html" aria-label="Terranxt home">
-        <img src="assets/images/logo.png" width="224" height="56" alt="Terranxt logo">
-      </a>
-      <p>Terranxt is building the digital backbone of solar with AI, geo-spatial intelligence and role-specific workflows for consumers, EPCs and installers.</p>
-      <div class="footer-trust">
-        <span>IIT Delhi Incubated</span>
-        <span>AI Solar Design</span>
-        <span>Zero Site Visit</span>
+    </div>
+
+    <!-- Footer Bottom -->
+    <div class="footer-bottom">
+      <p class="footer-copyright">© 2026 pvNXT by Terranxt. All rights reserved.</p>
+      <div class="footer-legal">
+        <a href="/contact.html#contact-form" class="footer-legal-link">Partnership enquiries</a>
       </div>
     </div>
-    <div class="footer-col">
-      <h2>Quick links</h2>
-      <nav aria-label="Footer navigation">
-        <a href="index.html">Home</a>
-        <a href="services.html#platform">pvNXT Platform</a>
-        <a href="services.html#beyond">Beyond Solar</a>
-        <a href="about.html">About Us</a>
-        <a href="contact.html">Contact</a>
-      </nav>
-    </div>
-    <div class="footer-col app-col">
-      <h2>Flexibility on the go</h2>
-      <p>Request mobile access for installer field tools, digital checklists and handovers.</p>
-      <div class="store-row">
-        <img class="google-play-badge" alt="Google Play Store badge" height="50" src="assets/images/Get_GP.png" width="150">
-      </div>
-    </div>
-    <div class="footer-col">
-      <h2>Contact</h2>
-      <address>
-        <a href="contact.html#contact-form">Start a product enquiry</a>
-        <a aria-label="Open Terranxt office location in Google Maps" href="https://maps.app.goo.gl/Jyn11jgyqLdDVydn7" target="_blank" rel="noopener noreferrer">12A, M3M Urbana Premium, Sector 67 Gurugram 122101</a>
-      </address>
-      <div class="social-links" aria-label="Social links">
-        <a href="https://in.linkedin.com/company/Terranxt" target="_blank" rel="noopener noreferrer" aria-label="Terranxt LinkedIn">LinkedIn</a>
-        <a href="https://www.youtube.com/@TerranxtPvtLtd" target="_blank" rel="noopener noreferrer" aria-label="Terranxt YouTube">YouTube</a>
-      </div>
-    </div>
+
   </div>
-  <div class="container footer-bottom">
-    <span>&copy; 2026 Terranxt. All rights reserved.</span>
-    <div>
-      <a href="contact.html#contact-form">Partnership enquiries</a>
-      <span aria-hidden="true">|</span>
-      <a href="terms.html">Terms of service</a>
-      <span aria-hidden="true">|</span>
-      <a href="privacy.html">Privacy policy</a>
-    </div>
-  </div>
+  <style>
+.footer-social-link { 
+  display: inline-flex; 
+  align-items: center; 
+  justify-content: center; 
+  width: 36px; 
+  height: 36px; 
+  border-radius: 8px; 
+  background: rgba(6,159,177,.08); 
+  color: var(--brand-dark); 
+  transition: background .2s ease, color .2s ease; 
+}
+.footer-social-link:hover { 
+  background: var(--brand); 
+  color: #fff; 
+}
+.footer-text { 
+  font-size: .88rem; 
+  color: var(--muted); 
+  line-height: 1.6; 
+  margin-bottom: 8px; 
+}
+</style>
 </footer>`;
 
   var whatsappTemplate = `
