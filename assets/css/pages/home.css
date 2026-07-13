@@ -391,7 +391,7 @@
 
 /* ===== S5: WHO IT'S FOR — 2-COL v2 ===== */
 .who-section { background: linear-gradient(180deg, #f9fcfd 0%, #fff 100%); }
-.who-grid { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(48px, 6vw, 80px); align-items: center; }
+.who-grid { display: grid; grid-template-columns: 1fr 1.2fr; gap: clamp(48px, 6vw, 80px); align-items: stretch; }
 .who-left { max-width: 560px; }
 .who-header { margin: 0 0 40px; }
 .who-header .overline { justify-content: flex-start; }
@@ -407,7 +407,7 @@
 .who-lane-arrow { font-size: .8rem; font-weight: 700; color: var(--brand-dark); white-space: nowrap; flex-shrink: 0; opacity: 0; transform: translateX(-8px); transition: opacity .25s ease, transform .25s ease; }
 .who-lane:hover .who-lane-arrow { opacity: 1; transform: translateX(0); }
 .who-right { display: flex; align-items: center; justify-content: center; }
-.who-illustration { width: 100%; max-width: 560px; height: auto; display: block; border-radius: 24px; }
+.who-illustration { width: 100%; max-width: 100%; height: 100%; display: block; border-radius: 24px; object-fit: cover; }
 @media (max-width: 860px) {
 .who-grid { grid-template-columns: 1fr; gap: 48px; }
 .who-left { max-width: 100%; order: 2; }
@@ -416,6 +416,6 @@
 .who-header .overline { justify-content: center; }
 .who-header h2 { text-align: center; }
 .who-header .lead { text-align: center; }
-.who-illustration { max-width: 100%; }
+.who-illustration { max-width: 100%; max-height: 400px; }
 }
 
